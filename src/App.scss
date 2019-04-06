@@ -1,0 +1,81 @@
+// @import "./Variables.scss";
+
+// .App {
+//   text-align: center;
+// }
+
+// .App-logo {
+//   animation: App-logo-spin infinite 20s linear;
+//   height: 40vmin;
+//   pointer-events: none;
+// }
+
+// .App-header {
+//   background-color: #282c34;
+//   min-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   font-size: calc(10px + 2vmin);
+//   color: white;
+// }
+
+// .App-link {
+//   color: #61dafb;
+// }
+
+// @keyframes App-logo-spin {
+//   from {
+//     transform: rotate(0deg);
+//   }
+
+//   to {
+//     transform: rotate(360deg);
+//   }
+// }
+
+.inputWrapper {
+  position: relative;
+  width: 80%;
+  margin: 1rem;
+
+  &::after {
+    content: attr(data-error);
+    // color: ;
+    font-size: 0.9rem;
+    font-weight: 500;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.2rem;
+  }
+}
+
+.dashboard {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
+
+.sidenav {
+  background: #171926;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  color: #C6C9CF;
+
+  a {
+    color: #C6C9CF;
+  }
+  a.active {
+    color: red;
+  }
+}
+
+.main {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  // background: linear-gradient(to bottom, #202737, #171926);
+  // background: linear-gradient(to bottom, #171926, #202737);
+}

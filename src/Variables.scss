@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Poppins:500');
+
+$light: #c6c9cf;
+$light50: rgba(198, 201, 207,.5);
+$lightBlue: #202737;
+$darkBlue: #171926;
+
+@mixin lato() {
+    font-family: 'Lato', sans-serif;
+    // font-size: $font-size;
+}
+
+@mixin poppins() {
+    font-family: 'Poppins', sans-serif;
+}
+
+@mixin radial() {
+    background: radial-gradient(rgb(68, 73, 89), rgba(68, 73, 89, 0));
+}
