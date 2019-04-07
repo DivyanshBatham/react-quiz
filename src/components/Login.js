@@ -41,14 +41,14 @@ class Login extends Component {
     // else if (!emailRegex.test(email)) errors.email = "* email is invalid";
 
     if (Object.entries(errors).length === 0 && errors.constructor === Object) {
-      auth
-        .signInWithEmailAndPassword(email, password)
-        .then(user => {
-          console.log(user);
-          // isAuthenticated is temporary.
-          this.setState({ redirectToReferrer: true, isAuthenticated: true });
-        })
-        .catch(err => console.error(err.message));
+      // auth
+      //   .signInWithEmailAndPassword(email, password)
+      //   .then(user => {
+      //     console.log(user);
+      //     // isAuthenticated is temporary.
+      //     this.setState({ redirectToReferrer: true, isAuthenticated: true });
+      //   })
+      //   .catch(err => console.error(err.message));
     } else {
       this.setState({
         errors
@@ -77,37 +77,48 @@ class Login extends Component {
     if (redirectToReferrer) return <Redirect to={from} />;
 
     return (
-      <div className="container">
-        <h1>Login Form</h1>
-        <form onSubmit={this.handleLogin}>
-          <div className="inputWrapper" data-error={this.state.errors.email}>
-            <input
-              type="text"
-              aria-label="Email"
-              placeholder="Email"
-              ref={el => (this.emailInput = el)}
-            />
+      <div className="auth">
+        <form className="auth-card" onSubmit={this.handleLogin}>
+          <div>
+            <h1 className="auth-card__logo">React Quiz</h1>
+            <h2 className="auth-card__sublogo">
+              Compete | Practice | Contribute
+            </h2>
           </div>
-          <div className="inputWrapper" data-error={this.state.errors.password}>
-            <input
-              type="password"
-              aria-label="Password"
-              placeholder="Password"
-              ref={el => (this.passwordInput = el)}
-            />
+          <div>
+            {/* <span className="auth-card__title">Continue where you left</span> */}
+            {/* <p className="auth-card__title">Login</p> */}
+            <div className="inputWrapper" data-error={this.state.errors.email}>
+              <label htmlFor="email">Email</label>
+              <input
+                type="text"
+                aria-label="Email"
+                placeholder="Enter your email"
+                ref={el => (this.emailInput = el)}
+              />
+            </div>
+            <div
+              className="inputWrapper"
+              data-error={this.state.errors.password}
+            >
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                aria-label="Password"
+                placeholder="Enter your password"
+                ref={el => (this.passwordInput = el)}
+              />
+            </div>
           </div>
-
-          <button className="cta cta-sub" onClick={this.handleSubmit}>
-            Login
-          </button>
+          <div>
+            <button className="primaryButton" onClick={this.handleSubmit}>
+              Login
+            </button>
+            <Link className="secondaryLink" to="/signup">
+              Don't have an account? Signup
+            </Link>
+          </div>
         </form>
-        <Link to="/signup">Don't have an account? Signup</Link>
-        {this.isAuthenticated && (
-          <button className="cta cta-sub" onClick={this.handleLogout}>
-            Logout
-          </button>
-        )}
-        <p>{this.props.dummyToken}</p>
       </div>
     );
   }

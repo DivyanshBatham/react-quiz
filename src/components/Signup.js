@@ -16,11 +16,12 @@ class Signup extends Component {
 
     let email = this.emailInput.value;
     let password = this.passwordInput.value;
-    let repeatPassword = this.repeatPasswordInput.value;
+    let name = this.nameInput.value;
 
     // Validation of Inputs:
     let errors = {};
 
+    if (name === "") errors.name = "* name is required";
     if (email === "") errors.email = "* email is required";
     if (password === "") errors.password = "* password is required";
     // TODO: Uncomment this after debugging:
@@ -28,10 +29,10 @@ class Signup extends Component {
     // else if (!emailRegex.test(email)) errors.email = "* email is invalid";
 
     if (Object.entries(errors).length === 0 && errors.constructor === Object) {
-      auth
-        .createUserWithEmailAndPassword(email, password)
-        .then(user => console.log(user))
-        .catch(err => console.error(err.message));
+      // auth
+      //   .createUserWithEmailAndPassword(email, password)
+      //   .then(user => console.log(user))
+      //   .catch(err => console.error(err.message));
     } else {
       this.setState({
         errors
@@ -41,41 +42,55 @@ class Signup extends Component {
 
   render() {
     return (
-      <div className="container">
-        <h1>Signup Form</h1>
-        <form onSubmit={this.handleSignup}>
-          <div className="inputWrapper" data-error={this.state.errors.email}>
-            <input
-              type="text"
-              aria-label="Email"
-              placeholder="Email"
-              ref={el => (this.emailInput = el)}
-            />
+      <div className="auth">
+        <form className="auth-card" onSubmit={this.handleSignup}>
+          <div>
+            <h1 className="auth-card__logo">React Quiz</h1>
+            <h2 className="auth-card__sublogo">
+              Compete | Practice | Contribute
+            </h2>
           </div>
-          <div className="inputWrapper" data-error={this.state.errors.password}>
-            <input
-              type="password"
-              aria-label="Password"
-              placeholder="Password"
-              ref={el => (this.passwordInput = el)}
-            />
+          <div>
+            <div className="inputWrapper" data-error={this.state.errors.name}>
+              <label htmlFor="name">Name</label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Enter your name"
+                ref={el => (this.nameInput = el)}
+              />
+            </div>
+            <div className="inputWrapper" data-error={this.state.errors.email}>
+              <label htmlFor="email">Email</label>
+              <input
+                type="text"
+                aria-label="Email"
+                placeholder="Enter your email"
+                ref={el => (this.emailInput = el)}
+              />
+            </div>
+            <div
+              className="inputWrapper"
+              data-error={this.state.errors.password}
+            >
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Enter your password"
+                ref={el => (this.passwordInput = el)}
+              />
+            </div>
           </div>
-          <div
-            className="inputWrapper"
-            data-error={this.state.errors.repeatPassword}
-          >
-            <input
-              type="password"
-              aria-label="Repeat Password"
-              placeholder="Repeat Password"
-              ref={el => (this.repeatPasswordInput = el)}
-            />
+          <div>
+            <button className="primaryButton" onClick={this.handleSubmit}>
+              Sign up
+            </button>
+            <Link className="secondaryLink" to="/login">
+              Already have an account? Login
+            </Link>
           </div>
-          <button className="cta cta-sub" onClick={this.handleSubmit}>
-            Sign up
-          </button>
         </form>
-        <Link to="/login">Already have an account? Login</Link>
       </div>
     );
   }

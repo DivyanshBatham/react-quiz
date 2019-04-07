@@ -1,7 +1,19 @@
-// @import "./Variables.scss";
+@import "./Variables.scss";
 
-// .App {
-//   text-align: center;
+body {
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  font-size: 16px;
+  @include lato();
+  color: #282828;
+}
+
+// #root {
+// text-align: center;
+// height: 100vh;
 // }
 
 // .App-logo {
@@ -35,10 +47,68 @@
 //   }
 // }
 
+.primaryButton {
+  border: 0;
+  @include poppins();
+  font-size: 1rem;
+  text-transform: uppercase;
+  // padding: 0.5rem 3rem;
+  padding: 0.5rem;
+  width: 100%;
+  color: rgb(240, 240, 240);
+  background: $pink;
+  border-radius: 0.5rem;
+  display: block;
+  margin: 0 auto;
+}
+
+.secondaryLink {
+  color: #282828;
+  display: block;
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+
+  &:hover,
+  &:focus {
+    color: $pink;
+  }
+}
+
+input {
+  position: relative;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #323232;
+  padding: 0.5rem 1rem;
+  border-bottom: solid 2px $lightBlue;
+
+  &:focus {
+    outline: none;
+  }
+}
+
 .inputWrapper {
   position: relative;
-  width: 80%;
-  margin: 1rem;
+  // width: 80%;
+  margin: 1.5rem 0;
+  // background: cadetblue;
+
+  // &::before {
+  //   content: "";
+  //   display: block;
+  //   position: absolute;
+  //   height: 2px;
+  //   width: 10%;
+  //   background: red;
+  //   bottom: 0;
+  //   left: 50%;
+  //   z-index: 1;
+  //   transform: translateX(-50%);
+  // }
 
   &::after {
     content: attr(data-error);
@@ -50,6 +120,7 @@
     right: 0;
     margin-top: 0.2rem;
   }
+
 }
 
 .dashboard {
@@ -63,10 +134,10 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  color: #C6C9CF;
+  color: #c6c9cf;
 
   a {
-    color: #C6C9CF;
+    color: #c6c9cf;
   }
   a.active {
     color: red;
@@ -78,4 +149,52 @@
   overflow-x: hidden;
   // background: linear-gradient(to bottom, #202737, #171926);
   // background: linear-gradient(to bottom, #171926, #202737);
+}
+
+// Login.js
+.auth {
+  // height: 100vh;
+  height: 100vh;
+  background: $darkBlue;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  // position: relative;
+
+  .auth-card {
+    border-radius: 0.5rem;
+    background: $light;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &__logo {
+      text-align: center;
+      @include poppins();
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    &__sublogo {
+      @include lato();
+      text-align: center;
+      margin: 0;
+      font-size: 1rem;
+      // font-weight: 500;
+    }
+
+    &__title {
+      @include poppins();
+      font-size: 1.2rem;
+      font-weight: 500;
+      text-align: center;
+      // text-transform: uppercase;
+    }
+
+    label {
+      @include poppins();
+    }
+  }
 }
