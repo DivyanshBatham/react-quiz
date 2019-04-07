@@ -5,8 +5,8 @@ main {
   color: $light;
   overflow-y: scroll;
   overflow-x: hidden;
-  background: linear-gradient(to bottom, $lightBlue, $darkBlue);
-  // background: linear-gradient(to bottom, #171926, #202737);
+  background: $lightBlue;
+  // background: linear-gradient(to bottom, $lightBlue, $darkBlue);
 }
 
 hr {
@@ -20,12 +20,13 @@ header {
   position: relative;
   display: flex;
   align-items: center;
-  margin-top: 0.5em;
+  margin: 1rem 0;
+  justify-content: space-between;
 
   h1 {
     @include poppins();
     margin: 0;
-    font-size: 18px;
+    font-size: 1.5rem;
     display: inline;
   }
 
@@ -46,20 +47,23 @@ header {
 .quizlist {
   &__header {
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 1rem;
     margin: 0.5rem 0;
+    font-weight: 500;
+    // text-align: right;
+    // display: none;
   }
 
   &__quiz {
     // display: flex;
     // flex-direction: column;
-    padding: 20px;
+    padding: 1rem 1rem;
     // background: cadetblue;
     // @include lato();
 
     &__title {
-      font-size: 18px;
-      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      // margin-bottom: 0.5rem;
     }
 
     &__timestamp {
@@ -78,7 +82,13 @@ header {
       border: 0;
       border-radius: 8px;
       padding: 5px 10px;
+    
+      &.register {
+        color: $white;
+        background: $pink;
+      }
     }
+
   }
 }
 
@@ -89,7 +99,9 @@ header {
 }
 .quizlist__quiz:hover {
   cursor: pointer;
+  // background: $lightBlue;
   background: $darkBlue;
+  // background: $lightPink;
 }
 
 .smallSVGWrapper {

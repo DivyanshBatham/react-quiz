@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Redirect, Link } from "react-router-dom";
-import { auth } from "../firebase";
+// import { auth } from "../firebase";
 import { connect } from "react-redux";
+import { signIn } from "../actions/authActions";
 
 const fakeAuth = {
   isAuthenticated: false,
@@ -41,14 +42,8 @@ class Login extends Component {
     // else if (!emailRegex.test(email)) errors.email = "* email is invalid";
 
     if (Object.entries(errors).length === 0 && errors.constructor === Object) {
-      // auth
-      //   .signInWithEmailAndPassword(email, password)
-      //   .then(user => {
-      //     console.log(user);
-      //     // isAuthenticated is temporary.
-      //     this.setState({ redirectToReferrer: true, isAuthenticated: true });
-      //   })
-      //   .catch(err => console.error(err.message));
+      this.props.signIn({ email, password });
+      // this.setState({ redirectToReferrer: true });
     } else {
       this.setState({
         errors
@@ -56,25 +51,13 @@ class Login extends Component {
     }
   };
 
-  //   login = () => {
-  //     fakeAuth.authenticate(() => {
-  //       this.setState({ redirectToReferrer: true });
-  //     });
-  //   };
-
-  handleLogout = () => {
-    auth.signOut();
-    this.setState({
-      isAuthenticated: false
-    });
-  };
-
   render() {
     console.log("Login.js Props", this.props);
     let { from } = this.props.location.state || { from: { pathname: "/" } };
     let { redirectToReferrer } = this.state;
 
-    if (redirectToReferrer) return <Redirect to={from} />;
+    // if (redirectToReferrer) return <Redirect to={from} />;
+    if (this.props.auth.uid) return <Redirect to="/dashboard" />;
 
     return (
       <div className="auth">
@@ -109,6 +92,7 @@ class Login extends Component {
                 ref={el => (this.passwordInput = el)}
               />
             </div>
+            {this.props.authError && <span>{this.props.authError}</span>}
           </div>
           <div>
             <button className="primaryButton" onClick={this.handleSubmit}>
@@ -125,18 +109,26 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
-    dummyToken: state.auth.dummyToken
+    authError: state.auth.authError,
+    auth: state.firebase.auth
   };
 };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-// actionCreatorName: parameter => dispatch(actionCreatorName(parameter))
-//   };
-// };
+const mapDispatchToProps = dispatch => {
+  return {
+    signIn: creds => dispatch(signIn(creds))
+  };
+  //   return {
+  // actionCreatorName: parameter => dispatch(actionCreatorName(parameter))
+  //   };
+};
 
-export default connect(mapStateToProps)(Login);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
 // export default connect(
 //   mapStateToProps,
 //   mapDispatchToProps

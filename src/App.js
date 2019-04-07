@@ -81,25 +81,27 @@ class App extends Component {
   // };
 
   // https://reacttraining.com/react-router/web/example/auth-workflow
-  // PrivateRoute = ({ component: Component, ...rest }) => {
-  //   return (
-  //     <Route
-  //       {...rest}
-  //       render={props =>
-  //         fakeAuth.isAuthenticated ? (
-  //           <Component {...props} />
-  //         ) : (
-  //           <Redirect
-  //             to={{
-  //               pathname: "/login",
-  //               state: { from: props.location }
-  //             }}
-  //           />
-  //         )
-  //       }
-  //     />
-  //   );
-  // }
+  PrivateRoute = ({ component: Component, ...rest }) => {
+    console.log("PRIVATE ROUTE");
+    return (
+      <Route
+        {...rest}
+        render={props =>
+          false ? (
+          // fakeAuth.isAuthenticated ? (
+            <Component {...props} />
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: { from: props.location }
+              }}
+            />
+          )
+        }
+      />
+    );
+  }
 
   render() {
     console.log("App.js", this.props);

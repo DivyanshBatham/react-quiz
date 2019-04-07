@@ -120,46 +120,15 @@ input {
     right: 0;
     margin-top: 0.2rem;
   }
-
 }
 
-.dashboard {
-  height: 100vh;
-  display: grid;
-  grid-template-columns: 200px 1fr;
-}
-
-.sidenav {
-  background: #171926;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  color: #c6c9cf;
-
-  a {
-    color: #c6c9cf;
-  }
-  a.active {
-    color: red;
-  }
-}
-
-.main {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  // background: linear-gradient(to bottom, #202737, #171926);
-  // background: linear-gradient(to bottom, #171926, #202737);
-}
-
-// Login.js
+// Login.js and Signup.js
 .auth {
-  // height: 100vh;
   height: 100vh;
   background: $darkBlue;
   padding: 20px;
   display: flex;
   justify-content: center;
-  // position: relative;
 
   .auth-card {
     border-radius: 0.5rem;
@@ -168,6 +137,7 @@ input {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    max-width: 350px;
 
     &__logo {
       text-align: center;
@@ -197,4 +167,35 @@ input {
       @include poppins();
     }
   }
+}
+
+.dashboard {
+  height: 100vh;
+  display: grid;
+  // grid-template-columns: 200px 1fr;
+  // grid-template-columns: 200px 1fr;
+}
+
+.sidenav {
+  position: fixed;
+  background: #171926;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  color: #c6c9cf;
+  // display: none;
+
+  a {
+    color: #c6c9cf;
+  }
+  a.active {
+    color: red;
+  }
+}
+
+.main {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  // background: linear-gradient(to bottom, #202737, #171926);
+  // background: linear-gradient(to bottom, #171926, #202737);
 }

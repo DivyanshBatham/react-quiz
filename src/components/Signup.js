@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { auth } from "../firebase";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { signUp } from "../actions/authActions";
 
 class Signup extends Component {
   // TODO: If logged-in and user visits this site, redirect them to /home
@@ -29,6 +30,7 @@ class Signup extends Component {
     // else if (!emailRegex.test(email)) errors.email = "* email is invalid";
 
     if (Object.entries(errors).length === 0 && errors.constructor === Object) {
+      this.props.signUp({ name, email, password });
       // auth
       //   .createUserWithEmailAndPassword(email, password)
       //   .then(user => console.log(user))
@@ -41,6 +43,8 @@ class Signup extends Component {
   };
 
   render() {
+    if (this.props.auth.uid) return <Redirect to="/dashboard" />;
+
     return (
       <div className="auth">
         <form className="auth-card" onSubmit={this.handleSignup}>
@@ -81,6 +85,7 @@ class Signup extends Component {
                 ref={el => (this.passwordInput = el)}
               />
             </div>
+            {this.props.authError && <span>{this.props.authError}</span>}
           </div>
           <div>
             <button className="primaryButton" onClick={this.handleSubmit}>
@@ -96,4 +101,20 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    authError: state.auth.authError
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    signUp: creds => dispatch(signUp(creds))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Signup);

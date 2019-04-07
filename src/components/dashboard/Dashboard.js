@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
 import Sidenav from "./Sidenav";
 import Home from "./home/home";
@@ -23,17 +24,37 @@ class Dashboard extends Component {
     this.state = {};
   }
   render() {
+    if (!this.props.auth.uid) return <Redirect to="/login" />;
+
     return (
       <div className="dashboard">
-        <Sidenav prefixURL={this.props.match.url} />
+        <Sidenav prefixURL={this.props.match.url} profile={this.props.profile}/>
         <Route exact path={this.props.match.url} component={Home} />
-        <Route exact path={`${this.props.match.url}/compete`} component={Compete} />
-        <Route path={`${this.props.match.url}/compete/quiz/:id`} component={Quiz} />
+        <Route
+          exact
+          path={`${this.props.match.url}/compete`}
+          component={Compete}
+        />
+        <Route
+          path={`${this.props.match.url}/compete/quiz/:id`}
+          component={Quiz}
+        />
         <Route path={`${this.props.match.url}/practice`} component={Practice} />
-        <Route path={`${this.props.match.url}/add_question`} component={AddQuestion} />
+        <Route
+          path={`${this.props.match.url}/add_question`}
+          component={AddQuestion}
+        />
       </div>
     );
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => {
+  console.log("Dashboard's mapStateToProps ", state);
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile
+  };
+};
+
+export default connect(mapStateToProps)(Dashboard);

@@ -4,7 +4,10 @@ $light: #c6c9cf;
 $light50: rgba(198, 201, 207,.5);
 $lightBlue: #202737;
 $darkBlue: #171926;
+// $white: rgba(255,255,255,0.8);
+$white: white;
 $pink: #D61252;
+$lightPink: rgba(214, 18, 82,0.5);
 
 @mixin lato() {
     font-family: 'Lato', sans-serif;
@@ -17,4 +20,12 @@ $pink: #D61252;
 
 @mixin radial() {
     background: radial-gradient(rgb(68, 73, 89), rgba(68, 73, 89, 0));
+}
+
+@mixin transition() {
+    transition: all 0.2s ease-in-out;
+}
+
+.mb-05 {
+    margin-bottom: 0.5rem;
 }
