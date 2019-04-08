@@ -2,11 +2,11 @@ const initState = {
   // dummyToken: "DUMMY TOKEN"
 };
 
-const authReducer = (state = initState, action) => {
+const questionReducer = (state = initState, action) => {
   // This is where we ~manipulate~ update the state.
   switch (action.type) {
     case "ADD_QUESTION":
-      console.log("Question Added", action.question);
+      console.log("Question Added", action.questionData);
       return state;
     case "ADD_QUESTION_ERROR":
       console.log("Question Added Error, ", action.err);
@@ -24,10 +24,10 @@ const authReducer = (state = initState, action) => {
       console.log("Report Question");
       return state;
     default:
-      console.log("Nothing");
+      // console.log("Nothing");
       return state;
   }
   return state;
 };
 
-export default authReducer;
+export default questionReducer;

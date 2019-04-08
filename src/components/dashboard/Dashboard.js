@@ -28,7 +28,10 @@ class Dashboard extends Component {
 
     return (
       <div className="dashboard">
-        <Sidenav prefixURL={this.props.match.url} profile={this.props.profile}/>
+        <Sidenav
+          prefixURL={this.props.match.url}
+          profile={this.props.profile}
+        />
         <Route exact path={this.props.match.url} component={Home} />
         <Route
           exact
