@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // My custom export with preconfigured firebase
-import firebase, {auth, database} from './firebase.js';
+import firebase, { auth, database } from "./firebase.js";
 
 // Styles:
 import "./bootstrap-grid.min.css";
@@ -13,7 +13,7 @@ import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/dashboard/Dashboard.js";
-
+import FullPageSpinner from "./components/spinner/FullPageSpinner.js";
 
 const fakeAuth = {
   isAuthenticated: false,
@@ -26,7 +26,6 @@ const fakeAuth = {
     setTimeout(cb, 100);
   }
 };
-
 
 class App extends Component {
   constructor(props) {
@@ -58,7 +57,6 @@ class App extends Component {
     // });
     // const db = f.database();
     // const dbRef = db.ref().child('timer');
-
     // dbRef.on('value', snapshot => {
     //   this.setState({
     //     timer: snapshot.val()
@@ -88,7 +86,7 @@ class App extends Component {
         {...rest}
         render={props =>
           false ? (
-          // fakeAuth.isAuthenticated ? (
+            // fakeAuth.isAuthenticated ? (
             <Component {...props} />
           ) : (
             <Redirect
@@ -101,19 +99,20 @@ class App extends Component {
         }
       />
     );
-  }
+  };
 
   render() {
     console.log("App.js", this.props);
+    // if (!this.props.auth.isLoaded) return <FullPageSpinner />;
     return (
       // <h1>{this.state.timer}</h1>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
         {/* <LandingPage/> */}
         <Switch>
-          <Route exact path="/" component={LandingPage}/>
-          <Route path="/login" component={Login}/>
-          <Route path="/signup" component={Signup}/>
-          <Route path="/dashboard" component={Dashboard}/>
+          <Route exact path="/" component={LandingPage} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/dashboard" component={Dashboard} />
           {/* <this.PrivateRoute path="/dashboard" component={Dashboard} /> */}
           {/* <Route path="/quiz/:id" component={}/> */}
           {/* <Route path="/home" component={}/> */}
@@ -122,5 +121,7 @@ class App extends Component {
     );
   }
 }
+
+
 
 export default App;

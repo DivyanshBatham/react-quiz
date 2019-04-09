@@ -3,6 +3,7 @@ import Markdown from "react-markdown";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import Spinner from "../../spinner/Spinner";
 
 class Quiz extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class Quiz extends Component {
   }
   render() {
     console.log("Quiz, ", this.props);
+    
     return (
       <main>
         <div className="container">
@@ -67,26 +69,16 @@ class Quiz extends Component {
           </div>
           <hr />
           <div className="quiz-questionNumber">Question 1</div>
-          {/* <Markdown source="Test ```js var React = require('react');var Markdown = require('react-markdown');React.render(  <Markdown source='# Your markdown here' />,  document.getElementById('content'));```" /> */}
-          <p className="quiz-question">
+          {this.props.questions ? (
+            <Markdown source={this.props.questions[0].question} />
+          ) : (
+            <Spinner />
+            )}
+          {/* <p className="quiz-question">
             What is the output of the following program :
-          </p>
-          <code className="quiz-code">
-            def myfunc(a): a = a + 2 a = a * 2 return a print myfunc(2)
-          </code>
+          </p> */}
           <div className="quiz-options">
-            {/* <div>
-              <input type="radio" id="test1" name="radio-group" checked />
-              <label htmlFor="test1"><div>Apple</div></label>
-            </div>
-            <div>
-              <input type="radio" id="test2" name="radio-group" />
-              <label htmlFor="test2"><div>Peach</div></label>
-            </div>
-            <div>
-              <input type="radio" id="test3" name="radio-group" />
-              <label htmlFor="test3"><div>Orange</div></label>
-            </div> */}
+            
             <ul>
               <li>
                 <input type="radio" id="option-one" name="selector" />
@@ -119,20 +111,6 @@ class Quiz extends Component {
                 <div className="check" />
               </li>
             </ul>
-            {/* <div>
-            Making it long <br/>
-            Making it long <br/>
-            Making it long <br/>
-            Making it long <br/>
-            Making it long <br/>
-            Making it long <br/>
-            Making it long <br/>
-            Making it long <br/>
-            Making it long <br/>
-            Making it long <br/>
-            Making it long <br/>
-            Making it long <br/>
-          </div> */}
           </div>
         </div>
 
@@ -172,8 +150,10 @@ class Quiz extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
-    auth: state.firebase.auth
+    auth: state.firebase.auth,
+    questions: state.firestore.ordered.questions
   };
 };
 
@@ -183,8 +163,8 @@ const mapStateToProps = state => {
 //   }
 // };
 
-// export default compose(
-//   connect(mapStateToProps),
-//   firestoreConnect([{ collection: "questions" }])
-// )(Quiz);
-export default connect(mapStateToProps)(Quiz);
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([{ collection: "questions" }])
+)(Quiz);
+// export default connect(mapStateToProps)(Quiz);

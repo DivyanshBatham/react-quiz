@@ -29,11 +29,12 @@ const store = createStore(
       userProfile: "users",
       attachAuthIsReady: true
     })
-  )
+  ),
+  // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 // thunk allows are us to return function inside action creator which can async interact with db.
 
-store.firebaseAuthIsReady.then(() => {
+// store.firebaseAuthIsReady.then(() => {
   // Adding Provider:
   ReactDOM.render(
     <Provider store={store}>
@@ -45,7 +46,7 @@ store.firebaseAuthIsReady.then(() => {
   // unregister() to register() below. Note this comes with some pitfalls.
   // Learn more about service workers: https://bit.ly/CRA-PWA
   serviceWorker.unregister();
-});
+// });
 
 // // Adding Provider:
 // ReactDOM.render(

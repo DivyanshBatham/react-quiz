@@ -7,6 +7,7 @@ import Home from "./home/home";
 import AddQuestion from "./question/AddQuestion";
 import Compete from "./compete/Compete";
 import Quiz from "./compete/Quiz";
+import FullPageSpinner from "../spinner/FullPageSpinner";
 
 // const Compete = props => {
 //   console.log("Compete ", props);
@@ -24,6 +25,7 @@ class Dashboard extends Component {
     this.state = {};
   }
   render() {
+    if (!this.props.auth.isLoaded) return <FullPageSpinner/>
     if (!this.props.auth.uid) return <Redirect to="/login" />;
 
     return (

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-// import { firestoreReducer } from "redux-firestore";
+import { firestoreReducer } from "redux-firestore";
 import { firebaseReducer } from "react-redux-firebase";
 
 import authReducer from "./authReducer";
@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   // These will be the keys in out global state.
   auth: authReducer,
   question: questionReducer,
-  // firestore: firestoreReducer,
+  firestore: firestoreReducer,
   firebase: firebaseReducer
 });
 
