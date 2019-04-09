@@ -1,4 +1,14 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Setting up local env
+1) Clone the repository.
+2) `cd react-quiz`
+3) `npm install`
+4) `touch src\firebase-config.json`
+5) Go to https://console.firebase.google.com/ and Add a new project you can name it whatever you want.
+6) Go to Authentication from sidebar, Set up sign-in method and enable Email/Password (Not passwordless sign-in).
+7) Go to Database > Firestore, start in test mode and create a database.
+8) Come back to project overview "Add an app to get started", select last option (web) and Copy the config data.
+9) Paste the config data into `firebase-config.json`.
+10) `npm start`
 
 ## Available Scripts
 
