@@ -3,6 +3,7 @@ import { Redirect, Link } from "react-router-dom";
 // import { auth } from "../firebase";
 import { connect } from "react-redux";
 import { signIn } from "../actions/authActions";
+import FullPageSpinner from "./spinner/FullPageSpinner";
 
 const fakeAuth = {
   isAuthenticated: false,
@@ -56,6 +57,7 @@ class Login extends Component {
     let { from } = this.props.location.state || { from: { pathname: "/" } };
     let { redirectToReferrer } = this.state;
 
+    if (!this.props.auth.isLoaded) return <FullPageSpinner/>
     // if (redirectToReferrer) return <Redirect to={from} />;
     if (this.props.auth.uid) return <Redirect to="/dashboard" />;
 

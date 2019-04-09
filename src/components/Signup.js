@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { signUp } from "../actions/authActions";
+import FullPageSpinner from "./spinner/FullPageSpinner";
 
 class Signup extends Component {
   // TODO: If logged-in and user visits this site, redirect them to /home
@@ -43,6 +44,8 @@ class Signup extends Component {
   };
 
   render() {
+
+    if (!this.props.auth.isLoaded) return <FullPageSpinner/>
     if (this.props.auth.uid) return <Redirect to="/dashboard" />;
 
     return (

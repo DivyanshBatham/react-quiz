@@ -3,7 +3,8 @@
 main {
   @include lato();
   color: $light;
-  overflow-y: auto;
+  // overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   background: $lightBlue;
   // background: linear-gradient(to bottom, $lightBlue, $darkBlue);
@@ -59,8 +60,16 @@ header {
     // display: flex;
     // flex-direction: column;
     padding: 1rem 1rem;
+    border-radius: 8px;
     // background: cadetblue;
     // @include lato();
+    &:hover {
+      cursor: pointer;
+      // background: $lightBlue;
+      // background: $darkBlue;
+      background: linear-gradient(to right, $darkBlue, $darkBlueOpacity05);
+      // background: $lightPink;
+    }
 
     &__title {
       font-size: 1rem;
@@ -83,13 +92,12 @@ header {
       border: 0;
       border-radius: 8px;
       padding: 5px 10px;
-    
+
       &.register {
         color: $white;
         background: $pink;
       }
     }
-
   }
 }
 
@@ -97,12 +105,6 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-.quizlist__quiz:hover {
-  cursor: pointer;
-  // background: $lightBlue;
-  background: $darkBlue;
-  // background: $lightPink;
 }
 
 .smallSVGWrapper {
@@ -119,4 +121,5 @@ header {
   width: 32px;
   fill: $light;
   margin-right: 5px;
+  @include transition();
 }

@@ -19,11 +19,16 @@ class AddQuestion extends Component {
     let optionThree = this.optionThreeInput.value;
     let optionFour = this.optionFourInput.value;
     let correctOption = this.correctOptionInput.value;
-    
+
     let questionData = {
-      question, optionOne, optionTwo, optionThree, optionFour, correctOption
+      question,
+      optionOne,
+      optionTwo,
+      optionThree,
+      optionFour,
+      correctOption
     };
-    
+
     // Validation of Inputs:
     let errors = {};
 
@@ -32,12 +37,16 @@ class AddQuestion extends Component {
     if (optionTwo === "") errors.optionTwo = "* option two is required";
     if (optionThree === "") errors.optionThree = "* option three is required";
     if (optionFour === "") errors.optionFour = "* option four is required";
-    if (correctOption === "") errors.correctOption = "* correct option is required";
+    if (correctOption === "")
+      errors.correctOption = "* correct option is required";
     // TODO: Uncomment this after debugging:
     // else if (!emailRegex.test(email)) errors.email = "* email is invalid";
 
     if (Object.entries(errors).length === 0 && errors.constructor === Object) {
       this.props.addQuestion(questionData);
+      alert("Question Submitted");
+      this.resetForm();
+
       // this.props.signIn({ email, password });
       // this.setState({ redirectToReferrer: true });
     } else {
@@ -45,6 +54,18 @@ class AddQuestion extends Component {
         errors
       });
     }
+  };
+
+  resetForm = () => {
+    this.questionInput.value = "";
+    this.optionOneInput.value = "";
+    this.optionTwoInput.value = "";
+    this.optionThreeInput.value = "";
+    this.optionFourInput.value = "";
+    this.correctOptionInput.value = "";
+    this.setState({
+      errors: {}
+    });
   };
 
   render() {
@@ -69,7 +90,7 @@ class AddQuestion extends Component {
           </header>
           <hr />
 
-          <form onSubmit={this.handleLogin} className="questionForm">
+          <form onSubmit={this.handleAddQuestion} className="questionForm">
             <div
               className="inputWrapper"
               data-error={this.state.errors.question}
@@ -145,7 +166,7 @@ class AddQuestion extends Component {
                 ref={el => (this.correctOptionInput = el)}
               />
             </div>
-            <br/>
+            <br />
             <div className="primaryButton" onClick={this.handleAddQuestion}>
               Submit Question
             </div>

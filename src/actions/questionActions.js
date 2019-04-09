@@ -1,13 +1,15 @@
+export const ADD_QUESTION = "ADD_QUESTION";
+export const ADD_QUESTION_ERROR = "ADD_QUESTION_ERROR";
+export const LIKE_QUESTION = "LIKE_QUESTION";
+export const LIKE_QUESTION_ERROR = "LIKE_QUESTION_ERROR";
+export const DISLIKE_QUESTION = "DISLIKE_QUESTION";
+export const REPORT_QUESTION = "REPORT_QUESTION";
+export const APPROVE_QUESTION = "APPROVE_QUESTION";
+
 export const createQuestion = questionData => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    // ASYNC Call.then( dispatch.. )
     const state = getState();
-    console.log(questionData);
     const firestore = getFirestore();
-    // dispatch({
-    //   type: "ADD_QUESTION",
-    //   questionData
-    // });
     firestore
       .collection("questions")
       .add({
@@ -19,20 +21,10 @@ export const createQuestion = questionData => {
           questionData.optionFour
         ],
         correctOption: questionData.correctOption,
-        likes: 0,
-        dislikes: 0,
+        likes: [],
+        dislikes: [],
         authorId: state.firebase.auth.uid,
         createdAt: new Date()
-
-        // Hardcoded:
-        // question: "Test Question",
-        // code: "Test code",
-        // options: ["Option1", "Option2", "Option3", "Option4"],
-        // answer: 2,
-        // likes: 0,
-        // dislikes: 0,
-        // authorId: 12345,
-        // createdAt: new Date()
       })
       .then(() => {
         dispatch({
@@ -60,23 +52,65 @@ export const approveQuestion = question => {
   };
 };
 
-export const likeQuestion = question => {
-  return (dispatch, getState) => {
-    // ASYNC Call.then( dispatch.. )
-    dispatch({
-      type: "LIKE_QUESTION",
-      question
-    });
+export const likeQuestion = questionData => {
+  return (dispatch, getState, { getFirestore }) => {
+
+    const state = getState();
+    const uid = state.firebase.auth.uid;
+    let newLikes = questionData.likes;
+
+    if( questionData.likes.includes(uid) )
+      newLikes.splice(questionData.likes.findIndex(uid),1);
+    else
+      newLikes.push(uid);
+    
+    const firestore = getFirestore();
+    firestore
+      .collection("questions")
+      // .doc(questionData.questionId)
+      .doc("TtnJ34YRKX4kik8Dwo4G")
+      .update({
+        // likes: [...questionData.likes, state.firebase.auth.uid]
+        // likes: [state.firebase.auth.uid]
+        likes: newLikes
+      })
+      .then(() => {
+        dispatch({
+          type: LIKE_QUESTION,
+          questionData
+        });
+      });
   };
 };
 
-export const dislikeQuestion = question => {
-  return (dispatch, getState) => {
-    // ASYNC Call.then( dispatch.. )
-    dispatch({
-      type: "DISLIKE_QUESTION",
-      question
-    });
+export const dislikeQuestion = questionData => {
+  return (dispatch, getState, { getFirestore }) => {
+
+    const state = getState();
+    const uid = state.firebase.auth.uid;
+    let newDislikes = questionData.dislikes;
+
+    if( questionData.dislikes.includes(uid) )
+      newDislikes.splice(questionData.dislikes.findIndex(uid),1);
+    else
+      newDislikes.push(uid);
+    
+    const firestore = getFirestore();
+    firestore
+      .collection("questions")
+      // .doc(questionData.questionId)
+      .doc("TtnJ34YRKX4kik8Dwo4G")
+      .update({
+        // dislikes: [...questionData.dislikes, state.firebase.auth.uid]
+        // dislikes: [state.firebase.auth.uid]
+        dislikes: newDislikes
+      })
+      .then(() => {
+        dispatch({
+          type: LIKE_QUESTION,
+          questionData
+        });
+      });
   };
 };
 

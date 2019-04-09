@@ -15,7 +15,7 @@ const questionReducer = (state = initState, action) => {
       console.log("Question Approved");
       return state;
     case "LIKE_QUESTION":
-      console.log("Live Question");
+      console.log("Like Question");
       return state;
     case "DISLIKE_QUESTION":
       console.log("Dislike Question");

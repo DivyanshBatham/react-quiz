@@ -5,15 +5,52 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import Spinner from "../../spinner/Spinner";
 import BallRipple from "../../spinner/BallRipple";
+import { likeQuestion } from "../../../actions/questionActions";
+import { dislikeQuestion } from "../../../actions/questionActions";
 
 class Quiz extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      curQues: null,
+      secondsLeft: 60
+    };
   }
+
+  componentDidMount() {
+    this.timer =  setInterval(() => {
+      this.setState(prevState => {
+        if (this.props.quizzes) {
+          if(this.state.secondsLeft===1){
+            clearInterval(this.timer);
+            alert("Server will change currentQuestion");
+          }
+          // if( this.props.curQues === null ){
+          //   // Calculate secondsLeft
+          //   alert("Calculate seconds left");
+          //   this.setState({
+          //     secondsLeft: 30
+          //   })
+          // }
+          // else if (this.state.curQues == this.props.quizzes[0].currentQuestion)
+          if (this.state.curQues == this.props.quizzes[0].currentQuestion)
+            return {
+              secondsLeft: prevState.secondsLeft - 1
+              // curQues: (prevState.curQues+1)%this.props.questions.length
+            };
+          else
+            return {
+              curQues: this.props.quizzes[0].currentQuestion,
+              secondsLeft: 60
+            };
+        }
+      });
+    }, 1000);
+  }
+
   render() {
     console.log("Quiz, ", this.props);
-    
+
     return (
       <main>
         <div className="container">
@@ -57,74 +94,106 @@ class Quiz extends Component {
           <div className="quiz-top3">
             <div>
               <div className="quiz-top3__rank">1st</div>
-              <BallRipple/>
+              <BallRipple />
               {/* <div className="quiz-top3__person">AB</div> */}
             </div>
             <div>
               <div className="quiz-top3__rank">2nd</div>
-              <BallRipple/>
+              <BallRipple />
               {/* <div className="quiz-top3__person"></div> */}
             </div>
             <div>
               <div className="quiz-top3__rank">3rd</div>
-              <BallRipple/>
+              <BallRipple />
               {/* <div className="quiz-top3__person"></div> */}
             </div>
           </div>
           <hr />
-          <div className="quiz-questionNumber">Question 1</div>
-          {this.props.questions ? (
-            <Markdown source={this.props.questions[0].question} />
+          {/* <div className="quiz-questionNumber">Question {this.props.quizzes[0].currentQuestion+1}</div> */}
+          {this.props.questions && this.props.quizzes ? (
+            <>
+              <div className="quiz-questionNumber">
+                Question {this.props.quizzes[0].currentQuestion + 1}
+              </div>
+              <Markdown
+                source={
+                  this.props.questions[this.props.quizzes[0].currentQuestion]
+                    .question
+                }
+              />
+              <div className="quiz-options">
+                <ul>
+                  <li>
+                    <input type="radio" id="option-one" name="selector" />
+                    <label htmlFor="option-one">
+                      {
+                        this.props.questions[
+                          this.props.quizzes[0].currentQuestion
+                        ].options[0]
+                      }
+                    </label>
+
+                    <div className="check" />
+                  </li>
+
+                  <li>
+                    <input type="radio" id="option-two" name="selector" />
+                    <label htmlFor="option-two">
+                      {
+                        this.props.questions[
+                          this.props.quizzes[0].currentQuestion
+                        ].options[1]
+                      }
+                    </label>
+
+                    <div className="check" />
+                  </li>
+
+                  <li>
+                    <input type="radio" id="option-three" name="selector" />
+                    <label htmlFor="option-three">
+                      {
+                        this.props.questions[
+                          this.props.quizzes[0].currentQuestion
+                        ].options[2]
+                      }
+                    </label>
+
+                    <div className="check" />
+                  </li>
+
+                  <li>
+                    <input type="radio" id="option-four" name="selector" />
+                    <label htmlFor="option-four">
+                      {
+                        this.props.questions[
+                          this.props.quizzes[0].currentQuestion
+                        ].options[3]
+                      }
+                    </label>
+
+                    <div className="check" />
+                  </li>
+                </ul>
+              </div>
+            </>
           ) : (
             <Spinner />
-            )}
-          {/* <p className="quiz-question">
-            What is the output of the following program :
-          </p> */}
-          <div className="quiz-options">
-            
-            <ul>
-              <li>
-                <input type="radio" id="option-one" name="selector" />
-                <label htmlFor="option-one">Pizza</label>
-
-                <div className="check" />
-              </li>
-
-              <li>
-                <input type="radio" id="option-two" name="selector" />
-                <label htmlFor="option-two">Bacon</label>
-
-                <div className="check" />
-              </li>
-
-              <li>
-                <input type="radio" id="option-three" name="selector" />
-                <label htmlFor="option-three">Cats</label>
-
-                <div className="check" />
-              </li>
-
-              <li>
-                <input type="radio" id="option-four" name="selector" />
-                <label htmlFor="option-four">
-                  This is a long answer, This is a long answer, This is a long
-                  answer, This is a long answer, This is a long answer,{" "}
-                </label>
-
-                <div className="check" />
-              </li>
-            </ul>
-          </div>
+          )}
         </div>
 
         <footer>
           <div className="container">
             <hr />
             <div className="flex_row">
-              <button className="primaryButton">SUBMIT 37s</button>
+              <button className="primaryButton">
+                SUBMIT {this.state.secondsLeft}s
+              </button>
               <div className="flex_row">
-                <div className="smallSVGWrapper">
+                <div
+                  className="smallSVGWrapper"
+                  // onClick={ () => this.props.likeQuestion("quesData")}
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path fill="none" d="M0 0h24v24H0V0z" />
                     <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z" />
@@ -157,18 +226,24 @@ const mapStateToProps = state => {
   console.log(state);
   return {
     auth: state.firebase.auth,
-    questions: state.firestore.ordered.questions
+    questions: state.firestore.ordered.questions,
+    quizzes: state.firestore.ordered.quizzes
   };
 };
 
-// conse mapDispatchToProps = disptach => {
-//   return {
-
-//   }
-// };
+const mapDispatchToProps = dispatch => {
+  return {
+    // likeQuestion: qData => dispatch(likeQuestion(qData))
+    // // dislikeQuestion: qData => dispatch(dislikeQuestion(qData))
+  };
+};
 
 export default compose(
-  connect(mapStateToProps),
-  firestoreConnect([{ collection: "questions" }])
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(["questions", "quizzes"])
+  // firestoreConnect([{ collection: "questions" }])
 )(Quiz);
 // export default connect(mapStateToProps)(Quiz);

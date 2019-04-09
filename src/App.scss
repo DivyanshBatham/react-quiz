@@ -61,7 +61,18 @@ body {
   border-radius: 0.5rem;
   display: block;
   margin: 0 auto;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease-in;
   cursor: pointer;
+
+  &:hover, &:focus {
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.8);
+  }
+
+  // &:active {
+  //   transform: translateY(0.1rem);
+  //   box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.8);
+  // }
 }
 
 .secondaryLink {
@@ -71,7 +82,7 @@ body {
   text-align: center;
   font-size: 0.9rem;
   font-weight: 500;
-  transition: all 0.2s ease-in-out;
+  @include transition();
 
   &:hover,
   &:focus {
@@ -237,11 +248,15 @@ textarea {
 pre {
   background: $darkBlue;
   overflow-X: auto;
-  // padding: 1rem;
   border: solid 1rem $darkBlue;
   border-radius: 8px;
-  // font-family
   font-size: 0.9rem;
+}
+
+code {
+  background: $darkBlue;
+  padding: 0px 8px;
+  border-radius: 5px;
 }
 
 .quiz-options {
@@ -380,6 +395,15 @@ footer {
     height: 24px;
     width: 24px;
     margin-left: 1.2rem;
+    cursor: pointer;
+
+    &.active {
+      fill: $pink;
+    }
+
+    &:hover {
+      fill: #eee;
+    }
   }
   span {
     margin-left: 0.5rem;
