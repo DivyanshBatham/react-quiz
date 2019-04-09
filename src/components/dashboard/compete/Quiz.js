@@ -4,6 +4,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import Spinner from "../../spinner/Spinner";
+import BallRipple from "../../spinner/BallRipple";
 
 class Quiz extends Component {
   constructor(props) {
@@ -56,15 +57,18 @@ class Quiz extends Component {
           <div className="quiz-top3">
             <div>
               <div className="quiz-top3__rank">1st</div>
-              <div className="quiz-top3__person">AB</div>
+              <BallRipple/>
+              {/* <div className="quiz-top3__person">AB</div> */}
             </div>
             <div>
               <div className="quiz-top3__rank">2nd</div>
-              <div className="quiz-top3__person">DB</div>
+              <BallRipple/>
+              {/* <div className="quiz-top3__person"></div> */}
             </div>
             <div>
               <div className="quiz-top3__rank">3rd</div>
-              <div className="quiz-top3__person">CSK</div>
+              <BallRipple/>
+              {/* <div className="quiz-top3__person"></div> */}
             </div>
           </div>
           <hr />
