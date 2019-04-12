@@ -4,7 +4,7 @@ $light: #c6c9cf;
 $light50: rgba(198, 201, 207,.5);
 $lightBlue: #202737;
 $darkBlue: #171926;
-$darkBlueOpacity05: rgba(22, 24, 38,0.5);
+$darkBlueOpacity05: rgba(22, 24, 38,0.4);
 
 $white: white;
 $pink: #D61252;
@@ -30,3 +30,10 @@ $lightPink: rgba(214, 18, 82,0.5);
 .mb-05 {
     margin-bottom: 0.5rem;
 }
+
+@mixin for-tablet-portrait-up {
+    @media (min-width: 600px) { @content; }
+  }
+@mixin for-tablet-portrait-below {
+    @media (max-width: 600px) { @content; }
+  }

@@ -12,20 +12,22 @@ class Compete extends Component {
       <main>
         <div className="container">
           <header>
-            <div className="largeSVGWrapper">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                // width="32"
-                // height="32"
-                viewBox="0 0 24 24"
-              >
-                <path d="M0 0h24v24H0z" fill="none" />
-                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-              </svg>
+            <div className="flex_row">
+              <div className="largeSVGWrapper sidenavTrigger">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  // width="32"
+                  // height="32"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                </svg>
+              </div>
+              <h1>Compete</h1>
             </div>
-            <h1>Compete</h1>
           </header>
-          {/* <hr /> */}
+          <hr />
           {/* <h1> Compete</h1> */}
           {/* <p>List of quizes</p> */}
           <section className="quizlist">

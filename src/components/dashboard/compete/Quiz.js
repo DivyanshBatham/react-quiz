@@ -5,6 +5,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import Spinner from "../../spinner/Spinner";
 import BallRipple from "../../spinner/BallRipple";
+import { toggleSidenav } from "../../../actions/uiActions";
 import { likeQuestion } from "../../../actions/questionActions";
 import { dislikeQuestion } from "../../../actions/questionActions";
 
@@ -18,45 +19,50 @@ class Quiz extends Component {
   }
 
   componentDidMount() {
-    this.timer =  setInterval(() => {
-      this.setState(prevState => {
-        if (this.props.quizzes) {
-          if(this.state.secondsLeft===1){
-            clearInterval(this.timer);
-            alert("Server will change currentQuestion");
-          }
-          // if( this.props.curQues === null ){
-          //   // Calculate secondsLeft
-          //   alert("Calculate seconds left");
-          //   this.setState({
-          //     secondsLeft: 30
-          //   })
-          // }
-          // else if (this.state.curQues == this.props.quizzes[0].currentQuestion)
-          if (this.state.curQues == this.props.quizzes[0].currentQuestion)
-            return {
-              secondsLeft: prevState.secondsLeft - 1
-              // curQues: (prevState.curQues+1)%this.props.questions.length
-            };
-          else
-            return {
-              curQues: this.props.quizzes[0].currentQuestion,
-              secondsLeft: 60
-            };
-        }
-      });
-    }, 1000);
+    // this.timer = setInterval(() => {
+    //   this.setState(prevState => {
+    //     if (this.props.quizzes) {
+    //       if (this.state.secondsLeft === 1) {
+    //         clearInterval(this.timer);
+    //         alert("Server will change currentQuestion");
+    //       }
+    //       // if( this.props.curQues === null ){
+    //       //   // Calculate secondsLeft
+    //       //   alert("Calculate seconds left");
+    //       //   this.setState({
+    //       //     secondsLeft: 30
+    //       //   })
+    //       // }
+    //       // else if (this.state.curQues == this.props.quizzes[0].currentQuestion)
+    //       if (this.state.curQues == this.props.quizzes[0].currentQuestion)
+    //         return {
+    //           secondsLeft: prevState.secondsLeft - 1
+    //           // curQues: (prevState.curQues+1)%this.props.questions.length
+    //         };
+    //       else
+    //         return {
+    //           curQues: this.props.quizzes[0].currentQuestion,
+    //           secondsLeft: 60
+    //         };
+    //     }
+    //   });
+    // }, 1000);
   }
 
   render() {
     console.log("Quiz, ", this.props);
 
     return (
-      <main>
+      <main className={this.props.sideNavActive ? "activeSidenav" : null}>
         <div className="container">
           <header>
             <div className="flex_row">
-              <div className="largeSVGWrapper">
+              <div
+                className="largeSVGWrapper"
+                onClick={() => {
+                  this.props.dispatch(toggleSidenav());
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   // width="32"
@@ -77,7 +83,7 @@ class Quiz extends Component {
                     <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
                   </svg>
                 </div>
-                {Math.floor(Math.random() * 10) + 3}
+                7{/* {Math.floor(Math.random() * 10) + 3} */}
               </div>
               <div className="quizlist__quiz__detail">
                 <div className="smallSVGWrapper">
@@ -227,21 +233,23 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     questions: state.firestore.ordered.questions,
-    quizzes: state.firestore.ordered.quizzes
+    quizzes: state.firestore.ordered.quizzes,
+    sideNavActive: state.ui.sideNavActive
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    // likeQuestion: qData => dispatch(likeQuestion(qData))
-    // // dislikeQuestion: qData => dispatch(dislikeQuestion(qData))
-  };
-};
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     toggleSidenav: () => dispatch(toggleSidenav())
+//     // likeQuestion: qData => dispatch(likeQuestion(qData))
+//     // // dislikeQuestion: qData => dispatch(dislikeQuestion(qData))
+//   };
+// };
 
 export default compose(
   connect(
     mapStateToProps,
-    mapDispatchToProps
+    // mapDispatchToProps
   ),
   firestoreConnect(["questions", "quizzes"])
   // firestoreConnect([{ collection: "questions" }])

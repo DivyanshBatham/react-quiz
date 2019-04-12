@@ -1,14 +1,5 @@
 @import "../../../Variables.scss";
 
-main {
-  @include lato();
-  color: $light;
-  // overflow-y: auto;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  background: $lightBlue;
-  // background: linear-gradient(to bottom, $lightBlue, $darkBlue);
-}
 
 hr {
   height: 2px;

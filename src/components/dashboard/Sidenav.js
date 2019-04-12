@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { signOut } from "../../actions/authActions";
+import { toggleSidenav } from "../../actions/uiActions";
 
 class Sidenav extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class Sidenav extends Component {
   render() {
     console.log("SIDENAV, ", this.props);
     return (
-      <nav className="sidenav">
+      <nav className={this.props.sideNavActive ? "sidenav activeSidenav" : "sidenav"}>
         <span>{this.props.profile.name}</span>
         <NavLink exact to={`${this.props.prefixURL}`}>
           Dashboard
@@ -19,22 +20,31 @@ class Sidenav extends Component {
         <NavLink to={`${this.props.prefixURL}/compete`}>Compete</NavLink>
         <NavLink to={`${this.props.prefixURL}/practice`}>Practice</NavLink>
         <NavLink to={`${this.props.prefixURL}/add_question`}>
-          Add Question
+          Question
         </NavLink>
         {/* <NavLink to={"/logout"}>Logout</NavLink> */}
-        <a onClick={this.props.signOut}>Logout</a>
+        <a onClick={() => this.props.dispatch(signOut())}>Logout</a>
+        {/* <button onClick={() => this.props.dispatch(toggleSidenav())}>
+          Close
+        </button> */}
       </nav>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
   return {
-    signOut: () => dispatch(signOut())
+    sideNavActive: state.ui.sideNavActive
   };
 };
 
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     signOut: () => dispatch(signOut())
+//   };
+// };
+
 export default connect(
-  null,
-  mapDispatchToProps
+  mapStateToProps
+  // mapDispatchToProps
 )(Sidenav);
