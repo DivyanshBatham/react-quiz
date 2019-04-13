@@ -10,6 +10,8 @@ $white: white;
 $pink: #D61252;
 $lightPink: rgba(214, 18, 82,0.5);
 
+$sidebar-width: 250px;
+
 @mixin lato() {
     font-family: 'Lato', sans-serif;
     // font-size: $font-size;

@@ -192,7 +192,7 @@ textarea {
   display: flex;
   overflow-x: hidden;
   // display: grid;
-  // grid-template-columns: 250px 1fr;
+  // grid-template-columns: $sidebar-width 1fr;
   // grid-template-columns: 200px 1fr;
 }
 
@@ -204,14 +204,12 @@ textarea {
   height: 100%;
   color: #c6c9cf;
   @include transition();
-  
+
   @include for-tablet-portrait-up() {
-    width: 250px;
-    // transform: translateX(0);
-    
+    width: $sidebar-width;
+
     &.activeSidenav {
-      // transform: translateX(0);
-      width: 0;
+      transform: translateX(-100%);
     }
   }
 
@@ -220,7 +218,7 @@ textarea {
     width: 70%;
     z-index: 100;
     transform: translateX(-100%);
-    
+
     &.activeSidenav {
       transform: translateX(0);
     }
@@ -232,38 +230,40 @@ textarea {
   a.active {
     color: red;
   }
-  
+
   // &:hover {
-    //   width: 500px;
-    // }
+  //   width: 500px;
+  // }
 }
 
 .sidenavTrigger {
   // cursor: pointer;
   // @include for-tablet-portrait-up {
-    //   display: none;
-    // }
-  }
-  
-  main {
-    height: 100%;
-    flex: 1;
-    @include lato();
-    color: $light;
-    // overflow-y: auto;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    background: $lightBlue;
-    @include transition();
-    // background: linear-gradient(to bottom, $lightBlue, $darkBlue);
-    
-    @include for-tablet-portrait-below() {
-    // position: fixed;
-    // width: 70%;
-    // z-index: 100;
-    // transform: translateX(-100%);
+  //   display: none;
+  // }
+}
+
+main {
+  height: 100%;
+  flex: 1;
+  @include lato();
+  color: $light;
+  // overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: $lightBlue;
+  @include transition();
+  // background: linear-gradient(to bottom, $lightBlue, $darkBlue);
+
+  @include for-tablet-portrait-below() {
     &.activeSidenav {
       transform: translateX(70%);
+    }
+  }
+
+  @include for-tablet-portrait-up() {
+    &.activeSidenav {
+      margin-left: -$sidebar-width;
     }
   }
 }

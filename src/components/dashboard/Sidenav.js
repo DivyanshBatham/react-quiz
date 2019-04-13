@@ -20,13 +20,13 @@ class Sidenav extends Component {
         <NavLink to={`${this.props.prefixURL}/compete`}>Compete</NavLink>
         <NavLink to={`${this.props.prefixURL}/practice`}>Practice</NavLink>
         <NavLink to={`${this.props.prefixURL}/add_question`}>
-          Question
+          Add Question
         </NavLink>
         {/* <NavLink to={"/logout"}>Logout</NavLink> */}
         <a onClick={() => this.props.dispatch(signOut())}>Logout</a>
-        {/* <button onClick={() => this.props.dispatch(toggleSidenav())}>
-          Close
-        </button> */}
+        <button onClick={() => this.props.dispatch(toggleSidenav())}>
+          Close Sidebar
+        </button>
       </nav>
     );
   }
