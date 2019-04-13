@@ -2,6 +2,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   SIGNOUT_SUCCESS,
+  SIGNOUT_ERROR,
   SIGNUP_SUCCESS,
   SIGNUP_ERROR
 } from "../actions/authActions";
@@ -32,6 +33,11 @@ const authReducer = (state = initState, action) => {
     case SIGNOUT_SUCCESS:
       console.log("SIGNOUT_SUCCESS");
       return state;
+
+    case SIGNOUT_ERROR:
+      console.log("SIGNOUT Error, ", action.err);
+      return state;
+
 
     case SIGNUP_SUCCESS:
       console.log("SIGNUP_SUCCESS");

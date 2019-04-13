@@ -146,7 +146,7 @@ class Sidenav extends Component {
               </div>
               Contribute
             </NavLink>
-            <a onClick={() => this.props.dispatch(signOut())}>
+            <a onClick={this.props.signOut}>
               <div className="svgWrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
@@ -178,6 +178,7 @@ const mapStateToProps = state => {
 // https://daveceddia.com/redux-mapdispatchtoprops-object-form/
 const mapDispatchToProps = dispatch => {
   return {
+    signOut: () => dispatch(signOut()),
     responsiveCloseSidenav: device => dispatch(responsiveCloseSidenav(device))
   };
 };

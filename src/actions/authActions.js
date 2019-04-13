@@ -33,6 +33,7 @@
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 export const SIGNOUT_SUCCESS = "SIGNOUT_SUCCESS";
+export const SIGNOUT_ERROR = "SIGNOUT_ERROR";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_ERROR = "SIGNUP_ERROR";
 
@@ -60,6 +61,7 @@ export const signIn = credentials => {
 };
 
 export const signOut = () => {
+  console.log("SingOut Action");
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
     firebase
@@ -67,6 +69,12 @@ export const signOut = () => {
       .signOut()
       .then(() => {
         dispatch({ type: SIGNOUT_SUCCESS });
+      })
+      .catch(err => {
+        dispatch({
+          type: SIGNOUT_ERROR,
+          err
+        });
       });
   };
 };

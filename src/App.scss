@@ -592,13 +592,20 @@ footer {
   }
 }
 
-
 .placeholder {
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  a {
+    color: $light50;
+    &:hover,
+    &:focus {
+      color: $light;
+    }
+  }
 
   &__heading {
     @include poppins();
@@ -614,12 +621,10 @@ footer {
     display: none;
   }
 
- @include for-tablet-portrait-below(){
-   &__button {
-    display: initial; 
-    cursor: pointer;
-   }
- }
-  
-
+  @include for-tablet-portrait-below() {
+    &__button {
+      display: initial;
+      cursor: pointer;
+    }
+  }
 }
