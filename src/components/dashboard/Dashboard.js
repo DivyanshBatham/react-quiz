@@ -8,16 +8,7 @@ import AddQuestion from "./question/AddQuestion";
 import Compete from "./compete/Compete";
 import Quiz from "./compete/Quiz";
 import FullPageSpinner from "../spinner/FullPageSpinner";
-
-// const Compete = props => {
-//   console.log("Compete ", props);
-//   return <h1>Compete</h1>;
-// };
-
-const Practice = props => {
-  console.log("Practice ", props);
-  return <h1>Practice</h1>;
-};
+import Placeholder from "./Placeholder";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -34,7 +25,8 @@ class Dashboard extends Component {
           prefixURL={this.props.match.url}
           profile={this.props.profile}
         />
-        <Route exact path={this.props.match.url} component={Home} />
+        {/* <Route exact path={this.props.match.url} component={Home} /> */}
+        <Route exact path={this.props.match.url}  render={ () => <Placeholder title="Dashboard"/>}  />
         <Route
           exact
           path={`${this.props.match.url}/compete`}
@@ -44,7 +36,7 @@ class Dashboard extends Component {
           path={`${this.props.match.url}/compete/quiz/:id`}
           component={Quiz}
         />
-        <Route path={`${this.props.match.url}/practice`} component={Practice} />
+        <Route path={`${this.props.match.url}/practice`} render={ () => <Placeholder title="Practice"/>} />
         <Route
           path={`${this.props.match.url}/add_question`}
           component={AddQuestion}

@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { signOut } from "../../actions/authActions";
 import { toggleSidenav } from "../../actions/uiActions";
-import Spinner from "../spinner/Spinner";
+// import Spinner from "../spinner/Spinner";
 
 class Sidenav extends Component {
   constructor(props) {
@@ -37,7 +37,13 @@ class Sidenav extends Component {
             </div>
           )}
           <div className="links">
-            <NavLink exact to={`${this.props.prefixURL}`}>
+            <NavLink
+              exact
+              to={`${this.props.prefixURL}`}
+              onClick={() => {
+                this.props.dispatch(toggleSidenav());
+              }}
+            >
               <div className="svgWrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
@@ -46,7 +52,12 @@ class Sidenav extends Component {
               </div>
               Dashboard
             </NavLink>
-            <NavLink to={`${this.props.prefixURL}/compete`}>
+            <NavLink
+              to={`${this.props.prefixURL}/compete`}
+              onClick={() => {
+                this.props.dispatch(toggleSidenav());
+              }}
+            >
               <div className="svgWrapper">
                 <svg
                   version="1.1"
@@ -85,7 +96,12 @@ class Sidenav extends Component {
               </div>
               Compete
             </NavLink>
-            <NavLink to={`${this.props.prefixURL}/practice`}>
+            <NavLink
+              to={`${this.props.prefixURL}/practice`}
+              onClick={() => {
+                this.props.dispatch(toggleSidenav());
+              }}
+            >
               <div className="svgWrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
@@ -94,7 +110,12 @@ class Sidenav extends Component {
               </div>
               Practice
             </NavLink>
-            <NavLink to={`${this.props.prefixURL}/add_question`}>
+            <NavLink
+              to={`${this.props.prefixURL}/add_question`}
+              onClick={() => {
+                this.props.dispatch(toggleSidenav());
+              }}
+            >
               <div className="svgWrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
@@ -118,9 +139,6 @@ class Sidenav extends Component {
         <div className="signature">
           <span className="product">React-Quiz v0</span>
           <div>Released under the MIT License</div>
-          {/* <button onClick={() => this.props.dispatch(toggleSidenav())}>
-            Close Sidebar
-          </button> */}
         </div>
       </nav>
     );
@@ -135,13 +153,4 @@ const mapStateToProps = state => {
   };
 };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     signOut: () => dispatch(signOut())
-//   };
-// };
-
-export default connect(
-  mapStateToProps
-  // mapDispatchToProps
-)(Sidenav);
+export default connect(mapStateToProps)(Sidenav);

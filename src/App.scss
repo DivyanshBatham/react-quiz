@@ -591,3 +591,24 @@ footer {
     margin: 1rem 0;
   }
 }
+
+
+.placeholder {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &__heading {
+    @include poppins();
+    font-size: 2rem;
+  }
+
+  &__description {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+}

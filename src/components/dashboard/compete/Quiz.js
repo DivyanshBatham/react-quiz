@@ -116,7 +116,7 @@ class Quiz extends Component {
           </div>
           <hr />
           {/* <div className="quiz-questionNumber">Question {this.props.quizzes[0].currentQuestion+1}</div> */}
-          {this.props.questions && this.props.quizzes ? (
+          {this.props.questions && this.props.quizzes && !false ? (
             <>
               <div className="quiz-questionNumber">
                 Question {this.props.quizzes[0].currentQuestion + 1}

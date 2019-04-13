@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-
+import { connect } from "react-redux";
+import { toggleSidenav } from "../../../actions/uiActions";
 import "./Compete.scss";
 
 class Compete extends Component {
@@ -9,11 +10,16 @@ class Compete extends Component {
   }
   render() {
     return (
-      <main>
+      <main className={this.props.sideNavActive ? "activeSidenav" : null}>
         <div className="container">
           <header>
             <div className="flex_row">
-              <div className="largeSVGWrapper sidenavTrigger">
+              <div
+                className="largeSVGWrapper sidenavTrigger"
+                onClick={() => {
+                  this.props.dispatch(toggleSidenav());
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   // width="32"
@@ -164,4 +170,10 @@ class Compete extends Component {
   }
 }
 
-export default Compete;
+const mapStateToProps = state => {
+  return {
+    sideNavActive: state.ui.sideNavActive
+  }
+}
+
+export default connect(mapStateToProps)(Compete);
