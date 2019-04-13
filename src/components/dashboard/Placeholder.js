@@ -4,18 +4,18 @@ import { connect } from "react-redux";
 
 const Placeholder = props => {
   return (
-    <main
-      className={props.sideNavActive ? "activeSidenav" : null}
-      onClick={() => {
-        props.dispatch(toggleSidenav());
-      }}
-    >
+    <main className={props.sideNavActive ? "activeSidenav" : null}>
       <div className="container">
         <div className="placeholder">
           <div className="placeholder__heading">{props.title}</div>
           <div className="placeholder__description">(Coming Soon)</div>
-          <div className="placeholder__button">
-            Click anywhere to open sidenav.
+          <div
+            className="placeholder__button"
+            onClick={() => {
+              props.dispatch(toggleSidenav());
+            }}
+          >
+            Click to open sidenav.
           </div>
         </div>
       </div>
@@ -26,8 +26,7 @@ const Placeholder = props => {
 const mapStateToProps = state => {
   return {
     sideNavActive: state.ui.sideNavActive
-  }
-}
-
+  };
+};
 
 export default connect(mapStateToProps)(Placeholder);

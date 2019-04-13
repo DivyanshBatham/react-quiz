@@ -353,8 +353,8 @@ main {
   // overflow-y: auto;
   overflow-y: scroll;
   overflow-x: hidden;
-  background: $lightBlue;
   @include transition();
+  background: $lightBlue;
   // background: linear-gradient(to bottom, $lightBlue, $darkBlue);
 
   @include for-tablet-portrait-below() {
@@ -599,7 +599,6 @@ footer {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
 
   &__heading {
     @include poppins();
@@ -610,5 +609,17 @@ footer {
     font-size: 1.2rem;
     margin-bottom: 1rem;
   }
+
+  &__button {
+    display: none;
+  }
+
+ @include for-tablet-portrait-below(){
+   &__button {
+    display: initial; 
+    cursor: pointer;
+   }
+ }
+  
 
 }

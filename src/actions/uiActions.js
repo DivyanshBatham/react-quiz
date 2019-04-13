@@ -14,7 +14,19 @@ export const SIDEBAR_CLOSE = "TOGGLE_SIDENAV";
 // };
 
 export const toggleSidenav = () => {
-    return{
-      type: TOGGLE_SIDENAV
-    }
+  return {
+    type: TOGGLE_SIDENAV
+  };
+};
+
+export const responsiveCloseSidenav = device => {
+  return dispatch => {
+    if (device == "mobile")
+      setTimeout(() => {
+        dispatch({
+          type: TOGGLE_SIDENAV
+        });
+      }, 1);
+    else return {};
+  };
 };

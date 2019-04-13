@@ -2,14 +2,36 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { signOut } from "../../actions/authActions";
-import { toggleSidenav } from "../../actions/uiActions";
+import { responsiveCloseSidenav } from "../../actions/uiActions";
 // import Spinner from "../spinner/Spinner";
 
 class Sidenav extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      device: null
+    };
   }
+
+  setDevice = x => {
+    if (x.matches) {
+      // If media query matches
+      this.setState({
+        device: "mobile"
+      });
+    } else {
+      this.setState({
+        device: "web"
+      });
+    }
+  };
+
+  componentDidMount = () => {
+    var x = window.matchMedia("(max-width: 600px)");
+    this.setDevice(x); // Call listener function at run time
+    x.addListener(this.setDevice); // Attach listener function on state changes
+  };
+
   render() {
     console.log("SIDENAV, ", this.props);
     return (
@@ -40,9 +62,9 @@ class Sidenav extends Component {
             <NavLink
               exact
               to={`${this.props.prefixURL}`}
-              onClick={() => {
-                this.props.dispatch(toggleSidenav());
-              }}
+              onClick={() =>
+                this.props.responsiveCloseSidenav(this.state.device)
+              }
             >
               <div className="svgWrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -54,9 +76,9 @@ class Sidenav extends Component {
             </NavLink>
             <NavLink
               to={`${this.props.prefixURL}/compete`}
-              onClick={() => {
-                this.props.dispatch(toggleSidenav());
-              }}
+              onClick={() =>
+                this.props.responsiveCloseSidenav(this.state.device)
+              }
             >
               <div className="svgWrapper">
                 <svg
@@ -98,9 +120,9 @@ class Sidenav extends Component {
             </NavLink>
             <NavLink
               to={`${this.props.prefixURL}/practice`}
-              onClick={() => {
-                this.props.dispatch(toggleSidenav());
-              }}
+              onClick={() =>
+                this.props.responsiveCloseSidenav(this.state.device)
+              }
             >
               <div className="svgWrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -112,9 +134,9 @@ class Sidenav extends Component {
             </NavLink>
             <NavLink
               to={`${this.props.prefixURL}/add_question`}
-              onClick={() => {
-                this.props.dispatch(toggleSidenav());
-              }}
+              onClick={() =>
+                this.props.responsiveCloseSidenav(this.state.device)
+              }
             >
               <div className="svgWrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -153,4 +175,20 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Sidenav);
+// https://daveceddia.com/redux-mapdispatchtoprops-object-form/
+const mapDispatchToProps = dispatch => {
+  return {
+    responsiveCloseSidenav: device => dispatch(responsiveCloseSidenav(device))
+  };
+};
+// const mapDispatchToProps = {
+//   responsiveCloseSidenav
+// };
+// const mapDispatchToProps = {
+//   responsiveCloseSidenav: (device) => responsiveCloseSidenav(device)
+// };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Sidenav);
