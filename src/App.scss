@@ -9,7 +9,7 @@ body {
   font-size: 16px;
   @include lato();
   color: #282828;
-  background: $lightBlue;
+  background: $darkBlue;
 }
 
 // #root {
@@ -197,12 +197,17 @@ textarea {
 }
 
 .sidenav {
+  position: relative;
   // position: fixed;
   background: #171926;
   display: flex;
   flex-direction: column;
+  // align-items: center;
+  justify-content: space-between;
   height: 100%;
   color: #c6c9cf;
+  overflow-y: auto;
+  overflow-x: hidden;
   @include transition();
 
   @include for-tablet-portrait-up() {
@@ -215,7 +220,8 @@ textarea {
 
   @include for-tablet-portrait-below() {
     position: fixed;
-    width: 70%;
+    width: 80%;
+    // width: 100%;
     z-index: 100;
     transform: translateX(-100%);
 
@@ -224,16 +230,111 @@ textarea {
     }
   }
 
-  a {
-    color: #c6c9cf;
-  }
-  a.active {
-    color: red;
+  // &::after {
+  //   content: "";
+  //   display: block;
+  //   background: red;
+  //   z-index: 10000;
+  //   // background: $darkBlueOpacity05;
+  //   height: 100%;
+  //   width: 25%;
+  //   position: absolute;
+  //   top: 0;
+  //   left: 100%;
+  // }
+
+  .userProfile {
+    margin: 2.5rem 0;
+    text-align: center;
+
+    .profilePicture {
+      height: 128px;
+      width: 128px;
+      // background: $light;
+      border: 2px solid $light50;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      @include poppins();
+      font-size: 3rem;
+
+      img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
+
+    span {
+      @include poppins();
+      font-size: 1.2rem;
+    }
   }
 
-  // &:hover {
-  //   width: 500px;
-  // }
+  .links {
+    // background: $lightBlue;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    // align-items: flex-start;
+
+    a {
+      color: $light50;
+      padding: 0.6rem 1.2rem;
+      text-decoration: none;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      @include lato();
+
+      @include svgWrapper(24px) {
+        margin-right: 1rem;
+        fill: $light50;
+      }
+
+      &.active {
+        background: linear-gradient(to right, $lightBlue, $lightBlue50);
+        color: $light;
+        .svgWrapper {
+          fill: $light;
+        }
+
+        &::before {
+          content: "";
+          display: block;
+          position: absolute;
+          height: 100%;
+          width: 5px;
+          background: $pink;
+          left: 0;
+          top: 0;
+        }
+      }
+
+      &:hover {
+        color: $light;
+        // background: linear-gradient(to right, $lightBlue, $lightBlue50);
+        .svgWrapper {
+          fill: $light;
+        }
+      }
+    }
+  }
+  .signature {
+    text-align: center;
+    color: $light50;
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+
+    .product {
+      color: $light;
+      font-weight: 500;
+    }
+  }
 }
 
 .sidenavTrigger {
@@ -244,6 +345,7 @@ textarea {
 }
 
 main {
+  position: relative;
   height: 100%;
   flex: 1;
   @include lato();
@@ -257,7 +359,20 @@ main {
 
   @include for-tablet-portrait-below() {
     &.activeSidenav {
-      transform: translateX(70%);
+      transform: translateX(80%);
+
+      // &::after {
+      //   content: "";
+      //   display: block;
+      //   background: red;
+      //   z-index: 0;
+      //   // background: $darkBlueOpacity05;
+      //   height: 100%;
+      //   width: 20%;
+      //   position: absolute;
+      //   top: 0;
+      //   left: 0;
+      // }
     }
   }
 
