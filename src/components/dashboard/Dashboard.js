@@ -34,7 +34,7 @@ class Dashboard extends Component {
         }
       />
     );
-  }
+  };
 
   render() {
     // if (!this.props.auth.isLoaded) return <FullPageSpinner/>
@@ -46,18 +46,25 @@ class Dashboard extends Component {
           prefixURL={this.props.match.url}
           profile={this.props.profile}
         />
-        {/* <Route exact path={this.props.match.url} component={Home} /> */}
-        <Route exact path={this.props.match.url}  render={ () => <Placeholder title="Dashboard"/>}  />
+        <Route exact path={this.props.match.url} render={()=><Redirect to="/app/dashboard"/>} />
+        <Route
+          exact
+          path={`${this.props.match.url}/dashboard`}
+          render={() => <Placeholder title="Dashboard" />}
+        />
         <Route
           exact
           path={`${this.props.match.url}/compete`}
           component={Compete}
         />
         <Route
-          path={`${this.props.match.url}/compete/quiz/:id`}
+          path={`${this.props.match.url}/compete/:id`}
           component={Quiz}
         />
-        <Route path={`${this.props.match.url}/practice`} render={ () => <Placeholder title="Practice"/>} />
+        <Route
+          path={`${this.props.match.url}/practice`}
+          render={() => <Placeholder title="Practice" />}
+        />
         <Route
           path={`${this.props.match.url}/add_question`}
           component={AddQuestion}

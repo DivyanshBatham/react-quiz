@@ -60,7 +60,7 @@ class Sidenav extends Component {
           <div className="links">
             <NavLink
               exact
-              to={`${this.props.prefixURL}`}
+              to={`${this.props.prefixURL}/dashboard`}
               onClick={() =>
                 this.props.responsiveCloseSidenav(this.state.device)
               }

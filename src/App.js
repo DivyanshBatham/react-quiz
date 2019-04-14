@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
-// My custom export with preconfigured firebase
-// import firebase, { auth, database } from "./firebase.js";
-
 // Styles:
 import "./bootstrap-grid.min.css";
 import "./App.scss";
@@ -52,7 +49,7 @@ class App extends Component {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           {/* <Route path="/dashboard" component={Dashboard} /> */}
-          <this.PrivateRoute path="/dashboard" component={Dashboard} />
+          <this.PrivateRoute path="/app" component={Dashboard} />
         </Switch>
       </BrowserRouter>
     );

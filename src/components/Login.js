@@ -36,7 +36,7 @@ class Login extends Component {
 
   render() {
     // If it's not redirected from anywhere, after login send it to /dashboard
-    let { from } = this.props.location.state || { from: { pathname: "/dashboard" } };
+    let { from } = this.props.location.state || { from: { pathname: "/app/dashboard" } };
 
     // Redirect to where user came from, if he came from no where then send to /dashboard.
     if (this.props.auth.uid) return <Redirect to={from} />;

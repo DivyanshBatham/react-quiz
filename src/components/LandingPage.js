@@ -17,7 +17,7 @@ const LandingPage = props => {
           <div className="placeholder__description">(Landing Page Coming Soon)</div>
 
           {props.auth.uid ? (
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/app/dashboard">Dashboard</Link>
           ) : (
             <>
               <Link to="/login">Login</Link>

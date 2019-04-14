@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
+
+// Actions:
 import { toggleSidenav } from "../../../actions/uiActions";
 import "./Compete.scss";
 
@@ -11,6 +13,7 @@ class Compete extends Component {
     this.state = {};
   }
   render() {
+    console.log(this.props);
     return (
       <main className={this.props.sideNavActive ? "activeSidenav" : null}>
         <div className="container">
@@ -40,6 +43,7 @@ class Compete extends Component {
           {/* <p>List of quizes</p> */}
           <section className="quizlist">
             <h2 className="quizlist__header">Upcoming Quiz</h2>
+            
             <div className="quizlist__quiz">
               <div className="flex_row mb-05">
                 <div className="quizlist__quiz__title">

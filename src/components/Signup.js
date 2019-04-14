@@ -42,7 +42,7 @@ class Signup extends Component {
   };
 
   render() {
-    if (this.props.auth.uid) return <Redirect to="/dashboard" />;
+    if (this.props.auth.uid) return <Redirect to="/app/dashboard" />;
 
     return (
       <div className="auth">
