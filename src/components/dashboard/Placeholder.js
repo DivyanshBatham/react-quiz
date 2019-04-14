@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { toggleSidenav } from "../../actions/uiActions";
 import { connect } from "react-redux";
 

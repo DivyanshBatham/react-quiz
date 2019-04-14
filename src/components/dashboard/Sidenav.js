@@ -33,7 +33,6 @@ class Sidenav extends Component {
   };
 
   render() {
-    console.log("SIDENAV, ", this.props);
     return (
       <nav
         className={
@@ -168,7 +167,7 @@ class Sidenav extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("Side nav >>>> ", state);
+  // console.log("Side nav >>>> ", state);
   return {
     auth: state.firebase.auth,
     sideNavActive: state.ui.sideNavActive

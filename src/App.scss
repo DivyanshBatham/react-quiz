@@ -5,6 +5,13 @@ body {
   margin: 0;
 }
 
+::selection {
+  background: $pink80;
+  // background: $lightPink;
+  // color: $light;
+  color: $white;
+}
+
 :root {
   font-size: 16px;
   @include lato();

@@ -14,8 +14,6 @@ const initState = {
 const authReducer = (state = initState, action) => {
   // This is where we ~manipulate~ update the state.
   switch (action.type) {
-    case "LOGIN":
-      console.log("Login Reducer");
     case LOGIN_SUCCESS:
       console.log("LOGIN Success");
       return {
@@ -37,7 +35,6 @@ const authReducer = (state = initState, action) => {
     case SIGNOUT_ERROR:
       console.log("SIGNOUT Error, ", action.err);
       return state;
-
 
     case SIGNUP_SUCCESS:
       console.log("SIGNUP_SUCCESS");

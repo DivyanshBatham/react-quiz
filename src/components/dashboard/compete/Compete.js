@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
 import { toggleSidenav } from "../../../actions/uiActions";
 import "./Compete.scss";
 
@@ -172,8 +174,12 @@ class Compete extends Component {
 
 const mapStateToProps = state => {
   return {
+    quizzes: state.firestore.ordered.quizzes,
     sideNavActive: state.ui.sideNavActive
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps)(Compete);
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect(["questions", "quizzes"])
+)(Compete);

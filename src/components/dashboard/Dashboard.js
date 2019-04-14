@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Sidenav from "./Sidenav";
-import Home from "./home/home";
+// import Home from "./home/home";
 import AddQuestion from "./question/AddQuestion";
 import Compete from "./compete/Compete";
 import Quiz from "./compete/Quiz";
@@ -15,9 +15,30 @@ class Dashboard extends Component {
     super(props);
     this.state = {};
   }
+
+  PrivateRoute = ({ component: Component, ...rest }) => {
+    return (
+      <Route
+        {...rest}
+        render={props =>
+          this.props.auth.uid ? (
+            <Component {...props} />
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: { from: props.location }
+              }}
+            />
+          )
+        }
+      />
+    );
+  }
+
   render() {
-    if (!this.props.auth.isLoaded) return <FullPageSpinner/>
-    if (!this.props.auth.uid) return <Redirect to="/login" />;
+    // if (!this.props.auth.isLoaded) return <FullPageSpinner/>
+    // if (!this.props.auth.uid) return <Redirect to="/login" />;
 
     return (
       <div className="dashboard">
@@ -47,7 +68,7 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("Dashboard's mapStateToProps ", state);
+  // console.log("Dashboard's mapStateToProps ", state);
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile

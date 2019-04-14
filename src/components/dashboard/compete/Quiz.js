@@ -6,8 +6,8 @@ import { connect } from "react-redux";
 import Spinner from "../../spinner/Spinner";
 import BallRipple from "../../spinner/BallRipple";
 import { toggleSidenav } from "../../../actions/uiActions";
-import { likeQuestion } from "../../../actions/questionActions";
-import { dislikeQuestion } from "../../../actions/questionActions";
+// import { likeQuestion } from "../../../actions/questionActions";
+// import { dislikeQuestion } from "../../../actions/questionActions";
 
 class Quiz extends Component {
   constructor(props) {

@@ -21,7 +21,7 @@ export const toggleSidenav = () => {
 
 export const responsiveCloseSidenav = device => {
   return dispatch => {
-    if (device == "mobile")
+    if (device === "mobile")
       setTimeout(() => {
         dispatch({
           type: TOGGLE_SIDENAV

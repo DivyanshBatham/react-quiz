@@ -3,28 +3,12 @@ import { Redirect, Link } from "react-router-dom";
 // import { auth } from "../firebase";
 import { connect } from "react-redux";
 import { signIn } from "../actions/authActions";
-import FullPageSpinner from "./spinner/FullPageSpinner";
-
-const fakeAuth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    this.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
-  },
-  signout(cb) {
-    this.isAuthenticated = false;
-    setTimeout(cb, 100);
-  }
-};
 
 class Login extends Component {
-  // TODO: If logged-in and user visits this site, redirect them to /home
   constructor(props) {
     super(props);
     this.state = {
-      redirectToReferrer: false,
       errors: {},
-      isAuthenticated: false
     };
   }
 
@@ -39,12 +23,10 @@ class Login extends Component {
 
     if (email === "") errors.email = "* email is required";
     if (password === "") errors.password = "* password is required";
-    // TODO: Uncomment this after debugging:
     // else if (!emailRegex.test(email)) errors.email = "* email is invalid";
 
     if (Object.entries(errors).length === 0 && errors.constructor === Object) {
       this.props.signIn({ email, password });
-      // this.setState({ redirectToReferrer: true });
     } else {
       this.setState({
         errors
@@ -53,13 +35,14 @@ class Login extends Component {
   };
 
   render() {
-    console.log("Login.js Props", this.props);
-    let { from } = this.props.location.state || { from: { pathname: "/" } };
-    let { redirectToReferrer } = this.state;
+    // If it's not redirected from anywhere, after login send it to /dashboard
+    let { from } = this.props.location.state || { from: { pathname: "/dashboard" } };
 
-    if (!this.props.auth.isLoaded) return <FullPageSpinner/>
-    // if (redirectToReferrer) return <Redirect to={from} />;
-    if (this.props.auth.uid) return <Redirect to="/dashboard" />;
+    // Redirect to where user came from, if he came from no where then send to /dashboard.
+    if (this.props.auth.uid) return <Redirect to={from} />;
+    
+    // No matter what, if user is logged in send to /dashboard.
+    // if (this.props.auth.uid) return <Redirect to="/dashboard" />;
 
     return (
       <div className="auth">
@@ -111,7 +94,6 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     authError: state.auth.authError,
     auth: state.firebase.auth
@@ -122,16 +104,9 @@ const mapDispatchToProps = dispatch => {
   return {
     signIn: creds => dispatch(signIn(creds))
   };
-  //   return {
-  // actionCreatorName: parameter => dispatch(actionCreatorName(parameter))
-  //   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Login);
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(Login);

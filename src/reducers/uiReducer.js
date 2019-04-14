@@ -1,8 +1,4 @@
-import {
-  TOGGLE_SIDENAV,
-  SIDEBAR_CLOSE,
-  SIDEBAR_OPEN
-} from "../actions/uiActions";
+import { TOGGLE_SIDENAV } from "../actions/uiActions";
 
 const initState = {
   sideNavActive: false
