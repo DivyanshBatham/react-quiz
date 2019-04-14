@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { signOut } from "../../actions/authActions";
-import { responsiveCloseSidenav } from "../../actions/uiActions";
-// import Spinner from "../spinner/Spinner";
+
+// Actions:
+import { signOut } from "../actions/authActions";
+import { responsiveCloseSidenav } from "../actions/uiActions";
 
 class Sidenav extends Component {
   constructor(props) {

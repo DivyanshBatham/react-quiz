@@ -1,13 +1,17 @@
 import React, { Component } from "react";
-import Markdown from "react-markdown";
-import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import Markdown from "react-markdown";
+
+// Components:
 import Spinner from "../../spinner/Spinner";
 import BallRipple from "../../spinner/BallRipple";
+
+// Actions:
 import { toggleSidenav } from "../../../actions/uiActions";
-// import { likeQuestion } from "../../../actions/questionActions";
-// import { dislikeQuestion } from "../../../actions/questionActions";
+// import { likeQuestion } from "../../actions/questionActions";
+// import { dislikeQuestion } from "../../actions/questionActions";
 
 class Quiz extends Component {
   constructor(props) {

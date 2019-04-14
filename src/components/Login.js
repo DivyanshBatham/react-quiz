@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Redirect, Link } from "react-router-dom";
 // import { auth } from "../firebase";
 import { connect } from "react-redux";
+
+// Actions:
 import { signIn } from "../actions/authActions";
 
 class Login extends Component {

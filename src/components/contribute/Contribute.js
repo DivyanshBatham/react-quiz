@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createQuestion } from "../../../actions/questionActions";
-import { toggleSidenav } from "../../../actions/uiActions";
 
-class AddQuestion extends Component {
+// Actions:
+import { createQuestion } from "../../actions/questionActions";
+import { toggleSidenav } from "../../actions/uiActions";
+
+class Contribute extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -192,4 +194,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddQuestion);
+)(Contribute);

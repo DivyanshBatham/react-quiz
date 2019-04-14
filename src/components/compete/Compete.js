@@ -4,7 +4,7 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 
 // Actions:
-import { toggleSidenav } from "../../../actions/uiActions";
+import { toggleSidenav } from "../../actions/uiActions";
 import "./Compete.scss";
 
 class Compete extends Component {

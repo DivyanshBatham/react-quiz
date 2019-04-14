@@ -1,5 +1,5 @@
 import React from "react";
-import { toggleSidenav } from "../../actions/uiActions";
+import { toggleSidenav } from "../actions/uiActions";
 import { connect } from "react-redux";
 
 const Placeholder = props => {

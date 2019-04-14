@@ -4,16 +4,16 @@ import { connect } from "react-redux";
 
 // Styles:
 import "./bootstrap-grid.min.css";
-import "./App.scss";
+import "./Root.scss";
 
 // Components:
+import App from "./components/App";
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Dashboard from "./components/dashboard/Dashboard.js";
 import FullPageSpinner from "./components/spinner/FullPageSpinner.js";
 
-class App extends Component {
+class Root extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -48,8 +48,7 @@ class App extends Component {
           <Route exact path="/" component={LandingPage} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
-          {/* <Route path="/dashboard" component={Dashboard} /> */}
-          <this.PrivateRoute path="/app" component={Dashboard} />
+          <this.PrivateRoute path="/app" component={App} />
         </Switch>
       </BrowserRouter>
     );
@@ -62,4 +61,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(Root);
