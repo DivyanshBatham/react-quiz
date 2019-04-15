@@ -1,17 +1,23 @@
 import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { firestoreConnect } from "react-redux-firebase";
+import { firestoreConnect, populate } from "react-redux-firebase";
 import Markdown from "react-markdown";
 
 // Components:
 import Spinner from "../../spinner/Spinner";
 import BallRipple from "../../spinner/BallRipple";
+import Question from "../../Question";
 
 // Actions:
 import { toggleSidenav } from "../../../actions/uiActions";
+
 // import { likeQuestion } from "../../actions/questionActions";
 // import { dislikeQuestion } from "../../actions/questionActions";
+
+const populates = [
+  { child: "owner", root: "users" } // replace owner with user object
+];
 
 class Quiz extends Component {
   constructor(props) {
@@ -23,9 +29,12 @@ class Quiz extends Component {
   }
 
   componentDidMount() {
+    // const quiz = this.props.quiz;
+    // const questions = this.props.questions;
+    //
     // this.timer = setInterval(() => {
     //   this.setState(prevState => {
-    //     if (this.props.quizzes) {
+    //     if (this.props.quiz) {
     //       if (this.state.secondsLeft === 1) {
     //         clearInterval(this.timer);
     //         alert("Server will change currentQuestion");
@@ -37,15 +46,15 @@ class Quiz extends Component {
     //       //     secondsLeft: 30
     //       //   })
     //       // }
-    //       // else if (this.state.curQues == this.props.quizzes[0].currentQuestion)
-    //       if (this.state.curQues == this.props.quizzes[0].currentQuestion)
+    //       // else if (this.state.curQues == quiz.currentQuestion)
+    //       if (this.state.curQues == this.props.quiz.currentQuestion)
     //         return {
     //           secondsLeft: prevState.secondsLeft - 1
-    //           // curQues: (prevState.curQues+1)%this.props.questions.length
+    //           // curQues: (prevState.curQues+1)%questions.length
     //         };
     //       else
     //         return {
-    //           curQues: this.props.quizzes[0].currentQuestion,
+    //           curQues: this.props.quiz.currentQuestion,
     //           secondsLeft: 60
     //         };
     //     }
@@ -54,7 +63,9 @@ class Quiz extends Component {
   }
 
   render() {
-    console.log("Quiz, ", this.props);
+    console.log("Quiz.js Props ", this.props);
+    const quiz = this.props.quiz;
+    const questions = this.props.questions;
 
     return (
       <main className={this.props.sideNavActive ? "activeSidenav" : null}>
@@ -67,17 +78,12 @@ class Quiz extends Component {
                   this.props.dispatch(toggleSidenav());
                 }}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  // width="32"
-                  // height="32"
-                  viewBox="0 0 24 24"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
                   <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
                 </svg>
               </div>
-              <h1>Quiz</h1>
+              <h1>Quiz {this.props.match.params.id}</h1>
             </div>
             <div>
               <div className="quizlist__quiz__detail">
@@ -87,7 +93,8 @@ class Quiz extends Component {
                     <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
                   </svg>
                 </div>
-                7{/* {Math.floor(Math.random() * 10) + 3} */}
+                {quiz ? quiz.registeredUsers.length : 0}
+                {/* {Math.floor(Math.random() * 10) + 3} */}
               </div>
               <div className="quizlist__quiz__detail">
                 <div className="smallSVGWrapper">
@@ -119,16 +126,20 @@ class Quiz extends Component {
             </div>
           </div>
           <hr />
-          {/* <div className="quiz-questionNumber">Question {this.props.quizzes[0].currentQuestion+1}</div> */}
-          {this.props.questions && this.props.quizzes && !false ? (
+          {/* <div className="quiz-questionNumber">Question {quiz.currentQuestion+1}</div> */}
+          {questions && quiz ? (
             <>
+              {/* <Question /> */}
               <div className="quiz-questionNumber">
-                Question {this.props.quizzes[0].currentQuestion + 1}
+                Question {quiz.currentQuestion + 1}
               </div>
               <Markdown
                 source={
-                  this.props.questions[this.props.quizzes[0].currentQuestion]
-                    .question
+                  // THIS IS COMPLETELY
+                  questions.find(
+                    question =>
+                      question.id === quiz.questions[quiz.currentQuestion].id
+                  ).question
                 }
               />
               <div className="quiz-options">
@@ -137,9 +148,11 @@ class Quiz extends Component {
                     <input type="radio" id="option-one" name="selector" />
                     <label htmlFor="option-one">
                       {
-                        this.props.questions[
-                          this.props.quizzes[0].currentQuestion
-                        ].options[0]
+                        questions.find(
+                          question =>
+                            question.id ===
+                            quiz.questions[quiz.currentQuestion].id
+                        ).options[0]
                       }
                     </label>
 
@@ -150,9 +163,11 @@ class Quiz extends Component {
                     <input type="radio" id="option-two" name="selector" />
                     <label htmlFor="option-two">
                       {
-                        this.props.questions[
-                          this.props.quizzes[0].currentQuestion
-                        ].options[1]
+                        questions.find(
+                          question =>
+                            question.id ===
+                            quiz.questions[quiz.currentQuestion].id
+                        ).options[1]
                       }
                     </label>
 
@@ -163,9 +178,11 @@ class Quiz extends Component {
                     <input type="radio" id="option-three" name="selector" />
                     <label htmlFor="option-three">
                       {
-                        this.props.questions[
-                          this.props.quizzes[0].currentQuestion
-                        ].options[2]
+                        questions.find(
+                          question =>
+                            question.id ===
+                            quiz.questions[quiz.currentQuestion].id
+                        ).options[2]
                       }
                     </label>
 
@@ -176,9 +193,11 @@ class Quiz extends Component {
                     <input type="radio" id="option-four" name="selector" />
                     <label htmlFor="option-four">
                       {
-                        this.props.questions[
-                          this.props.quizzes[0].currentQuestion
-                        ].options[3]
+                        questions.find(
+                          question =>
+                            question.id ===
+                            quiz.questions[quiz.currentQuestion].id
+                        ).options[3]
                       }
                     </label>
 
@@ -209,7 +228,8 @@ class Quiz extends Component {
                     <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z" />
                   </svg>
                 </div>
-                <span>5</span>
+                <span>5 </span>
+                {/* <span> { quiz ? quiz.questions.find( question => question.id === quiz.questions[quiz.currentQuestion].id ) } </span> */}
                 <div className="smallSVGWrapper">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path fill="none" d="M0 0h24v24H0z" />
@@ -232,12 +252,18 @@ class Quiz extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  console.log(state);
+const mapStateToProps = (state, ownProps) => {
+  console.log("REDUX STATE", state);
+  // [OLD] const qId = ownProps.match.params.id;
+  // [OLD] const quizzes = state.firestore.ordered.quizzes;
+  // [OLD] const quiz = quizzes ? quizzes.find(quiz => quiz.id === qId) : null;
+
+  // TODO: Populate quiz, maybe do it here then set props.
+
   return {
-    auth: state.firebase.auth,
     questions: state.firestore.ordered.questions,
-    quizzes: state.firestore.ordered.quizzes,
+    // [OLD] quiz: quiz,
+    quiz: state.firestore.data.quiz,
     sideNavActive: state.ui.sideNavActive
   };
 };
@@ -252,10 +278,16 @@ const mapStateToProps = state => {
 
 export default compose(
   connect(
-    mapStateToProps,
-    // mapDispatchToProps
+    mapStateToProps
+    // mapDispatchToProps,
   ),
-  firestoreConnect(["questions", "quizzes"])
-  // firestoreConnect([{ collection: "questions" }])
+  // firestoreConnect([{ collection: "quizzes" }, { collection: "questions" }])
+  firestoreConnect(props => {
+    // console.log("firestoreConnect props, ", props);
+    return [
+      { collection: "quizzes", doc: props.match.params.id, storeAs: "quiz" },
+      // [OLD] { collection: "quizzes" }, // This fetches complete collection
+      { collection: "questions" }
+    ];
+  })
 )(Quiz);
-// export default connect(mapStateToProps)(Quiz);
