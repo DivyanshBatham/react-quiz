@@ -1,12 +1,48 @@
-import React from "react";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import moment from "moment";
+
+// TODO: Make this a functional component if possible, we won't be needing componentWillReceiveProps
+// class QuizItem extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {};
+//   }
+
+//   componentWillReceiveProps() {
+//     console.warn("Question Component received new props.");
+//   }
 
 const QuizItem = (props) => {
+  console.log(props);
+  const quiz = props.quiz;
+
+  let startTime = +moment(quiz.startTime.toDate()).format("X");
+  let endTime = +moment(quiz.endTime.toDate()).format("X");
+  let now = +moment().format("X");
+
+  let status, timestamp;
+
+  if (now < startTime) {
+    status = "Upcoming";
+    timestamp = "Starts " + moment(quiz.startTime.toDate()).fromNow(); // Make this return "Starts in x minutes.."
+  } else if (now < endTime) {
+    status = "Running";
+    timestamp =
+      moment().diff(moment(quiz.endTime.toDate()), "minutes") +
+      " minutes remaining";
+  } else {
+    status = "Finished";
+    timestamp = moment(quiz.endTime.toDate()).fromNow(); // a minute ago.
+  }
+
   return (
-    <div className="quizlist__quiz">
+    <Link className="quizlist__quiz" to={`/app/compete/${quiz.id}`}>
       <div className="flex_row mb-05">
-        <div className="quizlist__quiz__title">React-Quiz's Regular</div>
-        <button className="quizlist__quiz__button">Dummy</button>
-        {/* <button className="quizlist__quiz__button">{props.status}</button> */}
+        <div className="quizlist__quiz__title">
+          React-Quiz's Regular ({quiz.id})
+        </div>
+        <button className="quizlist__quiz__button">{status}</button>
       </div>
       <div className="flex_row">
         <div>
@@ -17,8 +53,7 @@ const QuizItem = (props) => {
                 <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
               </svg>
             </div>
-            {Math.floor(Math.random() * 10) + 3}
-            {/* {props.registeredUsers.length} */}
+            {quiz.registeredUsers.length}
           </div>
           <div className="quizlist__quiz__detail">
             <div className="smallSVGWrapper">
@@ -30,9 +65,9 @@ const QuizItem = (props) => {
             10 minutes
           </div>
         </div>
-        <span className="quizlist__quiz__timestamp">Starts in x minutes</span>
+        <span className="quizlist__quiz__timestamp">{timestamp}</span>
       </div>
-    </div>
+    </Link>
   );
 };
 

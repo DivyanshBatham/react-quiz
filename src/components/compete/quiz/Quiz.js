@@ -254,15 +254,10 @@ class Quiz extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   console.log("REDUX STATE", state);
-  // [OLD] const qId = ownProps.match.params.id;
-  // [OLD] const quizzes = state.firestore.ordered.quizzes;
-  // [OLD] const quiz = quizzes ? quizzes.find(quiz => quiz.id === qId) : null;
-
   // TODO: Populate quiz, maybe do it here then set props.
 
   return {
     questions: state.firestore.ordered.questions,
-    // [OLD] quiz: quiz,
     quiz: state.firestore.data.quiz,
     sideNavActive: state.ui.sideNavActive
   };
@@ -281,12 +276,10 @@ export default compose(
     mapStateToProps
     // mapDispatchToProps,
   ),
-  // firestoreConnect([{ collection: "quizzes" }, { collection: "questions" }])
   firestoreConnect(props => {
     // console.log("firestoreConnect props, ", props);
     return [
       { collection: "quizzes", doc: props.match.params.id, storeAs: "quiz" },
-      // [OLD] { collection: "quizzes" }, // This fetches complete collection
       { collection: "questions" }
     ];
   })
