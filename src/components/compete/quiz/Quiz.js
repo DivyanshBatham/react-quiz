@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { firestoreConnect, populate } from "react-redux-firebase";
+import { firestoreConnect } from "react-redux-firebase";
 import Markdown from "react-markdown";
+import moment from "moment";
 
 // Components:
 import Spinner from "../../spinner/Spinner";
@@ -11,20 +12,16 @@ import Question from "../../Question";
 
 // Actions:
 import { toggleSidenav } from "../../../actions/uiActions";
-
-// import { likeQuestion } from "../../actions/questionActions";
-// import { dislikeQuestion } from "../../actions/questionActions";
-
-const populates = [
-  { child: "owner", root: "users" } // replace owner with user object
-];
+import { fetchQuestion } from "../../../actions/questionActions";
+// import { likeQuestion } from "../../../actions/questionActions";
+// import { dislikeQuestion } from "../../../actions/questionActions";
 
 class Quiz extends Component {
   constructor(props) {
     super(props);
     this.state = {
       curQues: null,
-      secondsLeft: 60
+      secondsLeft: "XX" // Default render, hide this?
     };
   }
 
@@ -32,40 +29,50 @@ class Quiz extends Component {
     // const quiz = this.props.quiz;
     // const questions = this.props.questions;
     //
-    // this.timer = setInterval(() => {
-    //   this.setState(prevState => {
-    //     if (this.props.quiz) {
-    //       if (this.state.secondsLeft === 1) {
-    //         clearInterval(this.timer);
-    //         alert("Server will change currentQuestion");
-    //       }
-    //       // if( this.props.curQues === null ){
-    //       //   // Calculate secondsLeft
-    //       //   alert("Calculate seconds left");
-    //       //   this.setState({
-    //       //     secondsLeft: 30
-    //       //   })
-    //       // }
-    //       // else if (this.state.curQues == quiz.currentQuestion)
-    //       if (this.state.curQues == this.props.quiz.currentQuestion)
-    //         return {
-    //           secondsLeft: prevState.secondsLeft - 1
-    //           // curQues: (prevState.curQues+1)%questions.length
-    //         };
-    //       else
-    //         return {
-    //           curQues: this.props.quiz.currentQuestion,
-    //           secondsLeft: 60
-    //         };
-    //     }
-    //   });
-    // }, 1000);
+    this.timer = setInterval(() => {
+      this.setState(prevState => {
+        if (this.props.quiz) {
+          if (this.state.secondsLeft === 1) {
+            clearInterval(this.timer);
+            alert("Server will change currentQuestion");
+          }
+          // if( this.props.curQues === null ){
+          //   // Calculate secondsLeft
+          //   alert("Calculate seconds left");
+          //   this.setState({
+          //     secondsLeft: 30
+          //   })
+          // }
+          // else if (this.state.curQues == quiz.currentQuestion)
+          if (this.state.curQues == this.props.quiz.currentQuestion)
+            return {
+              secondsLeft: prevState.secondsLeft - 1
+              // curQues: (prevState.curQues+1)%questions.length
+            };
+          else {
+            // When server changes quiz.currentQuestion
+            console.warn(
+              "FETCH_QUESTION Number %s",
+              this.props.quiz.currentQuestion
+            );
+            this.props.fetchQuestion(
+              this.props.quiz.questions[this.props.quiz.currentQuestion]
+            )
+            return {
+              curQues: this.props.quiz.currentQuestion,
+              secondsLeft: 60
+            };
+          }
+        }
+      });
+    }, 1000);
   }
 
   render() {
-    console.log("Quiz.js Props ", this.props);
+    // console.log("Quiz.js Props ", this.props);
     const quiz = this.props.quiz;
-    const questions = this.props.questions;
+    // const questions = this.props.questions;
+    const questionDoc = this.props.questionDoc;
 
     return (
       <main className={this.props.sideNavActive ? "activeSidenav" : null}>
@@ -127,7 +134,8 @@ class Quiz extends Component {
           </div>
           <hr />
           {/* <div className="quiz-questionNumber">Question {quiz.currentQuestion+1}</div> */}
-          {questions && quiz ? (
+          { quiz && questionDoc ? (
+          // {questions && quiz ? (
             <>
               {/* <Question /> */}
               <div className="quiz-questionNumber">
@@ -136,10 +144,11 @@ class Quiz extends Component {
               <Markdown
                 source={
                   // THIS IS COMPLETELY
-                  questions.find(
-                    question =>
-                      question.id === quiz.questions[quiz.currentQuestion].id
-                  ).question
+                  // questions.find(
+                  //   question =>
+                  //     question.id === quiz.questions[quiz.currentQuestion].id
+                  // ).question
+                  questionDoc.question
                 }
               />
               <div className="quiz-options">
@@ -148,11 +157,12 @@ class Quiz extends Component {
                     <input type="radio" id="option-one" name="selector" />
                     <label htmlFor="option-one">
                       {
-                        questions.find(
-                          question =>
-                            question.id ===
-                            quiz.questions[quiz.currentQuestion].id
-                        ).options[0]
+                        // questions.find(
+                        //   question =>
+                        //     question.id ===
+                        //     quiz.questions[quiz.currentQuestion].id
+                        // ).options[0]
+                        questionDoc.options[0]
                       }
                     </label>
 
@@ -163,11 +173,12 @@ class Quiz extends Component {
                     <input type="radio" id="option-two" name="selector" />
                     <label htmlFor="option-two">
                       {
-                        questions.find(
-                          question =>
-                            question.id ===
-                            quiz.questions[quiz.currentQuestion].id
-                        ).options[1]
+                        // questions.find(
+                        //   question =>
+                        //     question.id ===
+                        //     quiz.questions[quiz.currentQuestion].id
+                        // ).options[1]
+                        questionDoc.options[1]
                       }
                     </label>
 
@@ -178,11 +189,12 @@ class Quiz extends Component {
                     <input type="radio" id="option-three" name="selector" />
                     <label htmlFor="option-three">
                       {
-                        questions.find(
-                          question =>
-                            question.id ===
-                            quiz.questions[quiz.currentQuestion].id
-                        ).options[2]
+                        // questions.find(
+                        //   question =>
+                        //     question.id ===
+                        //     quiz.questions[quiz.currentQuestion].id
+                        // ).options[2]
+                        questionDoc.options[2]
                       }
                     </label>
 
@@ -193,11 +205,12 @@ class Quiz extends Component {
                     <input type="radio" id="option-four" name="selector" />
                     <label htmlFor="option-four">
                       {
-                        questions.find(
-                          question =>
-                            question.id ===
-                            quiz.questions[quiz.currentQuestion].id
-                        ).options[3]
+                        // questions.find(
+                        //   question =>
+                        //     question.id ===
+                        //     quiz.questions[quiz.currentQuestion].id
+                        // ).options[3]
+                        questionDoc.options[3]
                       }
                     </label>
 
@@ -257,30 +270,32 @@ const mapStateToProps = (state, ownProps) => {
   // TODO: Populate quiz, maybe do it here then set props.
 
   return {
-    questions: state.firestore.ordered.questions,
+    // questions: state.firestore.ordered.questions,
     quiz: state.firestore.data.quiz,
-    sideNavActive: state.ui.sideNavActive
+    questionDoc: state.question.questionDoc,
+    sideNavActive: state.ui.sideNavActive,
   };
 };
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     toggleSidenav: () => dispatch(toggleSidenav())
-//     // likeQuestion: qData => dispatch(likeQuestion(qData))
-//     // // dislikeQuestion: qData => dispatch(dislikeQuestion(qData))
-//   };
-// };
+const mapDispatchToProps = dispatch => {
+  return {
+    // toggleSidenav: () => dispatch(toggleSidenav())
+    // likeQuestion: qData => dispatch(likeQuestion(qData))
+    // dislikeQuestion: qData => dispatch(dislikeQuestion(qData))
+    fetchQuestion: ref => dispatch(fetchQuestion(ref))
+  };
+};
 
 export default compose(
   connect(
-    mapStateToProps
-    // mapDispatchToProps,
+    mapStateToProps,
+    mapDispatchToProps
   ),
   firestoreConnect(props => {
     // console.log("firestoreConnect props, ", props);
     return [
       { collection: "quizzes", doc: props.match.params.id, storeAs: "quiz" },
-      { collection: "questions" }
+      // { collection: "questions" }
     ];
   })
 )(Quiz);

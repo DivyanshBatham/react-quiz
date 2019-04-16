@@ -14,7 +14,7 @@ import moment from "moment";
 //   }
 
 const QuizItem = (props) => {
-  console.log(props);
+  // console.log(props);
   const quiz = props.quiz;
 
   let startTime = +moment(quiz.startTime.toDate()).format("X");
