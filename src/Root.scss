@@ -538,10 +538,7 @@ footer {
     justify-content: space-between;
   }
 
-  .smallSVGWrapper {
-    margin: 0;
-    height: 24px;
-    width: 24px;
+  @include svgWrapper(24px) {
     margin-left: 1.2rem;
     cursor: pointer;
 
@@ -551,8 +548,12 @@ footer {
 
     &:hover {
       fill: #eee;
+      &.active {
+        fill: $pink80;
+      }
     }
   }
+
   span {
     margin-left: 0.5rem;
   }

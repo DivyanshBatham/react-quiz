@@ -7,7 +7,7 @@ import {
   APPROVE_QUESTION,
   LIKE_QUESTION,
   DISLIKE_QUESTION,
-  REPORT_QUESTION,
+  REPORT_QUESTION
 } from "../actions/questionActions";
 
 const initState = {
@@ -24,14 +24,14 @@ const questionReducer = (state = initState, action) => {
       console.log("Question Added Error, ", action.err);
       return state;
 
-      case FETCH_QUESTION_REQUEST:
+    case FETCH_QUESTION_REQUEST:
       console.log("FETCH_QUESTION started");
       return {
         ...state,
-        isFetching: true,
+        isFetching: true
       };
 
-      case FETCH_QUESTION_SUCCESS:
+    case FETCH_QUESTION_SUCCESS:
       console.log("Question Fetched", action.questionDoc);
       return {
         ...state,
@@ -43,17 +43,17 @@ const questionReducer = (state = initState, action) => {
       console.log("Question Fetch Error, ", action.err);
       return {
         ...state,
-        isFetching: false,
+        isFetching: false
       };
 
     case APPROVE_QUESTION:
       console.log("Question Approved");
       return state;
     case LIKE_QUESTION:
-      console.log("Like Question");
+      console.log("Question Liked");
       return state;
     case DISLIKE_QUESTION:
-      console.log("Dislike Question");
+      console.log("Question Disliked");
       return state;
     case REPORT_QUESTION:
       console.log("Report Question");

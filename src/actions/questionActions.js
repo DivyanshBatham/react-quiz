@@ -87,59 +87,75 @@ export const approveQuestion = question => {
   };
 };
 
-export const likeQuestion = questionData => {
+export const likeQuestion = (questionDoc, questionRef) => {
   return (dispatch, getState, { getFirestore }) => {
     const state = getState();
     const uid = state.firebase.auth.uid;
-    let newLikes = questionData.likes;
+    let newLikes = questionDoc.likes;
+    let newDislikes = questionDoc.dislikes;
 
-    if (questionData.likes.includes(uid))
-      newLikes.splice(questionData.likes.findIndex(uid), 1);
+    if (questionDoc.likes.includes(uid))
+      newLikes.splice(
+        questionDoc.likes.findIndex(likedById => likedById === uid),
+        1
+      );
     else newLikes.push(uid);
 
-    const firestore = getFirestore();
-    firestore
-      .collection("questions")
-      // .doc(questionData.questionId)
-      .doc("TtnJ34YRKX4kik8Dwo4G")
-      .update({
-        // likes: [...questionData.likes, state.firebase.auth.uid]
-        // likes: [state.firebase.auth.uid]
-        likes: newLikes
-      })
-      .then(() => {
-        dispatch({
-          type: LIKE_QUESTION,
-          questionData
-        });
-      });
-  };
-};
-
-export const dislikeQuestion = questionData => {
-  return (dispatch, getState, { getFirestore }) => {
-    const state = getState();
-    const uid = state.firebase.auth.uid;
-    let newDislikes = questionData.dislikes;
-
-    if (questionData.dislikes.includes(uid))
-      newDislikes.splice(questionData.dislikes.findIndex(uid), 1);
-    else newDislikes.push(uid);
+    if (questionDoc.dislikes.includes(uid))
+      newDislikes.splice(
+        questionDoc.dislikes.findIndex(dislikedById => dislikedById === uid),
+        1
+      );
 
     const firestore = getFirestore();
     firestore
       .collection("questions")
-      // .doc(questionData.questionId)
-      .doc("TtnJ34YRKX4kik8Dwo4G")
+      .doc(questionRef.id)
       .update({
-        // dislikes: [...questionData.dislikes, state.firebase.auth.uid]
-        // dislikes: [state.firebase.auth.uid]
+        likes: newLikes,
         dislikes: newDislikes
       })
       .then(() => {
         dispatch({
           type: LIKE_QUESTION,
-          questionData
+          questionDoc
+        });
+      });
+  };
+};
+
+export const dislikeQuestion = (questionDoc, questionRef) => {
+  return (dispatch, getState, { getFirestore }) => {
+    const state = getState();
+    const uid = state.firebase.auth.uid;
+    let newDislikes = questionDoc.dislikes;
+    let newLikes = questionDoc.likes;
+
+    if (questionDoc.dislikes.includes(uid))
+      newDislikes.splice(
+        questionDoc.dislikes.findIndex(dislikedById => dislikedById === uid),
+        1
+      );
+    else newDislikes.push(uid);
+
+    if (questionDoc.likes.includes(uid))
+      newLikes.splice(
+        questionDoc.likes.findIndex(likedById => likedById === uid),
+        1
+      );
+
+    const firestore = getFirestore();
+    firestore
+      .collection("questions")
+      .doc(questionRef.id)
+      .update({
+        dislikes: newDislikes,
+        likes: newLikes
+      })
+      .then(() => {
+        dispatch({
+          type: DISLIKE_QUESTION,
+          questionDoc
         });
       });
   };

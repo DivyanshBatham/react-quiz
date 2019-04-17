@@ -13,8 +13,8 @@ import Question from "../../Question";
 // Actions:
 import { toggleSidenav } from "../../../actions/uiActions";
 import { fetchQuestion } from "../../../actions/questionActions";
-// import { likeQuestion } from "../../../actions/questionActions";
-// import { dislikeQuestion } from "../../../actions/questionActions";
+import { likeQuestion } from "../../../actions/questionActions";
+import { dislikeQuestion } from "../../../actions/questionActions";
 
 class Quiz extends Component {
   constructor(props) {
@@ -157,32 +157,15 @@ class Quiz extends Component {
               {/* <Question /> */}
               <div className="questionContainer">
                 <div className="quiz-questionNumber">
-                  {/* Question {quiz.currentQuestion + 1} */}
                   Question {this.state.curQues + 1}
                 </div>
-                <Markdown
-                  source={
-                    // THIS IS COMPLETELY
-                    // questions.find(
-                    //   question =>
-                    //     question.id === quiz.questions[quiz.currentQuestion].id
-                    // ).question
-                    questionDoc.question
-                  }
-                />
+                <Markdown source={questionDoc.question} />
                 <div className="quiz-options">
                   <ul>
                     <li>
                       <input type="radio" id="option-one" name="selector" />
                       <label htmlFor="option-one">
-                        {
-                          // questions.find(
-                          //   question =>
-                          //     question.id ===
-                          //     quiz.questions[quiz.currentQuestion].id
-                          // ).options[0]
-                          questionDoc.options[0]
-                        }
+                        {questionDoc.options[0]}
                       </label>
 
                       <div className="check" />
@@ -191,14 +174,7 @@ class Quiz extends Component {
                     <li>
                       <input type="radio" id="option-two" name="selector" />
                       <label htmlFor="option-two">
-                        {
-                          // questions.find(
-                          //   question =>
-                          //     question.id ===
-                          //     quiz.questions[quiz.currentQuestion].id
-                          // ).options[1]
-                          questionDoc.options[1]
-                        }
+                        {questionDoc.options[1]}
                       </label>
 
                       <div className="check" />
@@ -207,14 +183,7 @@ class Quiz extends Component {
                     <li>
                       <input type="radio" id="option-three" name="selector" />
                       <label htmlFor="option-three">
-                        {
-                          // questions.find(
-                          //   question =>
-                          //     question.id ===
-                          //     quiz.questions[quiz.currentQuestion].id
-                          // ).options[2]
-                          questionDoc.options[2]
-                        }
+                        {questionDoc.options[2]}
                       </label>
 
                       <div className="check" />
@@ -223,14 +192,7 @@ class Quiz extends Component {
                     <li>
                       <input type="radio" id="option-four" name="selector" />
                       <label htmlFor="option-four">
-                        {
-                          // questions.find(
-                          //   question =>
-                          //     question.id ===
-                          //     quiz.questions[quiz.currentQuestion].id
-                          // ).options[3]
-                          questionDoc.options[3]
-                        }
+                        {questionDoc.options[3]}
                       </label>
 
                       <div className="check" />
@@ -253,32 +215,55 @@ class Quiz extends Component {
               <button className="primaryButton">
                 SUBMIT {this.state.secondsLeft}s
               </button>
-              <div className="flex_row">
-                <div
-                  className="smallSVGWrapper"
-                  // onClick={ () => this.props.likeQuestion("quesData")}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path fill="none" d="M0 0h24v24H0V0z" />
-                    <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z" />
-                  </svg>
+              {!this.props.questionIsFetching && this.state.timerStarted && (
+                <div className="flex_row">
+                  <div
+                    className={
+                      questionDoc.likes.includes(this.props.auth.uid)
+                        ? "svgWrapper active"
+                        : "svgWrapper"
+                    }
+                    onClick={() =>
+                      this.props.likeQuestion(
+                        questionDoc,
+                        quiz.questions[this.state.curQues]
+                      )
+                    }
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <path fill="none" d="M0 0h24v24H0V0z" />
+                      <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z" />
+                    </svg>
+                  </div>
+                  <span>{questionDoc.likes.length}</span>
+                  {/* <span> { quiz ? quiz.questions.find( question => question.id === quiz.questions[quiz.currentQuestion].id ) } </span> */}
+                  <div
+                    className={
+                      questionDoc.dislikes.includes(this.props.auth.uid)
+                        ? "svgWrapper active"
+                        : "svgWrapper"
+                    }
+                    onClick={() =>
+                      this.props.dislikeQuestion(
+                        questionDoc,
+                        quiz.questions[this.state.curQues]
+                      )
+                    }
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <path fill="none" d="M0 0h24v24H0z" />
+                      <path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z" />
+                    </svg>
+                  </div>
+                  <span>{questionDoc.dislikes.length}</span>
+                  <div className="svgWrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <path d="M0 0h24v24H0z" fill="none" />
+                      <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                    </svg>
+                  </div>
                 </div>
-                <span>5 </span>
-                {/* <span> { quiz ? quiz.questions.find( question => question.id === quiz.questions[quiz.currentQuestion].id ) } </span> */}
-                <div className="smallSVGWrapper">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z" />
-                  </svg>
-                </div>
-                <span>2</span>
-                <div className="smallSVGWrapper">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M0 0h24v24H0z" fill="none" />
-                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                  </svg>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </footer>
@@ -293,9 +278,10 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     // questions: state.firestore.ordered.questions,
+    auth: state.firebase.auth,
     quiz: state.firestore.data.quiz,
-    questionIsFetching: state.question.isFetching,
     questionDoc: state.question.questionDoc,
+    questionIsFetching: state.question.isFetching,
     sideNavActive: state.ui.sideNavActive
   };
 };
@@ -303,8 +289,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
   return {
     toggleSidenav: () => dispatch(toggleSidenav()),
-    // likeQuestion: qData => dispatch(likeQuestion(qData))
-    // dislikeQuestion: qData => dispatch(dislikeQuestion(qData))
+    likeQuestion: (qDoc, ref) => dispatch(likeQuestion(qDoc, ref)),
+    dislikeQuestion: (qDoc, ref) => dispatch(dislikeQuestion(qDoc, ref)),
     fetchQuestion: ref => dispatch(fetchQuestion(ref))
   };
 };
