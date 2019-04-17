@@ -321,13 +321,18 @@ textarea {
 }
 
 main {
+  // To make footer of Quiz stick to bottom.
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   position: relative;
   height: 100%;
   flex: 1;
   @include lato();
   color: $light;
   // overflow-y: auto;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   @include transition();
   background: $lightBlue;
@@ -522,6 +527,7 @@ footer {
   // margin-bottom: 1rem;
 
   .primaryButton {
+    min-width: 160px;
     margin: 1rem 0;
     width: initial;
     padding: 0.5rem 2rem;

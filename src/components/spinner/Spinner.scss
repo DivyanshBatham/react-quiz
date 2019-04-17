@@ -101,6 +101,13 @@
 //   }
 // }
 
+.spinnerContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .sk-folding-cube {
   margin: 20px auto;
   width: 40px;

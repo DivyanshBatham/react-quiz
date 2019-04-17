@@ -21,11 +21,13 @@ class Quiz extends Component {
     super(props);
     this.state = {
       curQues: null,
+      timerStarted: false,
       secondsLeft: "XX" // Default render, hide this?
     };
   }
 
   componentDidMount() {
+    console.warn("Quiz.js Timer started.");
     // const quiz = this.props.quiz;
     // const questions = this.props.questions;
     //
@@ -33,8 +35,13 @@ class Quiz extends Component {
       this.setState(prevState => {
         if (this.props.quiz) {
           if (this.state.secondsLeft === 1) {
-            clearInterval(this.timer);
-            alert("Server will change currentQuestion");
+            console.warn("Server will change currentQuestion.");
+            // clearInterval(this.timer);
+            // alert("Server will change currentQuestion");
+            // return {
+            //   curQues: (prevState.curQues+1)%this.props.quiz.questions.length,
+            //   secondsLeft: 60
+            // };
           }
           // if( this.props.curQues === null ){
           //   // Calculate secondsLeft
@@ -57,15 +64,22 @@ class Quiz extends Component {
             );
             this.props.fetchQuestion(
               this.props.quiz.questions[this.props.quiz.currentQuestion]
-            )
+            );
             return {
               curQues: this.props.quiz.currentQuestion,
-              secondsLeft: 60
+              secondsLeft: 60,
+              timerStarted: true
             };
           }
         }
       });
     }, 1000);
+  }
+
+  componentWillUnmount() {
+    console.warn("Quiz.js Timer cleared.");
+    clearInterval(this.timer);
+    this.setState({ timerStarted: false });
   }
 
   render() {
@@ -76,21 +90,23 @@ class Quiz extends Component {
 
     return (
       <main className={this.props.sideNavActive ? "activeSidenav" : null}>
-        <div className="container">
+        <div className="container flex_col">
           <header>
             <div className="flex_row">
               <div
                 className="largeSVGWrapper"
-                onClick={() => {
-                  this.props.dispatch(toggleSidenav());
-                }}
+                onClick={this.props.toggleSidenav}
+                // onClick={() => {
+                //   this.props.dispatch(toggleSidenav());
+                // }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
                   <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
                 </svg>
               </div>
-              <h1>Quiz {this.props.match.params.id}</h1>
+              <h1>Quiz</h1>
+              {/* <h1>Quiz {this.props.match.params.id}</h1> */}
             </div>
             <div>
               <div className="quizlist__quiz__detail">
@@ -134,93 +150,99 @@ class Quiz extends Component {
           </div>
           <hr />
           {/* <div className="quiz-questionNumber">Question {quiz.currentQuestion+1}</div> */}
-          { quiz && questionDoc ? (
-          // {questions && quiz ? (
+          {!this.props.questionIsFetching && this.state.timerStarted ? (
+            // { quiz && questionDoc ? (
+            // {questions && quiz ? (
             <>
               {/* <Question /> */}
-              <div className="quiz-questionNumber">
-                Question {quiz.currentQuestion + 1}
-              </div>
-              <Markdown
-                source={
-                  // THIS IS COMPLETELY
-                  // questions.find(
-                  //   question =>
-                  //     question.id === quiz.questions[quiz.currentQuestion].id
-                  // ).question
-                  questionDoc.question
-                }
-              />
-              <div className="quiz-options">
-                <ul>
-                  <li>
-                    <input type="radio" id="option-one" name="selector" />
-                    <label htmlFor="option-one">
-                      {
-                        // questions.find(
-                        //   question =>
-                        //     question.id ===
-                        //     quiz.questions[quiz.currentQuestion].id
-                        // ).options[0]
-                        questionDoc.options[0]
-                      }
-                    </label>
+              <div className="questionContainer">
+                <div className="quiz-questionNumber">
+                  {/* Question {quiz.currentQuestion + 1} */}
+                  Question {this.state.curQues + 1}
+                </div>
+                <Markdown
+                  source={
+                    // THIS IS COMPLETELY
+                    // questions.find(
+                    //   question =>
+                    //     question.id === quiz.questions[quiz.currentQuestion].id
+                    // ).question
+                    questionDoc.question
+                  }
+                />
+                <div className="quiz-options">
+                  <ul>
+                    <li>
+                      <input type="radio" id="option-one" name="selector" />
+                      <label htmlFor="option-one">
+                        {
+                          // questions.find(
+                          //   question =>
+                          //     question.id ===
+                          //     quiz.questions[quiz.currentQuestion].id
+                          // ).options[0]
+                          questionDoc.options[0]
+                        }
+                      </label>
 
-                    <div className="check" />
-                  </li>
+                      <div className="check" />
+                    </li>
 
-                  <li>
-                    <input type="radio" id="option-two" name="selector" />
-                    <label htmlFor="option-two">
-                      {
-                        // questions.find(
-                        //   question =>
-                        //     question.id ===
-                        //     quiz.questions[quiz.currentQuestion].id
-                        // ).options[1]
-                        questionDoc.options[1]
-                      }
-                    </label>
+                    <li>
+                      <input type="radio" id="option-two" name="selector" />
+                      <label htmlFor="option-two">
+                        {
+                          // questions.find(
+                          //   question =>
+                          //     question.id ===
+                          //     quiz.questions[quiz.currentQuestion].id
+                          // ).options[1]
+                          questionDoc.options[1]
+                        }
+                      </label>
 
-                    <div className="check" />
-                  </li>
+                      <div className="check" />
+                    </li>
 
-                  <li>
-                    <input type="radio" id="option-three" name="selector" />
-                    <label htmlFor="option-three">
-                      {
-                        // questions.find(
-                        //   question =>
-                        //     question.id ===
-                        //     quiz.questions[quiz.currentQuestion].id
-                        // ).options[2]
-                        questionDoc.options[2]
-                      }
-                    </label>
+                    <li>
+                      <input type="radio" id="option-three" name="selector" />
+                      <label htmlFor="option-three">
+                        {
+                          // questions.find(
+                          //   question =>
+                          //     question.id ===
+                          //     quiz.questions[quiz.currentQuestion].id
+                          // ).options[2]
+                          questionDoc.options[2]
+                        }
+                      </label>
 
-                    <div className="check" />
-                  </li>
+                      <div className="check" />
+                    </li>
 
-                  <li>
-                    <input type="radio" id="option-four" name="selector" />
-                    <label htmlFor="option-four">
-                      {
-                        // questions.find(
-                        //   question =>
-                        //     question.id ===
-                        //     quiz.questions[quiz.currentQuestion].id
-                        // ).options[3]
-                        questionDoc.options[3]
-                      }
-                    </label>
+                    <li>
+                      <input type="radio" id="option-four" name="selector" />
+                      <label htmlFor="option-four">
+                        {
+                          // questions.find(
+                          //   question =>
+                          //     question.id ===
+                          //     quiz.questions[quiz.currentQuestion].id
+                          // ).options[3]
+                          questionDoc.options[3]
+                        }
+                      </label>
 
-                    <div className="check" />
-                  </li>
-                </ul>
+                      <div className="check" />
+                    </li>
+                  </ul>
+                </div>
               </div>
             </>
           ) : (
-            <Spinner />
+            <div className="spinnerContainer">
+              <Spinner />
+            </div>
           )}
         </div>
 
@@ -272,14 +294,15 @@ const mapStateToProps = (state, ownProps) => {
   return {
     // questions: state.firestore.ordered.questions,
     quiz: state.firestore.data.quiz,
+    questionIsFetching: state.question.isFetching,
     questionDoc: state.question.questionDoc,
-    sideNavActive: state.ui.sideNavActive,
+    sideNavActive: state.ui.sideNavActive
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    // toggleSidenav: () => dispatch(toggleSidenav())
+    toggleSidenav: () => dispatch(toggleSidenav()),
     // likeQuestion: qData => dispatch(likeQuestion(qData))
     // dislikeQuestion: qData => dispatch(dislikeQuestion(qData))
     fetchQuestion: ref => dispatch(fetchQuestion(ref))
@@ -294,7 +317,7 @@ export default compose(
   firestoreConnect(props => {
     // console.log("firestoreConnect props, ", props);
     return [
-      { collection: "quizzes", doc: props.match.params.id, storeAs: "quiz" },
+      { collection: "quizzes", doc: props.match.params.id, storeAs: "quiz" }
       // { collection: "questions" }
     ];
   })

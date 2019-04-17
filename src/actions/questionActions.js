@@ -1,6 +1,7 @@
 export const ADD_QUESTION = "ADD_QUESTION";
 export const ADD_QUESTION_ERROR = "ADD_QUESTION_ERROR";
-export const FETCH_QUESTION = "FETCH_QUESTION";
+export const FETCH_QUESTION_REQUEST = "FETCH_QUESTION_REQUEST";
+export const FETCH_QUESTION_SUCCESS = "FETCH_QUESTION_SUCCESS";
 export const FETCH_QUESTION_ERROR = "FETCH_QUESTION_ERROR";
 export const LIKE_QUESTION = "LIKE_QUESTION";
 export const LIKE_QUESTION_ERROR = "LIKE_QUESTION_ERROR";
@@ -46,6 +47,10 @@ export const createQuestion = questionData => {
 
 export const fetchQuestion = questionRef => {
   return (dispatch, getState, { getFirestore }) => {
+    dispatch({
+      type: FETCH_QUESTION_REQUEST
+    });
+
     const firestore = getFirestore();
     firestore
       .collection("questions")
@@ -54,7 +59,7 @@ export const fetchQuestion = questionRef => {
       .then(doc => {
         if (doc.exists) {
           dispatch({
-            type: FETCH_QUESTION,
+            type: FETCH_QUESTION_SUCCESS,
             questionDoc: doc.data()
           });
         } else {
