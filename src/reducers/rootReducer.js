@@ -10,9 +10,9 @@ import uiReducer from "./uiReducer";
 const rootReducer = combineReducers({
   // These will be the keys in out global state.
   auth: authReducer,
-  question: questionReducer,
-  firestore: firestoreReducer,
   firebase: firebaseReducer,
+  firestore: firestoreReducer,
+  question: questionReducer,
   ui: uiReducer
 });
 

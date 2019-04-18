@@ -1,15 +1,21 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "React Quiz",
+  "name": "React Quiz (v0)",
+  "description": "Compete | Practice | Contribute",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "quiz.svg",
+      "sizes": "192x192",
+      "type": "image/svg"
+    },
+    {
+      "src": "quiz.svg",
+      "sizes": "512x512",
+      "type": "image/svg"
     }
   ],
-  "start_url": ".",
+  "start_url": "/app/dashboard",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#171926",
+  "background_color": "#202737"
 }

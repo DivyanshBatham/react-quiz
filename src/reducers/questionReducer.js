@@ -7,7 +7,8 @@ import {
   APPROVE_QUESTION,
   LIKE_QUESTION,
   DISLIKE_QUESTION,
-  REPORT_QUESTION
+  REPORT_QUESTION,
+  SUBMIT_ANSWER
 } from "../actions/questionActions";
 
 const initState = {
@@ -49,6 +50,11 @@ const questionReducer = (state = initState, action) => {
     case APPROVE_QUESTION:
       console.log("Question Approved");
       return state;
+
+    case SUBMIT_ANSWER:
+      console.log("Answer Submitted");
+      return state;
+
     case LIKE_QUESTION:
       console.log("Question Liked");
       return state;

@@ -378,12 +378,20 @@ main {
   &__person {
     height: 42px;
     width: 42px;
-    border: solid 2px $light;
+    border: solid 2px $light50;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 0.5rem;
+    color: $light;
+    @include transition();
+
+    &.active {
+      color: #eee;
+      border-color: #eee;
+      background: $darkBlueOpacity05;
+    }
   }
 }
 

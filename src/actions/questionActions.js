@@ -8,6 +8,8 @@ export const LIKE_QUESTION_ERROR = "LIKE_QUESTION_ERROR";
 export const DISLIKE_QUESTION = "DISLIKE_QUESTION";
 export const REPORT_QUESTION = "REPORT_QUESTION";
 export const APPROVE_QUESTION = "APPROVE_QUESTION";
+export const SUBMIT_ANSWER = "SUBMIT_ANSWER";
+export const SUBMIT_ANSWER_ERROR = "SUBMIT_ANSWER_ERROR";
 
 export const createQuestion = questionData => {
   return (dispatch, getState, { getFirestore }) => {
@@ -158,6 +160,63 @@ export const dislikeQuestion = (questionDoc, questionRef) => {
           questionDoc
         });
       });
+  };
+};
+
+export const submitAnswer = (quizDoc, quizId, questionDoc, choosenOption) => {
+  return (dispatch, getState, { getFirestore }) => {
+    const state = getState();
+    const firestore = getFirestore();
+
+    let response = {
+      userId: state.firebase.auth.uid,
+      userInitials: state.firebase.profile.initials,
+      choosenOption: choosenOption,
+      timestamp: firestore.FieldValue.serverTimestamp(),
+      // timestampSys: new Date()
+      // Maybe calculate time taken or submitted at seconds, for better results page.
+      // IDEA: Setup a function to use the timestamp and startTime to calculated answered in seconds...
+    };
+
+    if (questionDoc.correctOption === choosenOption) {
+
+      firestore
+        .collection("quizzes")
+        .doc(quizId)
+        .collection("correctResponses")
+        .add(response)
+        // .update({
+        //   correctResponses: firestore.FieldValue.arrayUnion(response)
+        // })
+        .then(() => {
+          dispatch({
+            type: SUBMIT_ANSWER,
+            questionDoc
+          });
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    } else {
+
+      firestore
+        .collection("quizzes")
+        .doc(quizId)
+        .collection("incorrectResponses")
+        .add(response)
+        // .update({
+        //   incorrectResponses: firestore.FieldValue.arrayUnion(response)
+        // })
+        .then(() => {
+          dispatch({
+            type: SUBMIT_ANSWER,
+            questionDoc
+          });
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
   };
 };
 

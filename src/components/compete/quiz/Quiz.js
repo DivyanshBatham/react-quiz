@@ -13,6 +13,7 @@ import Question from "../../Question";
 // Actions:
 import { toggleSidenav } from "../../../actions/uiActions";
 import { fetchQuestion } from "../../../actions/questionActions";
+import { submitAnswer } from "../../../actions/questionActions";
 import { likeQuestion } from "../../../actions/questionActions";
 import { dislikeQuestion } from "../../../actions/questionActions";
 
@@ -33,7 +34,7 @@ class Quiz extends Component {
     //
     this.timer = setInterval(() => {
       this.setState(prevState => {
-        if (this.props.quiz) {
+        if (this.props.quizDoc) {
           if (this.state.secondsLeft === 1) {
             console.warn("Server will change currentQuestion.");
             // clearInterval(this.timer);
@@ -51,7 +52,7 @@ class Quiz extends Component {
           //   })
           // }
           // else if (this.state.curQues == quiz.currentQuestion)
-          if (this.state.curQues == this.props.quiz.currentQuestion)
+          if (this.state.curQues == this.props.quizDoc.currentQuestion)
             return {
               secondsLeft: prevState.secondsLeft - 1
               // curQues: (prevState.curQues+1)%questions.length
@@ -60,15 +61,16 @@ class Quiz extends Component {
             // When server changes quiz.currentQuestion
             console.warn(
               "FETCH_QUESTION Number %s",
-              this.props.quiz.currentQuestion
+              this.props.quizDoc.currentQuestion
             );
             this.props.fetchQuestion(
-              this.props.quiz.questions[this.props.quiz.currentQuestion]
+              this.props.quizDoc.questions[this.props.quizDoc.currentQuestion]
             );
             return {
-              curQues: this.props.quiz.currentQuestion,
+              curQues: this.props.quizDoc.currentQuestion,
               secondsLeft: 60,
-              timerStarted: true
+              timerStarted: true,
+              selectedOption: null
             };
           }
         }
@@ -82,11 +84,32 @@ class Quiz extends Component {
     this.setState({ timerStarted: false });
   }
 
+  handleOptionChange = changeEvent => {
+    // console.log(changeEvent, changeEvent.target.value);
+    console.warn("Choosen Option ", changeEvent.target.value);
+    this.setState({
+      selectedOption: changeEvent.target.value
+    });
+  };
+
+  handleSubmitAnswer = () => {
+    console.log(this.state.selectedOption);
+    if (this.state.selectedOption)
+      this.props.submitAnswer(
+        this.props.quizDoc,
+        this.props.match.params.id,
+        this.props.questionDoc,
+        this.state.selectedOption
+      );
+    else alert("Select Atleast on option");
+  };
+
   render() {
     // console.log("Quiz.js Props ", this.props);
-    const quiz = this.props.quiz;
-    // const questions = this.props.questions;
+    const quizDoc = this.props.quizDoc;
     const questionDoc = this.props.questionDoc;
+    const quizCorrectResponses = this.props.quizCorrectResponses;
+    const profile = this.props.profile;
 
     return (
       <main className={this.props.sideNavActive ? "activeSidenav" : null}>
@@ -96,9 +119,6 @@ class Quiz extends Component {
               <div
                 className="largeSVGWrapper"
                 onClick={this.props.toggleSidenav}
-                // onClick={() => {
-                //   this.props.dispatch(toggleSidenav());
-                // }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
@@ -116,8 +136,7 @@ class Quiz extends Component {
                     <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
                   </svg>
                 </div>
-                {quiz ? quiz.registeredUsers.length : 0}
-                {/* {Math.floor(Math.random() * 10) + 3} */}
+                {quizDoc ? quizDoc.registeredUsers.length : 0}
               </div>
               <div className="quizlist__quiz__detail">
                 <div className="smallSVGWrapper">
@@ -134,18 +153,90 @@ class Quiz extends Component {
           <div className="quiz-top3">
             <div>
               <div className="quiz-top3__rank">1st</div>
-              <BallRipple />
-              {/* <div className="quiz-top3__person">AB</div> */}
+              {quizDoc && quizCorrectResponses && quizCorrectResponses[0] ? (
+                <div
+                  className={
+                    quizCorrectResponses[0].userId === this.props.auth.uid
+                      ? "quiz-top3__person active"
+                      : "quiz-top3__person"
+                  }
+                >
+                  {quizCorrectResponses[0].userInitials}
+                </div>
+              ) : (
+                <BallRipple />
+              )}
+              {/* {quizDoc && quizDoc.correctResponses && quizDoc.correctResponses[0] ? (
+                <div
+                  className={
+                    quizDoc.correctResponses[0].userId === this.props.auth.uid
+                      ? "quiz-top3__person active"
+                      : "quiz-top3__person"
+                  }
+                >
+                  {quizDoc.correctResponses[0].userInitials}
+                </div>
+              ) : (
+                <BallRipple />
+              )} */}
             </div>
             <div>
               <div className="quiz-top3__rank">2nd</div>
-              <BallRipple />
-              {/* <div className="quiz-top3__person"></div> */}
+              {quizDoc && quizCorrectResponses && quizCorrectResponses[1] ? (
+                <div
+                  className={
+                    quizCorrectResponses[1].userId === this.props.auth.uid
+                      ? "quiz-top3__person active"
+                      : "quiz-top3__person"
+                  }
+                >
+                  {quizCorrectResponses[1].userInitials}
+                </div>
+              ) : (
+                <BallRipple />
+              )}
+              {/* {quizDoc && quizDoc.correctResponses && quizDoc.correctResponses[1] ? (
+                <div
+                  className={
+                    quizDoc.correctResponses[1].userId === this.props.auth.uid
+                      ? "quiz-top3__person active"
+                      : "quiz-top3__person"
+                  }
+                >
+                  {quizDoc.correctResponses[1].userInitials}
+                </div>
+              ) : (
+                <BallRipple />
+              )} */}
             </div>
             <div>
               <div className="quiz-top3__rank">3rd</div>
-              <BallRipple />
-              {/* <div className="quiz-top3__person"></div> */}
+              {quizDoc && quizCorrectResponses && quizCorrectResponses[2] ? (
+                <div
+                  className={
+                    quizCorrectResponses[2].userId === this.props.auth.uid
+                      ? "quiz-top3__person active"
+                      : "quiz-top3__person"
+                  }
+                >
+                  {quizCorrectResponses[2].userInitials}
+                </div>
+              ) : (
+                <BallRipple />
+              )}
+              {/* {quizDoc && quizDoc.correctResponses && quizDoc.correctResponses[2] ? (
+                <div
+                  className={
+                    quizDoc.correctResponses[2].userId === this.props.auth.uid
+                      ? "quiz-top3__person active"
+                      : "quiz-top3__person"
+                  }
+                >
+                  {quizDoc.correctResponses[2].userInitials}
+                </div>
+              ) : (
+                <BallRipple />
+              )} */}
             </div>
           </div>
           <hr />
@@ -163,7 +254,14 @@ class Quiz extends Component {
                 <div className="quiz-options">
                   <ul>
                     <li>
-                      <input type="radio" id="option-one" name="selector" />
+                      <input
+                        type="radio"
+                        id="option-one"
+                        name="userResponse"
+                        value="0"
+                        checked={this.state.selectedOption === "0"}
+                        onChange={this.handleOptionChange}
+                      />
                       <label htmlFor="option-one">
                         {questionDoc.options[0]}
                       </label>
@@ -172,7 +270,14 @@ class Quiz extends Component {
                     </li>
 
                     <li>
-                      <input type="radio" id="option-two" name="selector" />
+                      <input
+                        type="radio"
+                        id="option-two"
+                        name="userResponse"
+                        value="1"
+                        checked={this.state.selectedOption === "1"}
+                        onChange={this.handleOptionChange}
+                      />
                       <label htmlFor="option-two">
                         {questionDoc.options[1]}
                       </label>
@@ -181,7 +286,14 @@ class Quiz extends Component {
                     </li>
 
                     <li>
-                      <input type="radio" id="option-three" name="selector" />
+                      <input
+                        type="radio"
+                        id="option-three"
+                        name="userResponse"
+                        value="2"
+                        checked={this.state.selectedOption === "2"}
+                        onChange={this.handleOptionChange}
+                      />
                       <label htmlFor="option-three">
                         {questionDoc.options[2]}
                       </label>
@@ -190,7 +302,14 @@ class Quiz extends Component {
                     </li>
 
                     <li>
-                      <input type="radio" id="option-four" name="selector" />
+                      <input
+                        type="radio"
+                        id="option-four"
+                        name="userResponse"
+                        value="3"
+                        checked={this.state.selectedOption === "3"}
+                        onChange={this.handleOptionChange}
+                      />
                       <label htmlFor="option-four">
                         {questionDoc.options[3]}
                       </label>
@@ -212,7 +331,10 @@ class Quiz extends Component {
           <div className="container">
             <hr />
             <div className="flex_row">
-              <button className="primaryButton">
+              <button
+                className="primaryButton"
+                onClick={this.handleSubmitAnswer}
+              >
                 SUBMIT {this.state.secondsLeft}s
               </button>
               {!this.props.questionIsFetching && this.state.timerStarted && (
@@ -226,7 +348,7 @@ class Quiz extends Component {
                     onClick={() =>
                       this.props.likeQuestion(
                         questionDoc,
-                        quiz.questions[this.state.curQues]
+                        quizDoc.questions[this.state.curQues]
                       )
                     }
                   >
@@ -236,7 +358,6 @@ class Quiz extends Component {
                     </svg>
                   </div>
                   <span>{questionDoc.likes.length}</span>
-                  {/* <span> { quiz ? quiz.questions.find( question => question.id === quiz.questions[quiz.currentQuestion].id ) } </span> */}
                   <div
                     className={
                       questionDoc.dislikes.includes(this.props.auth.uid)
@@ -246,7 +367,7 @@ class Quiz extends Component {
                     onClick={() =>
                       this.props.dislikeQuestion(
                         questionDoc,
-                        quiz.questions[this.state.curQues]
+                        quizDoc.questions[this.state.curQues]
                       )
                     }
                   >
@@ -277,9 +398,11 @@ const mapStateToProps = (state, ownProps) => {
   // TODO: Populate quiz, maybe do it here then set props.
 
   return {
-    // questions: state.firestore.ordered.questions,
     auth: state.firebase.auth,
-    quiz: state.firestore.data.quiz,
+    profile: state.firebase.profile,
+    quizDoc: state.firestore.data.quizDoc,
+    quizCorrectResponses: state.firestore.ordered.quizCorrectResponses,
+    // quizIncorrectResponses: state.firestore.data.quizIncorrectResponses,
     questionDoc: state.question.questionDoc,
     questionIsFetching: state.question.isFetching,
     sideNavActive: state.ui.sideNavActive
@@ -289,6 +412,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
   return {
     toggleSidenav: () => dispatch(toggleSidenav()),
+    submitAnswer: (quizDoc, quizId, qDoc, option) =>
+      dispatch(submitAnswer(quizDoc, quizId, qDoc, option)),
     likeQuestion: (qDoc, ref) => dispatch(likeQuestion(qDoc, ref)),
     dislikeQuestion: (qDoc, ref) => dispatch(dislikeQuestion(qDoc, ref)),
     fetchQuestion: ref => dispatch(fetchQuestion(ref))
@@ -303,8 +428,9 @@ export default compose(
   firestoreConnect(props => {
     // console.log("firestoreConnect props, ", props);
     return [
-      { collection: "quizzes", doc: props.match.params.id, storeAs: "quiz" }
-      // { collection: "questions" }
+      { collection: "quizzes", doc: props.match.params.id, storeAs: "quizDoc" },
+      { collection: `quizzes/${props.match.params.id}/correctResponses`, storeAs: "quizCorrectResponses" },
+      // { collection: `quizzes/${props.match.params.id}/incorrectResponses`, storeAs: "quizIncorrectResponses" },
     ];
   })
 )(Quiz);
