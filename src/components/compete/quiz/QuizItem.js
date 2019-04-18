@@ -1,20 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-// TODO: Make this a functional component if possible, we won't be needing componentWillReceiveProps
-// class QuizItem extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {};
-//   }
-
-//   componentWillReceiveProps() {
-//     console.warn("Question Component received new props.");
-//   }
-
-const QuizItem = (props) => {
-  // console.log(props);
+const QuizItem = props => {
   const quiz = props.quiz;
 
   let startTime = +moment(quiz.startTime.toDate()).format("X");

@@ -101,4 +101,6 @@ const mapStateToProps = state => {
 export default compose(
   connect(mapStateToProps),
   firestoreConnect([{ collection: "quizzes", queryParams: ["limitToFirst=1"] }])
+  // firestoreConnect([{ collection: "quizzes", limit: 10 }]) // This will get only 3 quizzes
+  // firestoreConnect([{ collection: "quizzes", orderBy: ['timestamp', 'desc'] }]) // This will work
 )(Compete);

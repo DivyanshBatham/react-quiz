@@ -163,7 +163,13 @@ export const dislikeQuestion = (questionDoc, questionRef) => {
   };
 };
 
-export const submitAnswer = (quizDoc, quizId, questionDoc, choosenOption) => {
+export const submitAnswer = (
+  quizDoc,
+  quizId,
+  questionDoc,
+  choosenOption,
+  questionId
+) => {
   return (dispatch, getState, { getFirestore }) => {
     const state = getState();
     const firestore = getFirestore();
@@ -172,22 +178,31 @@ export const submitAnswer = (quizDoc, quizId, questionDoc, choosenOption) => {
       userId: state.firebase.auth.uid,
       userInitials: state.firebase.profile.initials,
       choosenOption: choosenOption,
-      timestamp: firestore.FieldValue.serverTimestamp(),
+      timestamp: firestore.FieldValue.serverTimestamp()
+      // Option 1:
+      // questionId: questionId
+
       // timestampSys: new Date()
       // Maybe calculate time taken or submitted at seconds, for better results page.
       // IDEA: Setup a function to use the timestamp and startTime to calculated answered in seconds...
     };
 
     if (questionDoc.correctOption === choosenOption) {
+      // quizzes/quizId/correctResponses/:responseId(autogen)/response
 
+      // Option 2:
+      // quizzes/:quizId/responses/:questionId/(correctResponses|incorrectResponses)
       firestore
+        // .collection("quizzes")
+        // .doc(quizId)
+        // .collection("responses")
+        // .doc(questionId)
+        // .collection("correctResponses")
+        // .add(response)
         .collection("quizzes")
         .doc(quizId)
         .collection("correctResponses")
         .add(response)
-        // .update({
-        //   correctResponses: firestore.FieldValue.arrayUnion(response)
-        // })
         .then(() => {
           dispatch({
             type: SUBMIT_ANSWER,
@@ -198,15 +213,17 @@ export const submitAnswer = (quizDoc, quizId, questionDoc, choosenOption) => {
           console.error(err);
         });
     } else {
-
       firestore
+        // .collection("quizzes")
+        // .doc(quizId)
+        // .collection("responses")
+        // .doc(questionId)
+        // .collection("incorrectResponses")
+        // .add(response)
         .collection("quizzes")
         .doc(quizId)
         .collection("incorrectResponses")
         .add(response)
-        // .update({
-        //   incorrectResponses: firestore.FieldValue.arrayUnion(response)
-        // })
         .then(() => {
           dispatch({
             type: SUBMIT_ANSWER,

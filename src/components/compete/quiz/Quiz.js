@@ -8,7 +8,7 @@ import moment from "moment";
 // Components:
 import Spinner from "../../spinner/Spinner";
 import BallRipple from "../../spinner/BallRipple";
-import Question from "../../Question";
+// import Question from "../../Question";
 
 // Actions:
 import { toggleSidenav } from "../../../actions/uiActions";
@@ -52,7 +52,7 @@ class Quiz extends Component {
           //   })
           // }
           // else if (this.state.curQues == quiz.currentQuestion)
-          if (this.state.curQues == this.props.quizDoc.currentQuestion)
+          if (this.state.curQues === this.props.quizDoc.currentQuestion)
             return {
               secondsLeft: prevState.secondsLeft - 1
               // curQues: (prevState.curQues+1)%questions.length
@@ -99,17 +99,18 @@ class Quiz extends Component {
         this.props.quizDoc,
         this.props.match.params.id,
         this.props.questionDoc,
-        this.state.selectedOption
+        this.state.selectedOption,
+        this.props.quizDoc.questions[this.props.quizDoc.currentQuestion].id
       );
     else alert("Select Atleast on option");
   };
 
   render() {
-    // console.log("Quiz.js Props ", this.props);
+    console.log("Quiz.js Props ", this.props);
     const quizDoc = this.props.quizDoc;
     const questionDoc = this.props.questionDoc;
     const quizCorrectResponses = this.props.quizCorrectResponses;
-    const profile = this.props.profile;
+    const quizIncorrectResponses = this.props.quizIncorrectResponses;
 
     return (
       <main className={this.props.sideNavActive ? "activeSidenav" : null}>
@@ -151,101 +152,85 @@ class Quiz extends Component {
           </header>
           <hr />
           <div className="quiz-top3">
-            <div>
+            <div className="flex_col">
               <div className="quiz-top3__rank">1st</div>
-              {quizDoc && quizCorrectResponses && quizCorrectResponses[0] ? (
-                <div
-                  className={
-                    quizCorrectResponses[0].userId === this.props.auth.uid
-                      ? "quiz-top3__person active"
-                      : "quiz-top3__person"
-                  }
-                >
-                  {quizCorrectResponses[0].userInitials}
-                </div>
+              {quizCorrectResponses &&
+              quizCorrectResponses[0] &&
+              quizCorrectResponses[0].timestamp ? (
+                <>
+                  <div
+                    className={
+                      quizCorrectResponses[0].userId === this.props.auth.uid
+                        ? "quiz-top3__person active"
+                        : "quiz-top3__person"
+                    }
+                  >
+                    {quizCorrectResponses[0].userInitials}
+                  </div>
+                  <div className="quiz-top3__rank">
+                    {moment(quizCorrectResponses[0].timestamp.toDate()).format(
+                      "x"
+                    )}
+                  </div>
+                </>
               ) : (
                 <BallRipple />
               )}
-              {/* {quizDoc && quizDoc.correctResponses && quizDoc.correctResponses[0] ? (
-                <div
-                  className={
-                    quizDoc.correctResponses[0].userId === this.props.auth.uid
-                      ? "quiz-top3__person active"
-                      : "quiz-top3__person"
-                  }
-                >
-                  {quizDoc.correctResponses[0].userInitials}
-                </div>
-              ) : (
-                <BallRipple />
-              )} */}
             </div>
-            <div>
+            <div className="flex_col">
               <div className="quiz-top3__rank">2nd</div>
-              {quizDoc && quizCorrectResponses && quizCorrectResponses[1] ? (
-                <div
-                  className={
-                    quizCorrectResponses[1].userId === this.props.auth.uid
-                      ? "quiz-top3__person active"
-                      : "quiz-top3__person"
-                  }
-                >
-                  {quizCorrectResponses[1].userInitials}
-                </div>
+              {quizCorrectResponses &&
+              quizCorrectResponses[1] &&
+              quizCorrectResponses[1].timestamp ? (
+                <>
+                  <div
+                    className={
+                      quizCorrectResponses[1].userId === this.props.auth.uid
+                        ? "quiz-top3__person active"
+                        : "quiz-top3__person"
+                    }
+                  >
+                    {quizCorrectResponses[1].userInitials}
+                  </div>
+                  <div className="quiz-top3__rank">
+                    {moment(quizCorrectResponses[1].timestamp.toDate()).format(
+                      "x"
+                    )}
+                  </div>
+                </>
               ) : (
                 <BallRipple />
               )}
-              {/* {quizDoc && quizDoc.correctResponses && quizDoc.correctResponses[1] ? (
-                <div
-                  className={
-                    quizDoc.correctResponses[1].userId === this.props.auth.uid
-                      ? "quiz-top3__person active"
-                      : "quiz-top3__person"
-                  }
-                >
-                  {quizDoc.correctResponses[1].userInitials}
-                </div>
-              ) : (
-                <BallRipple />
-              )} */}
             </div>
-            <div>
+            <div className="flex_col">
               <div className="quiz-top3__rank">3rd</div>
-              {quizDoc && quizCorrectResponses && quizCorrectResponses[2] ? (
-                <div
-                  className={
-                    quizCorrectResponses[2].userId === this.props.auth.uid
-                      ? "quiz-top3__person active"
-                      : "quiz-top3__person"
-                  }
-                >
-                  {quizCorrectResponses[2].userInitials}
-                </div>
+              {quizCorrectResponses &&
+              quizCorrectResponses[2] &&
+              quizCorrectResponses[2].timestamp ? (
+                <>
+                  <div
+                    className={
+                      quizCorrectResponses[2].userId === this.props.auth.uid
+                        ? "quiz-top3__person active"
+                        : "quiz-top3__person"
+                    }
+                  >
+                    {quizCorrectResponses[2].userInitials}
+                  </div>
+                  <div className="quiz-top3__rank">
+                    {moment(quizCorrectResponses[2].timestamp.toDate()).format(
+                      "x"
+                    )}
+                  </div>
+                </>
               ) : (
                 <BallRipple />
               )}
-              {/* {quizDoc && quizDoc.correctResponses && quizDoc.correctResponses[2] ? (
-                <div
-                  className={
-                    quizDoc.correctResponses[2].userId === this.props.auth.uid
-                      ? "quiz-top3__person active"
-                      : "quiz-top3__person"
-                  }
-                >
-                  {quizDoc.correctResponses[2].userInitials}
-                </div>
-              ) : (
-                <BallRipple />
-              )} */}
             </div>
           </div>
           <hr />
-          {/* <div className="quiz-questionNumber">Question {quiz.currentQuestion+1}</div> */}
           {!this.props.questionIsFetching && this.state.timerStarted ? (
-            // { quiz && questionDoc ? (
-            // {questions && quiz ? (
             <>
-              {/* <Question /> */}
               <div className="questionContainer">
                 <div className="quiz-questionNumber">
                   Question {this.state.curQues + 1}
@@ -334,7 +319,28 @@ class Quiz extends Component {
               <button
                 className="primaryButton"
                 onClick={this.handleSubmitAnswer}
+                disabled={
+                  quizCorrectResponses &&
+                  quizIncorrectResponses &&
+                  (quizCorrectResponses.find(
+                    response => response.userId === this.props.auth.uid
+                  ) ||
+                    quizIncorrectResponses.find(
+                      response => response.userId === this.props.auth.uid
+                    ))
+                }
               >
+                {/* {quizCorrectResponses &&
+                quizIncorrectResponses &&
+                (quizCorrectResponses.find(
+                  response => response.userId === this.props.auth.uid
+                ) ||
+                  quizIncorrectResponses.find(
+                    response => response.userId === this.props.auth.uid
+                  ))
+                  ? "SUBMITTED " + this.state.secondsLeft + "s"
+                  : "SUBMIT " + this.state.secondsLeft + "s"} */}
+
                 SUBMIT {this.state.secondsLeft}s
               </button>
               {!this.props.questionIsFetching && this.state.timerStarted && (
@@ -399,10 +405,9 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     auth: state.firebase.auth,
-    profile: state.firebase.profile,
     quizDoc: state.firestore.data.quizDoc,
     quizCorrectResponses: state.firestore.ordered.quizCorrectResponses,
-    // quizIncorrectResponses: state.firestore.data.quizIncorrectResponses,
+    quizIncorrectResponses: state.firestore.ordered.quizIncorrectResponses,
     questionDoc: state.question.questionDoc,
     questionIsFetching: state.question.isFetching,
     sideNavActive: state.ui.sideNavActive
@@ -427,10 +432,30 @@ export default compose(
   ),
   firestoreConnect(props => {
     // console.log("firestoreConnect props, ", props);
+    // this.props.quizDoc.questions[this.props.quizDoc.currentQuestion].id
+    // quizzes/:quizId/responses/:questionId/(correctResponses|incorrectResponses)
     return [
       { collection: "quizzes", doc: props.match.params.id, storeAs: "quizDoc" },
-      { collection: `quizzes/${props.match.params.id}/correctResponses`, storeAs: "quizCorrectResponses" },
-      // { collection: `quizzes/${props.match.params.id}/incorrectResponses`, storeAs: "quizIncorrectResponses" },
+      // {
+      //   collection: `quizzes/${props.match.params.id}/responses`,
+      //   storeAs: "quizResponses",
+      //   // orderBy: ["timestamp", "asc"]
+      //   // limit: 3
+      // },
+      // {
+      //   collection: `quizzes/${props.match.params.id}/incorrectResponses`,
+      //   storeAs: "quizIncorrectResponses"
+      // }
+      {
+        collection: `quizzes/${props.match.params.id}/correctResponses`,
+        storeAs: "quizCorrectResponses",
+        orderBy: ["timestamp", "asc"]
+        // limit: 3
+      },
+      {
+        collection: `quizzes/${props.match.params.id}/incorrectResponses`,
+        storeAs: "quizIncorrectResponses"
+      }
     ];
   })
 )(Quiz);
