@@ -17,7 +17,7 @@ const QuizItem = props => {
   } else if (now < endTime) {
     status = "Running";
     timestamp =
-      moment().diff(moment(quiz.endTime.toDate()), "minutes") +
+      (Math.abs(moment().diff(moment(quiz.endTime.toDate()), "minutes")) + 1) + 
       " minutes remaining";
   } else {
     status = "Finished";

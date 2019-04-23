@@ -58,7 +58,8 @@ class App extends Component {
           path={`${this.props.match.url}/compete`}
           component={Compete}
         />
-        <Route path={`${this.props.match.url}/compete/:id`} component={Quiz} />
+        <Route path={`${this.props.match.url}/compete/:quizId`} component={Quiz} />
+        
         <Route
           exact
           path={`${this.props.match.url}/practice`}

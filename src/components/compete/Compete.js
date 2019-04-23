@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
+import moment from "moment";
 
 // Actions:
 import { toggleSidenav } from "../../actions/uiActions";
@@ -35,6 +36,13 @@ class Compete extends Component {
 
   render() {
     // console.log("Compete.js");
+    let now = +moment().format("X");
+
+    // if (this.props.quizDoc) {
+    //   startTime = +moment(this.props.quizDoc.startTime.toDate()).format("X");
+    //   endTime = +moment(this.props.quizDoc.endTime.toDate()).format("X");
+    // }
+
     return (
       <main className={this.props.sideNavActive ? "activeSidenav" : null}>
         <div className="container flex_col">
@@ -59,9 +67,11 @@ class Compete extends Component {
           <section className="quizlist">
             <h2 className="quizlist__header">Upcoming Quiz</h2>
             {this.props.quizzes ? (
-              this.props.quizzes.map(quiz => (
-                <QuizItem quiz={quiz} key={quiz.id} />
-              ))
+              this.props.quizzes
+                .filter(
+                  quiz => now < +moment(quiz.endTime.toDate()).format("X")
+                )
+                .map(quiz => <QuizItem quiz={quiz} key={quiz.id} />)
             ) : (
               // <div className="spinnerContainer">
               <Spinner />
@@ -74,9 +84,11 @@ class Compete extends Component {
             {/* <div className="row"> */}
             {/* <div className="col-8 offset-2"> */}
             {this.props.quizzes ? (
-              this.props.quizzes.map(quiz => (
-                <QuizItem quiz={quiz} key={quiz.id} />
-              ))
+              this.props.quizzes
+                .filter(
+                  quiz => now >= +moment(quiz.endTime.toDate()).format("X")
+                )
+                .map(quiz => <QuizItem quiz={quiz} key={quiz.id} />)
             ) : (
               <div className="spinnerContainer">
                 <Spinner />
@@ -100,7 +112,14 @@ const mapStateToProps = state => {
 
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect([{ collection: "quizzes", queryParams: ["limitToFirst=1"] }])
+  firestoreConnect([
+    {
+      collection: "quizzes",
+      orderBy: ["startTime", "desc"]
+      // where: ["questionId", "==", props.match.params.questionId]
+    }
+  ])
+
   // firestoreConnect([{ collection: "quizzes", limit: 10 }]) // This will get only 3 quizzes
   // firestoreConnect([{ collection: "quizzes", orderBy: ['timestamp', 'desc'] }]) // This will work
 )(Compete);

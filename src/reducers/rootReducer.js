@@ -3,7 +3,7 @@ import { firestoreReducer } from "redux-firestore";
 import { firebaseReducer } from "react-redux-firebase";
 
 import authReducer from "./authReducer";
-// import quizReducer from "./quizReducer";
+import quizReducer from "./quizReducer";
 import questionReducer from "./questionReducer";
 import uiReducer from "./uiReducer";
 
@@ -13,7 +13,8 @@ const rootReducer = combineReducers({
   firebase: firebaseReducer,
   firestore: firestoreReducer,
   question: questionReducer,
-  ui: uiReducer
+  ui: uiReducer,
+  quiz: quizReducer
 });
 
 export default rootReducer;

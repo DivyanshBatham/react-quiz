@@ -24,6 +24,10 @@ body {
 // height: 100vh;
 // }
 
+h1 {
+  color: $light;
+}
+
 .primaryButton {
   border: 0;
   @include poppins();

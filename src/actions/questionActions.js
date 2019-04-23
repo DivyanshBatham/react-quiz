@@ -89,12 +89,12 @@ export const approveQuestion = question => {
   };
 };
 
-export const likeQuestion = (questionDoc, questionRef) => {
+export const likeQuestion = (questionDoc, questionId) => {
   return (dispatch, getState, { getFirestore }) => {
     const state = getState();
-    const uid = state.firebase.auth.uid;
-    let newLikes = questionDoc.likes;
-    let newDislikes = questionDoc.dislikes;
+    let uid = state.firebase.auth.uid;
+    let newLikes = [...questionDoc.likes];
+    let newDislikes = [...questionDoc.dislikes];
 
     if (questionDoc.likes.includes(uid))
       newLikes.splice(
@@ -112,12 +112,12 @@ export const likeQuestion = (questionDoc, questionRef) => {
     const firestore = getFirestore();
     firestore
       .collection("questions")
-      .doc(questionRef.id)
+      .doc(questionId)
       .update({
         likes: newLikes,
         dislikes: newDislikes
       })
-      .then(() => {
+      .then((questionDoc) => {
         dispatch({
           type: LIKE_QUESTION,
           questionDoc
@@ -126,12 +126,12 @@ export const likeQuestion = (questionDoc, questionRef) => {
   };
 };
 
-export const dislikeQuestion = (questionDoc, questionRef) => {
+export const dislikeQuestion = (questionDoc, questionId) => {
   return (dispatch, getState, { getFirestore }) => {
     const state = getState();
     const uid = state.firebase.auth.uid;
-    let newDislikes = questionDoc.dislikes;
-    let newLikes = questionDoc.likes;
+    let newDislikes = [...questionDoc.dislikes];
+    let newLikes = [...questionDoc.likes];
 
     if (questionDoc.dislikes.includes(uid))
       newDislikes.splice(
@@ -149,7 +149,7 @@ export const dislikeQuestion = (questionDoc, questionRef) => {
     const firestore = getFirestore();
     firestore
       .collection("questions")
-      .doc(questionRef.id)
+      .doc(questionId)
       .update({
         dislikes: newDislikes,
         likes: newLikes
@@ -164,11 +164,10 @@ export const dislikeQuestion = (questionDoc, questionRef) => {
 };
 
 export const submitAnswer = (
-  quizDoc,
   quizId,
+  questionId,
   questionDoc,
-  choosenOption,
-  questionId
+  choosenOption
 ) => {
   return (dispatch, getState, { getFirestore }) => {
     const state = getState();
@@ -178,10 +177,8 @@ export const submitAnswer = (
       userId: state.firebase.auth.uid,
       userInitials: state.firebase.profile.initials,
       choosenOption: choosenOption,
-      timestamp: firestore.FieldValue.serverTimestamp()
-      // Option 1:
-      // questionId: questionId
-
+      timestamp: firestore.FieldValue.serverTimestamp(),
+      questionId: questionId
       // timestampSys: new Date()
       // Maybe calculate time taken or submitted at seconds, for better results page.
       // IDEA: Setup a function to use the timestamp and startTime to calculated answered in seconds...
@@ -193,16 +190,22 @@ export const submitAnswer = (
       // Option 2:
       // quizzes/:quizId/responses/:questionId/(correctResponses|incorrectResponses)
       firestore
+        .collection("quizzes")
+        .doc(quizId)
+        .collection("correctResponses")
+        .add(response)
+
         // .collection("quizzes")
         // .doc(quizId)
         // .collection("responses")
         // .doc(questionId)
         // .collection("correctResponses")
         // .add(response)
-        .collection("quizzes")
-        .doc(quizId)
-        .collection("correctResponses")
-        .add(response)
+
+        // .collection("quizzes")
+        // .doc(quizId)
+        // .collection("correctResponses")
+        // .add(response)
         .then(() => {
           dispatch({
             type: SUBMIT_ANSWER,
@@ -214,16 +217,22 @@ export const submitAnswer = (
         });
     } else {
       firestore
+        .collection("quizzes")
+        .doc(quizId)
+        .collection("incorrectResponses")
+        .add(response)
+
         // .collection("quizzes")
         // .doc(quizId)
         // .collection("responses")
         // .doc(questionId)
         // .collection("incorrectResponses")
         // .add(response)
-        .collection("quizzes")
-        .doc(quizId)
-        .collection("incorrectResponses")
-        .add(response)
+
+        // .collection("quizzes")
+        // .doc(quizId)
+        // .collection("incorrectResponses")
+        // .add(response)
         .then(() => {
           dispatch({
             type: SUBMIT_ANSWER,
