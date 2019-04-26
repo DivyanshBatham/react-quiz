@@ -24,7 +24,7 @@ body {
 // height: 100vh;
 // }
 
-h1 {
+.temp {
   color: $light;
 }
 
@@ -37,7 +37,7 @@ h1 {
   // padding: 0.5rem 3rem;
   padding: 0.5rem;
   width: 100%;
-  color: rgb(240, 240, 240);
+  color: $white;
   background: $pink;
   border-radius: 0.5rem;
   display: block;
@@ -59,8 +59,8 @@ h1 {
 
   &:disabled {
     // background: $pink80;
-    background: $darkBlue;
-    background: #eee;
+    // background: $darkBlue;
+    // background: #eee;
     background: $light;
     color: #282828;
     box-shadow: none;

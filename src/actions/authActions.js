@@ -86,7 +86,7 @@ export const signUp = newUser => {
 
     firebase
       .auth()
-      .createUserWithEmailAndPassword(newUser.email, newUser.password) 
+      .createUserWithEmailAndPassword(newUser.email, newUser.password)
       .then(res => {
         return firestore
           .collection("users")
@@ -94,6 +94,7 @@ export const signUp = newUser => {
           .set({
             name: newUser.name,
             initials: newUser.name
+              .toUpperCase()
               .split(" ")
               .map(word => word[0])
               .join("")

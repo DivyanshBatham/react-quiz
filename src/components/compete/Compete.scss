@@ -1,6 +1,5 @@
 @import "../../Variables.scss";
 
-
 hr {
   height: 2px;
   width: 100%;
@@ -37,8 +36,98 @@ header {
   //   }
 }
 
+.userlist {
+  &__heading {
+    text-transform: uppercase;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  &-header {
+    @include poppins();
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  &-emptyMessage {
+    text-align: center;
+    @include poppins();
+  }
+
+  &-row {
+    display: flex;
+    align-items: center;
+
+    // padding: 0 0.5rem;
+    // font-weight: 600;
+    // padding: 0.5rem 0;
+
+    &.active {
+      font-weight: 600;
+      // color: $white;
+      // background: linear-gradient(to right, $darkBlue, $darkBlueOpacity05);
+    }
+  }
+
+  &-col {
+    // background: rebeccapurple;
+    padding: 0 0.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  &-flexcol {
+    flex: 1;
+    padding: 0 0.5rem;
+    // background: crimson;
+  }
+
+  &-verticalcol {
+    // background: yellowgreen;
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__score {
+      // font-size: 0.8rem;
+      // color: $pink;
+      font-weight: 600;
+    }
+    &__timestamp {
+      font-size: 0.8rem;
+    }
+  }
+
+  &-userIcon {
+    height: 40px;
+    width: 40px;
+    border: solid 2px $light50;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0.8rem;
+    color: $light;
+    @include transition();
+
+    &.active {
+      color: #eee;
+      border-color: #eee;
+      background: $darkBlueOpacity05;
+    }
+  }
+
+  &-userName {
+    display: inline-block;
+    // background: peru;
+  }
+}
+
 .quizlist {
-  
   &__header {
     text-transform: uppercase;
     font-size: 1rem;
@@ -60,10 +149,12 @@ header {
     // @include lato();
     &:hover {
       cursor: pointer;
-      // background: $lightBlue;
-      // background: $darkBlue;
       background: linear-gradient(to right, $darkBlue, $darkBlueOpacity05);
-      // background: $lightPink;
+    }
+
+    &.highlight {
+      cursor: initial;
+      background: linear-gradient(to right, $darkBlue, $darkBlueOpacity05);
     }
 
     &__title {
@@ -91,6 +182,13 @@ header {
       &.register {
         color: $white;
         background: $pink;
+        cursor: pointer;
+      }
+
+      &:disabled {
+        background: $light;
+        color: #282828;
+        box-shadow: none;
       }
     }
   }

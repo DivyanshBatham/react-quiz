@@ -15,6 +15,8 @@ export const createQuestion = questionData => {
   return (dispatch, getState, { getFirestore }) => {
     const state = getState();
     const firestore = getFirestore();
+    const userIsAdmin = state.firebase.profile.isAdmin || false; // Default value is false.
+
     firestore
       .collection("questions")
       .add({
@@ -29,7 +31,8 @@ export const createQuestion = questionData => {
         likes: [],
         dislikes: [],
         authorId: state.firebase.auth.uid,
-        createdAt: new Date()
+        createdAt: new Date(),
+        isApproved: userIsAdmin || false
       })
       .then(() => {
         dispatch({
@@ -117,7 +120,7 @@ export const likeQuestion = (questionDoc, questionId) => {
         likes: newLikes,
         dislikes: newDislikes
       })
-      .then((questionDoc) => {
+      .then(questionDoc => {
         dispatch({
           type: LIKE_QUESTION,
           questionDoc
@@ -167,19 +170,27 @@ export const submitAnswer = (
   quizId,
   questionId,
   questionDoc,
-  choosenOption
+  choosenOption,
+  questionIndex,
+  userIndex
 ) => {
   return (dispatch, getState, { getFirestore }) => {
     const state = getState();
     const firestore = getFirestore();
 
     let response = {
-      userId: state.firebase.auth.uid,
-      userInitials: state.firebase.profile.initials,
-      choosenOption: choosenOption,
-      timestamp: firestore.FieldValue.serverTimestamp(),
-      questionId: questionId
-      // timestampSys: new Date()
+      userId: state.firebase.auth.uid, // For Primary key
+      userIndex: userIndex, // For Primary key + For fast result generation.
+      userInitials: state.firebase.profile.initials, // For display
+      userName: state.firebase.profile.name, // For display
+
+      // choosenOption: choosenOption, // Not needed :thinking:, until letting users know what they choose.
+      timestamp: firestore.FieldValue.serverTimestamp(), // For calculation and display
+      // points: 3 or 2 or 1 or 0 for display // Maybe use functions.
+
+      questionId: questionId,
+      questionIndex: questionIndex // For fast result generation.
+
       // Maybe calculate time taken or submitted at seconds, for better results page.
       // IDEA: Setup a function to use the timestamp and startTime to calculated answered in seconds...
     };
@@ -194,18 +205,6 @@ export const submitAnswer = (
         .doc(quizId)
         .collection("correctResponses")
         .add(response)
-
-        // .collection("quizzes")
-        // .doc(quizId)
-        // .collection("responses")
-        // .doc(questionId)
-        // .collection("correctResponses")
-        // .add(response)
-
-        // .collection("quizzes")
-        // .doc(quizId)
-        // .collection("correctResponses")
-        // .add(response)
         .then(() => {
           dispatch({
             type: SUBMIT_ANSWER,

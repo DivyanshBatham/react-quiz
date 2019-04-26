@@ -113,6 +113,7 @@ class Question extends Component {
 
   componentWillUnmount() {
     console.warn("Quiz.js Timer cleared.");
+    // TODO: IF this component is unmounted when going to results or any other page, then add logic for userIndex in componentWIllMount
     clearInterval(this.timer);
     this.setState({ timerStarted: false });
   }
@@ -126,14 +127,19 @@ class Question extends Component {
   };
 
   handleSubmitAnswer = () => {
+
     console.log(this.state.selectedOption);
     if (this.state.selectedOption)
       this.props.submitAnswer(
         this.props.quizId,
         this.props.match.params.questionId,
         this.props.questionDoc,
-        this.state.selectedOption
-      );
+        this.state.selectedOption,
+    // questionIndex:
+        this.props.quizDoc.currentQuestion,
+    // userIndex:
+        this.props.quizDoc.registeredUsers.findIndex(regUser => regUser.uid === this.props.auth.uid)
+        );
     else alert("Select Atleast on option");
   };
 
@@ -147,19 +153,18 @@ class Question extends Component {
 
     // +moment(this.props.quizDoc.startTime.toDate()).format("X");
     // let quizStart = +moment(quizDoc.startTime.toDate()).format("X");
-    
+
     // let quizStart = this.props.startTime;
     // let questionEnd = quizStart + 60 * (quizDoc.currentQuestion + 1);
     // let secondsLeft = questionEnd - +moment(new Date()).format("X");
-    
-    let currentQuestionEndTime = this.props.startTime + 60 * (quizDoc.currentQuestion + 1);
+
+    let currentQuestionEndTime =
+      this.props.startTime + 60 * (quizDoc.currentQuestion + 1);
     let secondsLeft = currentQuestionEndTime - this.props.now;
 
-    
     // console.log("quizStart: ", quizStart);
     // console.log("questionEnd: ", questionEnd);
     // console.log("SECONDS LEFT: ", secondsLeft);
-
 
     // TODO: Reset selectedOption for new Question
 
@@ -168,7 +173,6 @@ class Question extends Component {
     //     console.log("UPDATE");
     //     return { selectedOption: null };
     //   });
-
 
     // If :/questionId doesn't matches, redirect to currentQuestion Id:
     if (
@@ -243,13 +247,19 @@ class Question extends Component {
                         {quizCorrectResponses[0].userInitials}
                       </div>
                       <div className="quiz-top3__rank">
+                        {/* {moment(
+                          quizCorrectResponses[0].timestamp.toDate()
+                        ).format("x")} */}
                         {moment(
                           quizCorrectResponses[0].timestamp.toDate()
-                        ).format("x")}
+                        ).format("s.SSS") + "s"}
                       </div>
                     </>
                   ) : (
-                    <BallRipple />
+                    <>
+                      <BallRipple />
+                      <div className="quiz-top3__rank">- - -</div>
+                    </>
                   )}
                 </div>
                 <div className="flex_col">
@@ -268,13 +278,19 @@ class Question extends Component {
                         {quizCorrectResponses[1].userInitials}
                       </div>
                       <div className="quiz-top3__rank">
+                        {/* {moment(
+                          quizCorrectResponses[1].timestamp.toDate()
+                        ).format("x")} */}
                         {moment(
                           quizCorrectResponses[1].timestamp.toDate()
-                        ).format("x")}
+                        ).format("s.SSS") + "s"}
                       </div>
                     </>
                   ) : (
-                    <BallRipple />
+                    <>
+                      <BallRipple />
+                      <div className="quiz-top3__rank">- - -</div>
+                    </>
                   )}
                 </div>
                 <div className="flex_col">
@@ -293,13 +309,19 @@ class Question extends Component {
                         {quizCorrectResponses[2].userInitials}
                       </div>
                       <div className="quiz-top3__rank">
-                        {moment(
+                        {/* {moment(
                           quizCorrectResponses[2].timestamp.toDate()
-                        ).format("x")}
+                        ).format("x")} */}
+                        {moment(
+                          quizCorrectResponses[0].timestamp.toDate()
+                        ).format("s.SSS") + "s"}
                       </div>
                     </>
                   ) : (
-                    <BallRipple />
+                    <>
+                      <BallRipple />
+                      <div className="quiz-top3__rank">- - -</div>
+                    </>
                   )}
                 </div>
               </div>
@@ -316,8 +338,8 @@ class Question extends Component {
                         type="radio"
                         id="option-one"
                         name="userResponse"
-                        value="0"
-                        checked={this.state.selectedOption === "0"}
+                        value="1"
+                        checked={this.state.selectedOption === "1"}
                         onChange={this.handleOptionChange}
                       />
                       <label htmlFor="option-one">
@@ -332,8 +354,8 @@ class Question extends Component {
                         type="radio"
                         id="option-two"
                         name="userResponse"
-                        value="1"
-                        checked={this.state.selectedOption === "1"}
+                        value="2"
+                        checked={this.state.selectedOption === "2"}
                         onChange={this.handleOptionChange}
                       />
                       <label htmlFor="option-two">
@@ -348,8 +370,8 @@ class Question extends Component {
                         type="radio"
                         id="option-three"
                         name="userResponse"
-                        value="2"
-                        checked={this.state.selectedOption === "2"}
+                        value="3"
+                        checked={this.state.selectedOption === "3"}
                         onChange={this.handleOptionChange}
                       />
                       <label htmlFor="option-three">
@@ -364,8 +386,8 @@ class Question extends Component {
                         type="radio"
                         id="option-four"
                         name="userResponse"
-                        value="3"
-                        checked={this.state.selectedOption === "3"}
+                        value="4"
+                        checked={this.state.selectedOption === "4"}
                         onChange={this.handleOptionChange}
                       />
                       <label htmlFor="option-four">
@@ -508,8 +530,17 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
   return {
     toggleSidenav: () => dispatch(toggleSidenav()),
-    submitAnswer: (quizId, questionId, qDoc, option) =>
-      dispatch(submitAnswer(quizId, questionId, qDoc, option)),
+    submitAnswer: (
+      quizId,
+      questionId,
+      qDoc,
+      option,
+      questionIndex,
+      userIndex
+    ) =>
+      dispatch(
+        submitAnswer(quizId, questionId, qDoc, option, questionIndex, userIndex)
+      ),
     likeQuestion: (qDoc, questionId) =>
       dispatch(likeQuestion(qDoc, questionId)),
     dislikeQuestion: (qDoc, questionId) =>
@@ -547,5 +578,7 @@ export default compose(
         where: ["questionId", "==", props.match.params.questionId]
       }
     ];
+
+    // TODO: MOVE THESE TO Quiz.js
   })
 )(Question);

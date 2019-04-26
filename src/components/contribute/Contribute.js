@@ -23,6 +23,7 @@ class Contribute extends Component {
     let optionFour = this.optionFourInput.value;
     let correctOption = this.correctOptionInput.value;
 
+    // console.log
     let questionData = {
       question,
       optionOne,
@@ -31,6 +32,7 @@ class Contribute extends Component {
       optionFour,
       correctOption
     };
+    console.log(questionData);
 
     // Validation of Inputs:
     let errors = {};
