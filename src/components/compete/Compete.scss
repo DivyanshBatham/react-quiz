@@ -11,7 +11,8 @@ header {
   position: relative;
   display: flex;
   align-items: center;
-  margin: 1rem 0;
+  // margin: 1rem 0;
+  margin-bottom: 1rem;
   justify-content: space-between;
 
   h1 {
@@ -45,6 +46,11 @@ header {
     margin-bottom: 1rem;
   }
 
+  &-tableWrapper {
+    overflow-y: hidden;
+    // overflow-x: scroll;
+  }
+
   &-header {
     @include poppins();
     font-weight: 600;
@@ -59,16 +65,29 @@ header {
   &-row {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
-    // padding: 0 0.5rem;
-    // font-weight: 600;
-    // padding: 0.5rem 0;
+    padding: 1rem 0;
 
     &.active {
       font-weight: 600;
-      // color: $white;
-      // background: linear-gradient(to right, $darkBlue, $darkBlueOpacity05);
+      color: $white;
+      background: linear-gradient(to right, $darkBlue, $darkBlueOpacity05);
+    
+      // &::after {
+      //   content: "";
+      //   display: block;
+      //   height: 5px;
+      //   width: 100%;
+      //   background: crimson;
+      //   position: fixed;
+      //   width: 50px;
+      // }
     }
+  }
+
+  &-col-group {
+    display: flex;
   }
 
   &-col {
@@ -76,12 +95,20 @@ header {
     padding: 0 0.5rem;
     display: flex;
     justify-content: center;
+    align-items: center;
+
+    &.flex-start{
+      justify-content: flex-start;
+    }
   }
 
   &-flexcol {
     flex: 1;
     padding: 0 0.5rem;
     // background: crimson;
+    // @include for-tablet-portrait-up() {
+      min-width: 250px;
+    // }
   }
 
   &-verticalcol {
@@ -91,6 +118,10 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    // @include for-tablet-portrait-below() {
+    //   display: none;
+    // }
 
     &__score {
       // font-size: 0.8rem;

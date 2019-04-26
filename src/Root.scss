@@ -28,6 +28,10 @@ body {
   color: $light;
 }
 
+hr.noMargin {
+  margin: 0;
+}
+
 .primaryButton {
   border: 0;
   @include poppins();
@@ -335,6 +339,7 @@ textarea {
 }
 
 main {
+  padding: 1rem 0;
   // To make footer of Quiz stick to bottom.
   display: flex;
   flex-direction: column;

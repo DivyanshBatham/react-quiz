@@ -15,7 +15,8 @@
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
     "redux-firestore": "^0.7.2",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "simplebar-react": "^1.0.0-alpha.6"
   },
   "scripts": {
     "start": "react-scripts start",

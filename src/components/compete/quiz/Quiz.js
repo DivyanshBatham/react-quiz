@@ -25,7 +25,7 @@ class Quiz extends Component {
   }
 
   componentDidMount() {
-    console.warn("Quiz.js Timer started.");
+    // console.warn("Quiz.js Timer started.");
     this.timer = setInterval(() => {
       this.setState(prevState => {
         return { timer: prevState.timer + 1 };
@@ -34,7 +34,7 @@ class Quiz extends Component {
   }
 
   componentWillUnmount() {
-    console.warn("Quiz.js Timer cleared.");
+    // console.warn("Quiz.js Timer cleared.");
     clearInterval(this.timer);
     this.setState({ timerStarted: false });
   }
@@ -48,6 +48,8 @@ class Quiz extends Component {
     // If I add a timer here, then page will automatically change between
     // registration, results and quiz.
 
+    // TODO: Add a check for :quizId, redirect to /compete when quizId doesn't matches.
+
     if (this.props.quizDoc) {
       startTime = +moment(this.props.quizDoc.startTime.toDate()).format("X");
       endTime = +moment(this.props.quizDoc.endTime.toDate()).format("X");
@@ -56,12 +58,14 @@ class Quiz extends Component {
 
     return (
       <>
-        {this.props.quizDoc ? (
+        {this.props.quizDoc &&
+        this.props.quizCorrectResponsesALL &&
+        this.props.quizIncorrectResponsesALL ? (
           <Route
             exact
             path={this.props.match.url}
             render={props => {
-              console.warn("CHECKING FOR TIME path={this.props.match.url}");
+              // console.warn("CHECKING FOR TIME path={this.props.match.url}");
               return startTime < now && now < endTime ? (
                 <Redirect
                   to={`/app/compete/${this.props.match.params.quizId}/${
@@ -87,6 +91,12 @@ class Quiz extends Component {
                   quizDoc={this.props.quizDoc}
                   uid={this.props.auth.uid}
                   sideNavActive={this.props.sideNavActive}
+                  timer={this.state.timer} // Just for setInterval.
+                  // startTime={startTime}
+                  // endTime={endTime}
+                  // now={now}
+                  quizCorrectResponsesALL={this.props.quizCorrectResponsesALL}
+                  quizIncorrectResponsesALL={this.props.quizIncorrectResponsesALL}
                 />
               );
             }}
@@ -131,7 +141,9 @@ const mapStateToProps = (state, ownProps) => {
   return {
     auth: state.firebase.auth,
     quizDoc: state.firestore.data.quizDoc,
-    sideNavActive: state.ui.sideNavActive
+    sideNavActive: state.ui.sideNavActive,
+    quizCorrectResponsesALL: state.firestore.ordered.quizCorrectResponsesALL,
+    quizIncorrectResponsesALL: state.firestore.ordered.quizIncorrectResponsesALL
   };
 };
 
@@ -143,6 +155,17 @@ export default compose(
         collection: "quizzes",
         doc: props.match.params.quizId,
         storeAs: "quizDoc"
+      },
+      {
+        collection: `quizzes/${props.match.params.quizId}/correctResponses`,
+        storeAs: "quizCorrectResponsesALL",
+        orderBy: ["timestamp", "asc"]
+        // where: ["questionId", "==", props.match.params.questionId]
+      },
+      {
+        collection: `quizzes/${props.match.params.quizId}/incorrectResponses`,
+        storeAs: "quizIncorrectResponsesALL"
+        // where: ["questionId", "==", props.match.params.questionId]
       }
     ];
   })
