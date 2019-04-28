@@ -19,6 +19,11 @@ body {
   background: $darkBlue;
 }
 
+.simplebar-scrollbar:before {
+  // background: $darkBlue !important;
+  background: $light20 !important;
+  opacity: 1 !important;
+}
 // #root {
 // text-align: center;
 // height: 100vh;
@@ -30,6 +35,7 @@ body {
 
 hr.noMargin {
   margin: 0;
+  // position: fixed;
 }
 
 .primaryButton {

@@ -32,7 +32,7 @@ class Contribute extends Component {
       optionFour,
       correctOption
     };
-    console.log(questionData);
+//$$$ console.log(questionData);
 
     // Validation of Inputs:
     let errors = {};

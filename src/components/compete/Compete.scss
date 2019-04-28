@@ -37,6 +37,16 @@ header {
   //   }
 }
 
+.userlist-bg {
+  // position: fixed;
+  // background: red;
+  background: linear-gradient(to right, $darkBlue, $darkBlueOpacity05);
+  margin-left: -0.5rem;
+  border-radius: 8px;
+  z-index: -1;
+  position: absolute;
+}
+
 .userlist {
   &__heading {
     text-transform: uppercase;
@@ -66,28 +76,36 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    padding: 1rem 0;
+    border-radius: 8px;
+    // padding: 1rem 0;
+    padding: 1rem 0.5rem;
+    position: relative;
 
     &.active {
       font-weight: 600;
       color: $white;
       background: linear-gradient(to right, $darkBlue, $darkBlueOpacity05);
-    
+
       // &::after {
-      //   content: "";
+      //   content: "XYZ";
       //   display: block;
-      //   height: 5px;
-      //   width: 100%;
+      //   height: 10px;
+      //   // width: 100%;
       //   background: crimson;
-      //   position: fixed;
-      //   width: 50px;
+      //   position: sticky;
+      //   left: 0;
+      //   top:0;
+      //   // width: 50px;
       // }
     }
   }
 
   &-col-group {
     display: flex;
+    @include transition();
+    // @include for-tablet-portrait-below() {
+    //   display: none;
+    // }
   }
 
   &-col {
@@ -96,19 +114,23 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-
-    &.flex-start{
+    
+    &.flex-start {
       justify-content: flex-start;
     }
   }
-
+  
   &-flexcol {
+    // background: crimson;
     flex: 1;
     padding: 0 0.5rem;
-    // background: crimson;
-    // @include for-tablet-portrait-up() {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    @include for-tablet-portrait-up() {
       min-width: 250px;
-    // }
+      flex: 0;
+    }
   }
 
   &-verticalcol {
@@ -119,9 +141,9 @@ header {
     justify-content: center;
     align-items: center;
 
-    // @include for-tablet-portrait-below() {
-    //   display: none;
-    // }
+    @include for-tablet-portrait-below() {
+      display: none;
+    }
 
     &__score {
       // font-size: 0.8rem;

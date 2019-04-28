@@ -2,31 +2,32 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // Custom Scrollbar:
-import SimpleBar from "simplebar-react";
+// import SimpleBar from "simplebar-react";
+import 'simplebar';
 import "simplebar/dist/simplebar.min.css";
 
 import moment from "moment";
 
 // Actions:
-import { registerForQuiz } from "../../../actions/quizActions";
 import { toggleSidenav } from "../../../actions/uiActions";
 
 class QuizResults extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.tableWrapper = React.createRef();
   }
 
   getRankNotation = n => {
     let j = n % 10,
       k = n % 100;
-    if (j == 1 && k != 11) {
+    if (j === 1 && k !== 11) {
       return n + "st";
     }
-    if (j == 2 && k != 12) {
+    if (j === 2 && k !== 12) {
       return n + "nd";
     }
-    if (j == 3 && k != 13) {
+    if (j === 3 && k !== 13) {
       return n + "rd";
     }
     return n + "th";
@@ -92,8 +93,8 @@ class QuizResults extends Component {
     });
 
     resultMatrix.sort((a, b) => {
-      if (a.totalScore != b.totalScore) return b.totalScore - a.totalScore;
-      else if (a.totalTimetaken != b.totalTimetaken)
+      if (a.totalScore !== b.totalScore) return b.totalScore - a.totalScore;
+      else if (a.totalTimetaken !== b.totalTimetaken)
         return a.totalTimetaken - b.totalTimetaken;
       else
         return (
@@ -111,10 +112,21 @@ class QuizResults extends Component {
     });
   };
 
+  // updateDimensions = () => {
+  //   console.log(this.tableWrapper.current.clientWidth);
+  //   this.setState({ width: this.tableWrapper.current.clientWidth });
+  // };
+
   componentDidMount() {
     // console.warn("QuizResults.js Props ", this.props);
+    // this.updateDimensions();
     this.renderResults();
+    // window.addEventListener("resize", this.updateDimensions);
   }
+
+  // componentWillUnmount() {
+  //   window.removeEventListener("resize", this.updateDimensions);
+  // }
 
   render() {
     let timestamp = moment(this.props.quizDoc.endTime.toDate()).fromNow(); // a minute ago.
@@ -189,137 +201,160 @@ class QuizResults extends Component {
               className="userlist-tableWrapper"
               data-simplebar
               data-simplebar-auto-hide="false"
+              ref={this.tableWrapper}
             >
-              <div className="userlist-header">
-                <div className="userlist-row">
-                  <div className="userlist-col" style={{ minWidth: "35px" }}>
-                    #
-                  </div>
-                  {/* <div className="userlist-flexcol">Users</div> */}
-                  <div className="userlist-col flex-start" style={{ minWidth: "250px" }}>
-                    Users
-                  </div>
+              <div>
+                <div className="userlist-header">
+                  <div className="userlist-row">
+                    <div className="userlist-col" style={{ minWidth: "35px" }}>
+                      #
+                    </div>
+                    {/* <div className="userlist-flexcol">Users</div> */}
+                    <div
+                      className="userlist-flexcol"
+                      // className="userlist-col flex-start"
+                      // style={{ minWidth: "250px" }}
+                    >
+                      Users
+                    </div>
 
-                  {/* < FOR DESKTOP > */}
-                  <div className="userlist-col-group">
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(questionIndex => (
-                      <div
-                        className="userlist-verticalcol"
-                        key={questionIndex}
-                        style={{ minWidth: "63px" }}
-                      >
-                        Q{questionIndex}
-                      </div>
-                    ))}
-                  </div>
-                  {/* </ FOR DESKTOP > */}
+                    {/* < FOR DESKTOP > */}
+                    <div className="userlist-col-group">
+                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(questionIndex => (
+                        <div
+                          className="userlist-verticalcol"
+                          key={questionIndex}
+                          style={{ minWidth: "63px" }}
+                        >
+                          Q{questionIndex}
+                        </div>
+                      ))}
+                    </div>
+                    {/* </ FOR DESKTOP > */}
 
-                  <div className="userlist-col" style={{ minWidth: "70px" }}>
-                    Score
-                  </div>
+                    <div className="userlist-col" style={{ minWidth: "70px" }}>
+                      Score
+                    </div>
 
-                  <div className="userlist-col" style={{ minWidth: "83px" }}>
-                    Time
+                    <div className="userlist-col" style={{ minWidth: "83px" }}>
+                      Time
+                    </div>
                   </div>
                 </div>
-              </div>
-              <hr className="noMargin" />
+                <hr className="noMargin" style={{ width: this.state.width }}/>
 
-              {this.state.resultMatrix &&
-                this.state.resultMatrix.map((regUser, userIndex) => {
-                  return (
-                    <div key={regUser.userId}>
-                      <div
-                        className={
-                          regUser.userId === this.props.uid
-                            ? "userlist-row active"
-                            : "userlist-row"
-                        }
-                      >
+                {this.state.resultMatrix &&
+                  this.state.resultMatrix.map((regUser, userIndex) => {
+                    return (
+                      <div key={regUser.userId}>
                         <div
-                          className="userlist-col"
-                          style={{ minWidth: "35px" }}
+                          className={
+                            regUser.userId === this.props.uid
+                              ? "userlist-row active"
+                              : "userlist-row"
+                          }
                         >
-                          {userIndex + 1}
-                        </div>
-                        {/* <div className="userlist-flexcol"> */}
-                        <div
-                          className="userlist-col flex-start"
-                          style={{ minWidth: "250px" }}
-                        >
+                          {/* TODO: 
+                              - Add an empty div of 100% to userlist-row and width from state, z-index:-1 
+                              - Remove background from userlist-row
+                        */}
+                          {/* {regUser.userId === this.props.uid && (
+                            <div
+                              className="userlist-bg"
+                              style={{ width: this.state.width }}
+                            >
+                            &nbsp;
+                            </div>
+                          )} */}
                           <div
-                            className={
-                              regUser.userId === this.props.uid
-                                ? "userlist-userIcon active"
-                                : "userlist-userIcon"
-                            }
+                            className="userlist-col"
+                            style={{ minWidth: "35px" }}
                           >
-                            {regUser.userInitials}
+                            {userIndex + 1}
                           </div>
-
-                          <div className="userlist-userName">
-                            {regUser.userName}
-                          </div>
-                        </div>
-                        {/* < FOR DESKTOP > */}
-                        <div className="userlist-col-group">
-                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(questionIndex => (
+                          {/* <div className="userlist-flexcol"> */}
                           <div
-                            className="userlist-verticalcol"
-                            style={{ minWidth: "63px" }}
-                            key={questionIndex}
+                            className="userlist-flexcol"
+                            // className="userlist-col flex-start"
+                            // style={{ minWidth: "250px" }}
                           >
-                            {this.state.resultMatrix[userIndex] &&
-                            this.state.resultMatrix[userIndex].responses[
-                              questionIndex
-                            ].timetaken ? (
-                              <>
-                                <span className="userlist-verticalcol__score">
-                                  {
-                                    // Score:
-                                    // this.state.resultMatrix[userIndex].responses[
-                                    //   questionIndex
-                                    // ].score
+                            <div
+                              className={
+                                regUser.userId === this.props.uid
+                                  ? "userlist-userIcon active"
+                                  : "userlist-userIcon"
+                              }
+                            >
+                              {regUser.userInitials}
+                            </div>
 
-                                    // Rank:
-                                    this.state.resultMatrix[userIndex]
-                                      .responses[questionIndex].rank
-                                  }
-                                </span>
-                                <span className="userlist-verticalcol__timestamp">
-                                  {
-                                    this.state.resultMatrix[userIndex]
-                                      .responses[questionIndex].timetaken
-                                  }
-                                </span>
-                              </>
-                            ) : (
-                              <>-</>
+                            <div className="userlist-userName">
+                              {regUser.userName}
+                            </div>
+                          </div>
+                          {/* < FOR DESKTOP > */}
+                          <div className="userlist-col-group">
+                            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(
+                              questionIndex => (
+                                <div
+                                  className="userlist-verticalcol"
+                                  style={{ minWidth: "63px" }}
+                                  key={questionIndex}
+                                >
+                                  {this.state.resultMatrix[userIndex] &&
+                                  this.state.resultMatrix[userIndex].responses[
+                                    questionIndex
+                                  ].timetaken ? (
+                                    <>
+                                      <span className="userlist-verticalcol__score">
+                                        {
+                                          // Score:
+                                          // this.state.resultMatrix[userIndex].responses[
+                                          //   questionIndex
+                                          // ].score
+
+                                          // Rank:
+                                          this.state.resultMatrix[userIndex]
+                                            .responses[questionIndex].rank
+                                        }
+                                      </span>
+                                      <span className="userlist-verticalcol__timestamp">
+                                        {
+                                          this.state.resultMatrix[userIndex]
+                                            .responses[questionIndex].timetaken
+                                        }
+                                      </span>
+                                    </>
+                                  ) : (
+                                    <>-</>
+                                  )}
+                                </div>
+                              )
                             )}
                           </div>
-                        ))}
-                        </div>
-                        {/* </ FOR DESKTOP > */}
+                          {/* </ FOR DESKTOP > */}
 
-                        <div
-                          className="userlist-col"
-                          style={{ minWidth: "70px" }}
-                        >
-                          {this.state.resultMatrix[userIndex].totalScore}
-                        </div>
-                        <div
-                          className="userlist-col"
-                          style={{ minWidth: "83px" }}
-                        >
-                          {this.state.resultMatrix[
-                            userIndex
-                          ].totalTimetaken.toFixed(3) + "s"}
+                          <div
+                            className="userlist-col"
+                            style={{ minWidth: "70px" }}
+                          >
+                            {this.state.resultMatrix[userIndex].totalScore}
+                          </div>
+                          <div
+                            className="userlist-col"
+                            style={{ minWidth: "83px" }}
+                          >
+                            {this.state.resultMatrix[
+                              userIndex
+                            ].totalTimetaken.toFixed(3) + "s"}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              <hr className="noMargin" />
+                    );
+                  })}
+                <hr className="noMargin" style={{ width: this.state.width }}/>
+                {/* <hr /> */}
+              </div>
             </div>
             {/* TableWrapper */}
           </section>

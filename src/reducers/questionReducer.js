@@ -19,21 +19,21 @@ const questionReducer = (state = initState, action) => {
   // This is where we ~manipulate~ update the state.
   switch (action.type) {
     case ADD_QUESTION:
-      console.log("Question Added", action.questionData);
+//$$$ console.log("Question Added", action.questionData);
       return state;
     case ADD_QUESTION_ERROR:
-      console.log("Question Added Error, ", action.err);
+//$$$ console.log("Question Added Error, ", action.err);
       return state;
 
     case FETCH_QUESTION_REQUEST:
-      console.log("FETCH_QUESTION started");
+//$$$ console.log("FETCH_QUESTION started");
       return {
         ...state,
         isFetching: true
       };
 
     case FETCH_QUESTION_SUCCESS:
-      console.log("Question Fetched", action.questionDoc);
+//$$$ console.log("Question Fetched", action.questionDoc);
       return {
         ...state,
         isFetching: false,
@@ -41,28 +41,28 @@ const questionReducer = (state = initState, action) => {
       };
 
     case FETCH_QUESTION_ERROR:
-      console.log("Question Fetch Error, ", action.err);
+//$$$ console.log("Question Fetch Error, ", action.err);
       return {
         ...state,
         isFetching: false
       };
 
     case APPROVE_QUESTION:
-      console.log("Question Approved");
+//$$$ console.log("Question Approved");
       return state;
 
     case SUBMIT_ANSWER:
-      console.log("Answer Submitted");
+//$$$ console.log("Answer Submitted");
       return state;
 
     case LIKE_QUESTION:
-      console.log("Question Liked");
+//$$$ console.log("Question Liked");
       return state;
     case DISLIKE_QUESTION:
-      console.log("Question Disliked");
+//$$$ console.log("Question Disliked");
       return state;
     case REPORT_QUESTION:
-      console.log("Report Question");
+//$$$ console.log("Report Question");
       return state;
     default:
       // console.log("Nothing");

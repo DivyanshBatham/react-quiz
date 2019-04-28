@@ -45,7 +45,7 @@ export const signIn = credentials => {
       .auth()
       .signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(loginRes => {
-        console.log(loginRes);
+//$$$ console.log(loginRes);
         dispatch({
           type: LOGIN_SUCCESS,
           credentials: credentials
@@ -61,7 +61,7 @@ export const signIn = credentials => {
 };
 
 export const signOut = () => {
-  console.log("SingOut Action");
+//$$$ console.log("SingOut Action");
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
     firebase
@@ -101,7 +101,7 @@ export const signUp = newUser => {
           });
       })
       .then(res => {
-        console.log(res);
+//$$$ console.log(res);
         dispatch({ type: SIGNUP_SUCCESS });
       })
       .catch(err => {

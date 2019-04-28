@@ -19,14 +19,14 @@ class Compete extends Component {
   }
 
   componentDidMount() {
-    console.warn("Compete.js Timer started.");
+    // console.warn("Compete.js Timer started.");
     this.timer = setInterval(() => {
       this.setState({ timer: "timer" });
     }, 1000);
   }
 
   componentWillUnmount() {
-    console.warn("Compete.js Timer cleared.");
+    // console.warn("Compete.js Timer cleared.");
     clearInterval(this.timer);
   }
 

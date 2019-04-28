@@ -7,7 +7,7 @@ const initState = {
 const uiReducer = (state = initState, action) => {
   switch (action.type) {
     case TOGGLE_SIDENAV:
-      console.log("Toggle Sidenav");
+//$$$ console.log("Toggle Sidenav");
       return {
         ...state,
         sideNavActive: !state.sideNavActive

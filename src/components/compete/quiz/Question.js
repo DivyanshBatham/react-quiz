@@ -128,7 +128,7 @@ class Question extends Component {
 
   handleSubmitAnswer = () => {
 
-    console.log(this.state.selectedOption);
+//$$$ console.log(this.state.selectedOption);
     if (this.state.selectedOption)
       this.props.submitAnswer(
         this.props.quizId,

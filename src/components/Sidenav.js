@@ -28,7 +28,7 @@ class Sidenav extends Component {
   };
 
   componentDidMount = () => {
-    var x = window.matchMedia("(max-width: 600px)");
+    let x = window.matchMedia("(max-width: 600px)");
     this.setDevice(x); // Call listener function at run time
     x.addListener(this.setDevice); // Attach listener function on state changes
   };
