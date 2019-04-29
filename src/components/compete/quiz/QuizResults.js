@@ -37,8 +37,11 @@ class QuizResults extends Component {
     let resultMatrix = Array.apply(
       null,
       new Array(this.props.quizDoc.registeredUsers.length)
-    ).map(x => {
+    ).map((x,i) => {
       return {
+        userName: this.props.quizDoc.registeredUsers[i].userName,
+        userInitials: this.props.quizDoc.registeredUsers[i].userInitials,
+        userId: this.props.quizDoc.registeredUsers[i].uid,
         totalScore: 0,
         totalTimetaken: 0,
         responses: new Array(10).fill({})
@@ -52,10 +55,12 @@ class QuizResults extends Component {
       let res = this.props.quizCorrectResponsesALL[i];
 
       // Setting User Deatils:
-      resultMatrix[res.userIndex].userName = res.userName;
-      resultMatrix[res.userIndex].userInitials = res.userInitials;
-      resultMatrix[res.userIndex].userId = res.userId;
-
+      // if( !resultMatrix[res.userIndex].userName ) {
+      //   resultMatrix[res.userIndex].userName = res.userName;
+      //   resultMatrix[res.userIndex].userInitials = res.userInitials;
+      //   resultMatrix[res.userIndex].userId = res.userId;
+      // }
+      
       // Setting User's Response Deatils:
       let timetaken = +moment(res.timestamp.toDate()).format("s.SSS");
       let score = 0;
@@ -63,16 +68,16 @@ class QuizResults extends Component {
       let rank = top3Users[res.questionIndex].length;
       switch (rank) {
         case 1:
-          score = 3;
+        score = 3;
           break;
         case 2:
           score = 2;
           break;
         case 3:
-          score = 1;
-          break;
+        score = 1;
+        break;
       }
-
+      
       resultMatrix[res.userIndex].responses[res.questionIndex] = {
         rank: this.getRankNotation(rank),
         score: score,
@@ -84,6 +89,14 @@ class QuizResults extends Component {
 
     // Iterating Over Incorrect Responses:
     this.props.quizIncorrectResponsesALL.forEach(res => {
+      
+      // Setting User Deatils:
+      // if( !resultMatrix[res.userIndex].userName ) {
+      //   resultMatrix[res.userIndex].userName = res.userName;
+      //   resultMatrix[res.userIndex].userInitials = res.userInitials;
+      //   resultMatrix[res.userIndex].userId = res.userId;
+      // }
+
       let timetaken = +moment(res.timestamp.toDate()).format("s.SSS");
       resultMatrix[res.userIndex].responses[res.questionIndex] = {
         rank: "-",

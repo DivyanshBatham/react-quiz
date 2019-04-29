@@ -42,18 +42,21 @@ class Quiz extends Component {
   render() {
     // console.log("Quiz.js Props ", this.props);
 
-    let startTime, endTime, now;
-
-    // TODO: Auto redirect to Questions when quiz starts..
-    // If I add a timer here, then page will automatically change between
-    // registration, results and quiz.
+    let startTime, endTime, now, isUserRegistered;
 
     // TODO: Add a check for :quizId, redirect to /compete when quizId doesn't matches.
+
+    // TODO: Add a check for user registration.
 
     if (this.props.quizDoc) {
       startTime = +moment(this.props.quizDoc.startTime.toDate()).format("X");
       endTime = +moment(this.props.quizDoc.endTime.toDate()).format("X");
       now = +moment().format("X");
+
+      isUserRegistered =
+        this.props.quizDoc.registeredUsers.findIndex(
+          regUser => regUser.uid === this.props.auth.uid
+        ) !== -1;
     }
 
     return (
@@ -66,15 +69,36 @@ class Quiz extends Component {
             path={this.props.match.url}
             render={props => {
               // console.warn("CHECKING FOR TIME path={this.props.match.url}");
-              return startTime < now && now < endTime ? (
-                <Redirect
-                  to={`/app/compete/${this.props.match.params.quizId}/${
-                    this.props.quizDoc.questions[
-                      this.props.quizDoc.currentQuestion
-                    ]
-                  }`}
-                />
-              ) : now <= startTime ? (
+              return startTime < now && now < endTime && isUserRegistered ? (
+                  <Redirect
+                    to={`/app/compete/${this.props.match.params.quizId}/${
+                      this.props.quizDoc.questions[
+                        this.props.quizDoc.currentQuestion
+                      ]
+                    }`}
+                  />
+              // return startTime < now && now < endTime ? (
+              //   isUserRegistered ? (
+              //     <Redirect
+              //       to={`/app/compete/${this.props.match.params.quizId}/${
+              //         this.props.quizDoc.questions[
+              //           this.props.quizDoc.currentQuestion
+              //         ]
+              //       }`}
+              //     />
+              //   ) : (
+              //     <QuizRegistration
+              //       quizId={this.props.match.params.quizId}
+              //       quizDoc={this.props.quizDoc}
+              //       uid={this.props.auth.uid}
+              //       sideNavActive={this.props.sideNavActive}
+              //       timer={this.state.timer} // Just for setInterval.
+              //       startTime={startTime}
+              //       endTime={endTime}
+              //       now={now}
+              //     />
+              //   )
+              ) : (now <= startTime) || (now < endTime && !isUserRegistered)  ? (
                 <QuizRegistration
                   quizId={this.props.match.params.quizId}
                   quizDoc={this.props.quizDoc}
@@ -96,7 +120,9 @@ class Quiz extends Component {
                   // endTime={endTime}
                   // now={now}
                   quizCorrectResponsesALL={this.props.quizCorrectResponsesALL}
-                  quizIncorrectResponsesALL={this.props.quizIncorrectResponsesALL}
+                  quizIncorrectResponsesALL={
+                    this.props.quizIncorrectResponsesALL
+                  }
                 />
               );
             }}
