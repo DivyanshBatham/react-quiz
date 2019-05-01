@@ -2,6 +2,7 @@
 
 # firebase functions (temporarily)
 .firebase/
+.firebase/hosting.*.cache
 /functions
 
 # dependencies
